@@ -7,11 +7,19 @@
 
 import UIKit
 
-class ImagesListCell: UITableViewCell {
-    @IBOutlet private var bottomGradientView: UIView!
-    @IBOutlet private var cellImage: UIImageView!
+final class ImagesListCell: UITableViewCell {
+    @IBOutlet private var gradientView: UIView!
+    @IBOutlet var cellImage: UIImageView!
+    @IBOutlet var dateLabel: UILabel!
+    @IBOutlet var likeButton: UIButton!
     
     static let reuseIdentifier = "ImagesListCell"
+    
+    var isLiked: Bool = false {
+        didSet {
+            setButtonImage()
+        }
+    }
     
     var gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
@@ -24,17 +32,24 @@ class ImagesListCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        layer.cornerRadius = 16
-        layer.masksToBounds = true
+        cellImage.layer.cornerRadius = 16
+        cellImage.layer.masksToBounds = true
         
-        gradientLayer.frame = bottomGradientView.bounds
-        bottomGradientView.layer.addSublayer(gradientLayer)
+        likeButton.addTarget(self, action: #selector(handleLikeButtonTap), for: .touchUpInside)
+        
+        gradientLayer.frame = gradientView.bounds
+        gradientView.layer.addSublayer(gradientLayer)
+        gradientView.layer.cornerRadius = 16
+        gradientView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        gradientView.layer.masksToBounds = true
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    @objc func handleLikeButtonTap() {
+        isLiked.toggle()
+        setButtonImage()
     }
-
+    
+    private func setButtonImage() {
+        likeButton.setImage(UIImage(named: isLiked ? "like_button_on" : "like_button_off"), for: .normal)
+    }
 }
