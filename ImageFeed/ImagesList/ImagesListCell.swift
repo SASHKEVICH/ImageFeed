@@ -44,6 +44,11 @@ final class ImagesListCell: UITableViewCell {
         gradientView.layer.masksToBounds = true
     }
     
+    override func layoutSubviews() {
+        gradientLayer.frame = gradientView.bounds
+        super.layoutSubviews()
+    }
+    
     @objc func handleLikeButtonTap() {
         isLiked.toggle()
         setButtonImage()
