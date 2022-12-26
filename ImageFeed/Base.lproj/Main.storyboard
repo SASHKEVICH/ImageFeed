@@ -45,21 +45,25 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPK-Dd-Ngc">
-                                                    <rect key="frame" x="357" y="16" width="29" height="26"/>
+                                                    <rect key="frame" x="356" y="4" width="42" height="42"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="42" id="cnD-cY-ZE4"/>
+                                                        <constraint firstAttribute="width" constant="42" id="ic0-fU-6CQ"/>
+                                                    </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="like_button_off"/>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="QPK-Dd-Ngc" firstAttribute="top" secondItem="lqs-7k-r2U" secondAttribute="top" constant="12" id="24s-eV-kwY"/>
+                                                <constraint firstItem="QPK-Dd-Ngc" firstAttribute="top" secondItem="lqs-7k-r2U" secondAttribute="top" id="24s-eV-kwY"/>
                                                 <constraint firstItem="lqs-7k-r2U" firstAttribute="top" secondItem="F1A-pw-Qb9" secondAttribute="top" constant="4" id="2dJ-pX-x3h"/>
                                                 <constraint firstItem="lqs-7k-r2U" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="PYr-0j-FDh" secondAttribute="trailing" constant="8" id="F2T-eS-ODY"/>
                                                 <constraint firstAttribute="trailing" secondItem="lqs-7k-r2U" secondAttribute="trailing" constant="16" id="IFn-ip-JsX"/>
                                                 <constraint firstItem="lqs-7k-r2U" firstAttribute="leading" secondItem="F1A-pw-Qb9" secondAttribute="leading" constant="16" id="JKU-RE-iEJ"/>
                                                 <constraint firstAttribute="bottom" secondItem="lqs-7k-r2U" secondAttribute="bottom" constant="4" id="JW0-Ig-TXh"/>
                                                 <constraint firstItem="lqs-7k-r2U" firstAttribute="bottom" secondItem="Ryz-vB-7Mp" secondAttribute="bottom" id="P0E-pv-9IJ"/>
-                                                <constraint firstItem="lqs-7k-r2U" firstAttribute="trailing" secondItem="QPK-Dd-Ngc" secondAttribute="trailing" constant="12" id="TXS-9Z-o0F"/>
+                                                <constraint firstItem="lqs-7k-r2U" firstAttribute="trailing" secondItem="QPK-Dd-Ngc" secondAttribute="trailing" id="TXS-9Z-o0F"/>
                                                 <constraint firstItem="lqs-7k-r2U" firstAttribute="bottom" secondItem="PYr-0j-FDh" secondAttribute="bottom" constant="8" id="W6u-ga-nzK"/>
                                                 <constraint firstItem="Ryz-vB-7Mp" firstAttribute="leading" secondItem="lqs-7k-r2U" secondAttribute="leading" id="YY4-GV-AoJ"/>
                                                 <constraint firstItem="lqs-7k-r2U" firstAttribute="trailing" secondItem="Ryz-vB-7Mp" secondAttribute="trailing" id="cUk-pH-Ppn"/>
