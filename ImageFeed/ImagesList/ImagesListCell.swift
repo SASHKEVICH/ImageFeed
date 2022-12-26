@@ -24,7 +24,7 @@ final class ImagesListCell: UITableViewCell {
     var gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
         gradientLayer.type = .axial
-        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        gradientLayer.colors = [UIColor.black.withAlphaComponent(0.0), UIColor.black.withAlphaComponent(0.2).cgColor]
         gradientLayer.locations = [0, 1]
         gradientLayer.frame = CGRect.zero
         return gradientLayer
