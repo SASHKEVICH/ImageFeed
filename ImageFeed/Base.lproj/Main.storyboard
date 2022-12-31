@@ -110,18 +110,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="DtR-Jq-la2">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" name="YP Black"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XMO-Eb-XV7">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iky-z7-r3Y">
+                                <rect key="frame" x="-20" y="-20" width="454" height="936"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="DtR-Jq-la2">
+                                        <rect key="frame" x="20" y="20" width="414" height="896"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" name="YP Black"/>
+                                    </imageView>
+                                </subviews>
+                                <viewLayoutGuide key="contentLayoutGuide" id="8gx-qS-p7x"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Pgs-k3-BhA"/>
+                                <connections>
+                                    <outlet property="delegate" destination="n6V-Cw-qvY" id="uEm-jH-6oD"/>
+                                </connections>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XMO-Eb-XV7">
                                 <rect key="frame" x="9" y="57" width="48" height="48"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="48" id="ev1-2E-wJ7"/>
-                                    <constraint firstAttribute="height" constant="48" id="iCl-HR-wgm"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="tintColor" name="YP White"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="" image="backward"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="chevron.left" catalog="system" symbolScale="large"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="semibold"/>
+                                </state>
                                 <connections>
                                     <action selector="didTapBackButton" destination="n6V-Cw-qvY" eventType="touchUpInside" id="Cp8-xq-Dfl"/>
                                 </connections>
@@ -130,17 +143,16 @@
                         <viewLayoutGuide key="safeArea" id="JKh-Um-283"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="DtR-Jq-la2" firstAttribute="top" secondItem="tXc-cv-doS" secondAttribute="top" id="C2D-PN-ua1"/>
-                            <constraint firstItem="XMO-Eb-XV7" firstAttribute="leading" secondItem="JKh-Um-283" secondAttribute="leading" constant="9" id="Khf-tX-JPg"/>
-                            <constraint firstItem="DtR-Jq-la2" firstAttribute="trailing" secondItem="tXc-cv-doS" secondAttribute="trailing" id="OrE-Ol-g3L"/>
-                            <constraint firstItem="DtR-Jq-la2" firstAttribute="leading" secondItem="tXc-cv-doS" secondAttribute="leading" id="Y6Z-bN-mSl"/>
-                            <constraint firstAttribute="bottom" secondItem="DtR-Jq-la2" secondAttribute="bottom" id="ZxP-ab-FPK"/>
-                            <constraint firstItem="XMO-Eb-XV7" firstAttribute="top" secondItem="JKh-Um-283" secondAttribute="top" constant="9" id="bAU-42-KBr"/>
+                            <constraint firstAttribute="trailing" secondItem="iky-z7-r3Y" secondAttribute="trailing" id="HcM-xa-E8T"/>
+                            <constraint firstItem="iky-z7-r3Y" firstAttribute="leading" secondItem="tXc-cv-doS" secondAttribute="leading" id="hY2-nf-T1l"/>
+                            <constraint firstAttribute="bottom" secondItem="iky-z7-r3Y" secondAttribute="bottom" id="xF0-cG-J8K"/>
+                            <constraint firstItem="iky-z7-r3Y" firstAttribute="top" secondItem="tXc-cv-doS" secondAttribute="top" id="yz9-Rz-lm4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="jWd-ly-9Ci"/>
                     <connections>
                         <outlet property="imageView" destination="DtR-Jq-la2" id="0yp-ko-IAl"/>
+                        <outlet property="scrollView" destination="iky-z7-r3Y" id="oHc-6C-LyH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dcs-0v-n54" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -260,7 +272,7 @@
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="ProfileIcon" width="70" height="70"/>
-        <image name="backward" width="24" height="24"/>
+        <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="ipad.and.arrow.forward" catalog="system" width="113" height="128"/>
         <image name="like_button_off" width="29" height="26"/>
         <image name="tab_editorial_active" width="30" height="30"/>
