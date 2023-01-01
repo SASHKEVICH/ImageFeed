@@ -15,15 +15,17 @@ class SingleimageViewController: UIViewController {
         didSet {
             guard isViewLoaded else { return }
             imageView.image = image
+            rescale(image: image)
+            centerContent()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageView.image = image
-        
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        imageView.image = image
+        
         rescale(image: image)
         centerContent()
     }
@@ -33,18 +35,13 @@ class SingleimageViewController: UIViewController {
     }
     
     private func rescale(image: UIImage) {
-        let imageDimensions = (image.size.width, image.size.height)
-        let viewDimensions = (view.bounds.size.width, view.bounds.size.height)
-        
-        let scaleFactor = max(viewDimensions.0 / imageDimensions.0, viewDimensions.1 / imageDimensions.1)
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
         
-        let scale = min(maxZoomScale, min(minZoomScale, scaleFactor))
-        let rescaledImageSize = CGSize(
-            width: image.size.width * scale,
-            height: image.size.height * scale
-        )
+        view.layoutIfNeeded()
+        let viewRect = scrollView.bounds.size
+        let scaleFactor = max(viewRect.width / image.size.width, viewRect.height / image.size.height)
+        let scale = min(maxZoomScale, max(minZoomScale, scaleFactor))
         
         scrollView.setZoomScale(scale, animated: true)
         scrollView.layoutIfNeeded()
