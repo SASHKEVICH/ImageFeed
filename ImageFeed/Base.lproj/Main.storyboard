@@ -188,83 +188,10 @@
                     <view key="view" contentMode="scaleToFill" id="I3t-ba-Vz8">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uG2-dX-aaf">
-                                <rect key="frame" x="16" y="80" width="238" height="153.5"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lut-rR-oSl" userLabel="Profile Image">
-                                        <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
-                                        <color key="backgroundColor" name="YP White"/>
-                                        <color key="tintColor" name="YP Gray"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="70" id="QPG-Vu-3Td"/>
-                                            <constraint firstAttribute="width" constant="70" id="kfm-AN-vYa"/>
-                                        </constraints>
-                                        <imageReference key="image" image="ProfileIcon" symbolScale="default"/>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Александр Бекренев" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zcw-wz-o5J" userLabel="Name Label">
-                                        <rect key="frame" x="0.0" y="78" width="238" height="27.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="235" id="bdM-Ju-U5d"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
-                                        <color key="textColor" name="YP White"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@sashkevich" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mwa-1A-LO3" userLabel="Nickname Label">
-                                        <rect key="frame" x="0.0" y="113.5" width="79" height="16"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <color key="textColor" name="YP Gray"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dFF-IL-vUF" userLabel="Text Label">
-                                        <rect key="frame" x="0.0" y="137.5" width="75.5" height="16"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <color key="textColor" name="YP White"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="zcw-wz-o5J" secondAttribute="width" id="2oJ-6b-atC"/>
-                                    <constraint firstItem="zcw-wz-o5J" firstAttribute="leading" secondItem="uG2-dX-aaf" secondAttribute="leading" id="6Lo-Pq-M6F"/>
-                                    <constraint firstItem="Lut-rR-oSl" firstAttribute="leading" secondItem="uG2-dX-aaf" secondAttribute="leading" id="9L9-Fq-Yoh"/>
-                                    <constraint firstItem="dFF-IL-vUF" firstAttribute="leading" secondItem="uG2-dX-aaf" secondAttribute="leading" id="IDh-Mj-Jsh"/>
-                                    <constraint firstItem="Lut-rR-oSl" firstAttribute="top" secondItem="uG2-dX-aaf" secondAttribute="top" id="Vb0-dn-t7U"/>
-                                    <constraint firstItem="Mwa-1A-LO3" firstAttribute="leading" secondItem="uG2-dX-aaf" secondAttribute="leading" id="pBs-JW-28e"/>
-                                </constraints>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fnh-EH-bNt" userLabel="Exit Button">
-                                <rect key="frame" x="364" y="104" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="0Ti-I3-6ff"/>
-                                    <constraint firstAttribute="width" constant="24" id="xsb-3C-TUj"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <color key="tintColor" name="YP Red"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal">
-                                    <color key="titleColor" name="YP Red"/>
-                                    <imageReference key="image" image="ipad.and.arrow.forward" catalog="system" symbolScale="large"/>
-                                </state>
-                            </button>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="x7Z-SL-gqa"/>
                         <color key="backgroundColor" name="YP Black"/>
-                        <constraints>
-                            <constraint firstItem="uG2-dX-aaf" firstAttribute="leading" secondItem="x7Z-SL-gqa" secondAttribute="leading" constant="16" id="3L0-PZ-qOj"/>
-                            <constraint firstItem="x7Z-SL-gqa" firstAttribute="trailing" secondItem="Fnh-EH-bNt" secondAttribute="trailing" constant="26" id="Gcl-k4-xJa"/>
-                            <constraint firstItem="Fnh-EH-bNt" firstAttribute="top" secondItem="x7Z-SL-gqa" secondAttribute="top" constant="56" id="XnT-tb-zrU"/>
-                            <constraint firstItem="uG2-dX-aaf" firstAttribute="top" secondItem="x7Z-SL-gqa" secondAttribute="top" constant="32" id="aoN-1w-iHh"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="Aot-33-bbz"/>
-                    <connections>
-                        <outlet property="exitButton" destination="Fnh-EH-bNt" id="WjD-ik-5Yt"/>
-                        <outlet property="nameLabel" destination="zcw-wz-o5J" id="4lW-UO-o4Z"/>
-                        <outlet property="nicknameLabel" destination="Mwa-1A-LO3" id="C1G-cm-FHu"/>
-                        <outlet property="profileImage" destination="Lut-rR-oSl" id="ZMk-WZ-4N7"/>
-                        <outlet property="textLabel" destination="dFF-IL-vUF" id="vce-Rg-ObX"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tyu-eQ-Lec" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -274,12 +201,13 @@
         <scene sceneID="Iyf-UE-M4d">
             <objects>
                 <tabBarController id="v7e-xl-fwL" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="09O-9V-Xd0">
+                    <tabBar key="tabBar" opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="09O-9V-Xd0">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" name="YP Black"/>
-                        <color key="tintColor" name="YP White"/>
                         <color key="selectedImageTintColor" name="YP White"/>
+                        <tabBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" name="YP Black"/>
+                        </tabBarAppearance>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="zAP-XV-pui"/>
@@ -293,21 +221,13 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="ProfileIcon" width="70" height="70"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
-        <image name="ipad.and.arrow.forward" catalog="system" width="113" height="128"/>
         <image name="like_button_off" width="29" height="26"/>
         <image name="sharing_button" width="30" height="30"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="YP Gray">
-            <color red="0.68199998140335083" green="0.68599998950958252" blue="0.70599997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="YP Red">
-            <color red="0.96100002527236938" green="0.41999998688697815" blue="0.42399999499320984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
