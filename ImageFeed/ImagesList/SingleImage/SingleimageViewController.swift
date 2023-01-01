@@ -10,6 +10,7 @@ import UIKit
 class SingleimageViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var shareButton: UIButton!
     
     var image: UIImage! {
         didSet {
@@ -28,6 +29,8 @@ class SingleimageViewController: UIViewController {
         
         rescale(image: image)
         centerContent()
+        
+        setupShareButton()
     }
     
     @IBAction private func didTapBackButton() {
@@ -55,6 +58,20 @@ class SingleimageViewController: UIViewController {
         let y = (newContentSize.height - visibleRectSize.height) / 2
         
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+    }
+    
+    private func setupShareButton() {
+        shareButton.layer.cornerRadius = shareButton.frame.size.height / 2
+        shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
+    }
+    
+    @objc private func didTapShareButton() {
+        let activityItem = [image]
+        let vc = UIActivityViewController(
+            activityItems: activityItem as [Any],
+            applicationActivities: nil
+        )
+        present(vc, animated: true)
     }
 }
 
