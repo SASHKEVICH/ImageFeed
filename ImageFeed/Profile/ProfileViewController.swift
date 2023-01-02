@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
-    let stackView: UIStackView = {
+final class ProfileViewController: UIViewController {
+    private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .leading
@@ -17,7 +17,7 @@ class ProfileViewController: UIViewController {
         return stackView
     }()
     
-    let profileImageView: UIImageView = {
+    private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.crop.circle.fill")
         imageView.backgroundColor = .white
@@ -27,7 +27,7 @@ class ProfileViewController: UIViewController {
         return imageView
     }()
     
-    let nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 23)
@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController {
         return label
     }()
     
-    let nicknameLabel: UILabel = {
+    private lazy var nicknameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypGray
         label.font = UIFont.systemFont(ofSize: 13)
@@ -43,7 +43,7 @@ class ProfileViewController: UIViewController {
         return label
     }()
     
-    let textLabel: UILabel = {
+    private lazy var textLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 13)
@@ -51,7 +51,7 @@ class ProfileViewController: UIViewController {
         return label
     }()
     
-    let exitButton: UIButton = {
+    private lazy var exitButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "ipad.and.arrow.forward") ?? UIImage(), for: .normal)
         button.tintColor = .red

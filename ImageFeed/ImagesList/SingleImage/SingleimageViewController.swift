@@ -7,10 +7,10 @@
 
 import UIKit
 
-class SingleimageViewController: UIViewController {
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var shareButton: UIButton!
+final class SingleimageViewController: UIViewController {
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var shareButton: UIButton!
     
     var image: UIImage! {
         didSet {
