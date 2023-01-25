@@ -13,6 +13,10 @@
 		961D0BA4294D9F1E005A914D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961D0BA2294D9F1E005A914D /* Main.storyboard */; };
 		961D0BA6294D9F20005A914D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 961D0BA5294D9F20005A914D /* Assets.xcassets */; };
 		961D0BA9294D9F20005A914D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961D0BA7294D9F20005A914D /* LaunchScreen.storyboard */; };
+		96321363297D22B0003A07EB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96321362297D22B0003A07EB /* Constants.swift */; };
+		963213662981207C003A07EB /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963213652981207C003A07EB /* AuthViewController.swift */; };
+		9632136829812623003A07EB /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9632136729812623003A07EB /* WebViewViewController.swift */; };
+		9632136A298132B1003A07EB /* WebViewViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96321369298132B1003A07EB /* WebViewViewControllerDelegate.swift */; };
 		96859C962954A62700C468D8 /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96859C952954A62700C468D8 /* DateFormatter+Extensions.swift */; };
 		96AD1E1F295D9DD500947031 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AD1E1E295D9DD500947031 /* ProfileViewController.swift */; };
 		96AD1E22295F41A700947031 /* SingleimageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AD1E21295F41A700947031 /* SingleimageViewController.swift */; };
@@ -29,6 +33,10 @@
 		961D0BA5294D9F20005A914D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		961D0BA8294D9F20005A914D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		961D0BAA294D9F20005A914D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		96321362297D22B0003A07EB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		963213652981207C003A07EB /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		9632136729812623003A07EB /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
+		96321369298132B1003A07EB /* WebViewViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewControllerDelegate.swift; sourceTree = "<group>"; };
 		96859C952954A62700C468D8 /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
 		96AD1E1E295D9DD500947031 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		96AD1E21295F41A700947031 /* SingleimageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleimageViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +74,7 @@
 		961D0B9B294D9F1E005A914D /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				963213642981205F003A07EB /* Authorization */,
 				961D0BAA294D9F20005A914D /* Info.plist */,
 				961D0B9C294D9F1E005A914D /* AppDelegate.swift */,
 				961D0B9E294D9F1E005A914D /* SceneDelegate.swift */,
@@ -79,11 +88,22 @@
 			path = ImageFeed;
 			sourceTree = "<group>";
 		};
+		963213642981205F003A07EB /* Authorization */ = {
+			isa = PBXGroup;
+			children = (
+				963213652981207C003A07EB /* AuthViewController.swift */,
+				9632136729812623003A07EB /* WebViewViewController.swift */,
+				96321369298132B1003A07EB /* WebViewViewControllerDelegate.swift */,
+			);
+			path = Authorization;
+			sourceTree = "<group>";
+		};
 		96859C942954A60E00C468D8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				96859C952954A62700C468D8 /* DateFormatter+Extensions.swift */,
 				96DE47DD2961E94400FD7E28 /* UIColor+Extensions.swift */,
+				96321362297D22B0003A07EB /* Constants.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -187,12 +207,16 @@
 			files = (
 				96AD1E1F295D9DD500947031 /* ProfileViewController.swift in Sources */,
 				961D0BA1294D9F1E005A914D /* ImagesListViewController.swift in Sources */,
+				963213662981207C003A07EB /* AuthViewController.swift in Sources */,
 				96BC124829542F1500AB1E8D /* ImagesListCell.swift in Sources */,
+				9632136829812623003A07EB /* WebViewViewController.swift in Sources */,
 				96DE47DE2961E94400FD7E28 /* UIColor+Extensions.swift in Sources */,
 				96AD1E22295F41A700947031 /* SingleimageViewController.swift in Sources */,
 				961D0B9D294D9F1E005A914D /* AppDelegate.swift in Sources */,
 				961D0B9F294D9F1E005A914D /* SceneDelegate.swift in Sources */,
 				96859C962954A62700C468D8 /* DateFormatter+Extensions.swift in Sources */,
+				9632136A298132B1003A07EB /* WebViewViewControllerDelegate.swift in Sources */,
+				96321363297D22B0003A07EB /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
