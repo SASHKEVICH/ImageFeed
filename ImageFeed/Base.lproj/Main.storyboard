@@ -7,7 +7,6 @@
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -296,7 +295,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oy2-KD-SbX">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="99" width="414" height="797"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -304,9 +303,9 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T2E-jO-D1Z">
-                                <rect key="frame" x="9" y="59" width="24" height="24"/>
+                                <rect key="frame" x="9" y="59" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="HOE-hI-Hgc"/>
+                                    <constraint firstAttribute="width" constant="40" id="HOE-hI-Hgc"/>
                                     <constraint firstAttribute="width" secondItem="T2E-jO-D1Z" secondAttribute="height" multiplier="1:1" id="kgS-Dw-WlT"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -315,20 +314,28 @@
                                     <action selector="didTapBackButton:" destination="FhZ-P9-Rvn" eventType="touchUpInside" id="HxU-Bp-iIU"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="5Ey-ew-hsh">
+                                <rect key="frame" x="0.0" y="95" width="414" height="4"/>
+                                <color key="progressTintColor" name="YP Black"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="E2B-pj-GGu"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="YP White"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Oy2-KD-SbX" secondAttribute="trailing" id="7eb-9a-6uX"/>
+                            <constraint firstAttribute="trailing" secondItem="5Ey-ew-hsh" secondAttribute="trailing" id="9Jz-Lf-XbZ"/>
                             <constraint firstAttribute="bottom" secondItem="Oy2-KD-SbX" secondAttribute="bottom" id="9k4-dq-HEA"/>
+                            <constraint firstItem="5Ey-ew-hsh" firstAttribute="leading" secondItem="mWI-fj-t62" secondAttribute="leading" id="GhU-p6-cOI"/>
                             <constraint firstItem="T2E-jO-D1Z" firstAttribute="leading" secondItem="mWI-fj-t62" secondAttribute="leading" constant="9" id="Qj3-VA-ZIx"/>
                             <constraint firstItem="T2E-jO-D1Z" firstAttribute="top" secondItem="E2B-pj-GGu" secondAttribute="top" constant="11" id="Ql3-tS-ozQ"/>
-                            <constraint firstItem="Oy2-KD-SbX" firstAttribute="top" secondItem="mWI-fj-t62" secondAttribute="top" id="UaK-BO-cFe"/>
+                            <constraint firstItem="Oy2-KD-SbX" firstAttribute="top" secondItem="5Ey-ew-hsh" secondAttribute="bottom" id="UaK-BO-cFe"/>
                             <constraint firstItem="Oy2-KD-SbX" firstAttribute="leading" secondItem="mWI-fj-t62" secondAttribute="leading" id="nLE-7h-BG0"/>
+                            <constraint firstItem="5Ey-ew-hsh" firstAttribute="bottom" secondItem="T2E-jO-D1Z" secondAttribute="bottom" id="nSe-NU-VFg"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="backButton" destination="T2E-jO-D1Z" id="eYm-1a-v5x"/>
+                        <outlet property="progressView" destination="5Ey-ew-hsh" id="cUn-Zx-8em"/>
                         <outlet property="webView" destination="Oy2-KD-SbX" id="z3u-pA-b1p"/>
                     </connections>
                 </viewController>
@@ -352,8 +359,5 @@
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
