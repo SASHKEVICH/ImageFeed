@@ -12,6 +12,7 @@ final class AuthViewController: UIViewController {
     @IBOutlet private weak var loginButton: UIButton!
     
     private let showWebViewSegueId = "ShowWebView"
+    private let oauthService = OAuth2Service.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +39,15 @@ final class AuthViewController: UIViewController {
 extension AuthViewController: WebViewViewControllerDelegate {
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        
+        oauthService.fetchAuthToken(with: code) { result in
+            switch result {
+            case .success(let token):
+                print(token)
+            case .failure(let error):
+                // throw InvalidTokenError
+                print(error)
+            }
+        }
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
