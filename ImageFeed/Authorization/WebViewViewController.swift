@@ -27,10 +27,12 @@ final class WebViewViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         subsribeWebViewProgress()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         unsubsribeWebViewProgress()
     }
     
@@ -80,6 +82,7 @@ extension WebViewViewController {
             options: .new,
             context: nil
         )
+        updateProgress()
     }
     
     private func unsubsribeWebViewProgress() {
