@@ -24,21 +24,28 @@ extension URLSession {
             }
         }
         
+        func handle(error: Error?, completion: (Result<Data, Error>) -> Void) {
+            if let error = error {
+                completion(.failure(NetworkError.urlRequestError(error)))
+            } else {
+                completion(.failure(NetworkError.urlSessionError))
+            }
+        }
+        
         let task = dataTask(with: request) { data, response, error in
-            if
+            guard
                 let data = data,
                 let response = response,
                 let statusCode = (response as? HTTPURLResponse)?.statusCode
-            {
-                if 200..<300 ~= statusCode {
-                    fulfillCompletion(.success(data))
-                } else {
-                    fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))
-                }
-            } else if let error = error {
-                fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
+            else {
+                handle(error: error, completion: fulfillCompletion)
+                return
+            }
+            
+            if 200..<300 ~= statusCode {
+                fulfillCompletion(.success(data))
             } else {
-                fulfillCompletion(.failure(NetworkError.urlSessionError))
+                fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))
             }
         }
         
