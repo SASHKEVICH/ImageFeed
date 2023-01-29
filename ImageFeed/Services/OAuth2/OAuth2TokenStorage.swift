@@ -13,8 +13,7 @@ struct OAuth2TokenStorage {
     
     var token: String? {
         get {
-            let token = defaults.string(forKey: "bearerToken")
-            return token
+            return defaults.string(forKey: "bearerToken")
         }
         set {
             defaults.set(newValue, forKey: "bearerToken")
