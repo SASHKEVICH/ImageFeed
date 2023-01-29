@@ -9,17 +9,17 @@ import UIKit
 
 final class SplashViewController: UIViewController {
     
-    private let ShowAuthenticationScreenSegueIdentifier = "AuthVCSegue"
-    private let ShowImagesListViewControllerIdentifier = "ImagesListVC"
+    private let showAuthenticationScreenSegueIdentifier = "AuthVCSegue"
+    private let showImagesListViewControllerIdentifier = "ImagesListVC"
     private let oauthService = OAuth2Service.shared
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if let _ = OAuth2TokenStorage().token {
-            switchToImagesViewController(withIdentifier: ShowImagesListViewControllerIdentifier)
+            switchToImagesViewController(withIdentifier: showImagesListViewControllerIdentifier)
         } else {
-            performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
+            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
     }
     
@@ -37,11 +37,11 @@ final class SplashViewController: UIViewController {
 extension SplashViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
+        if segue.identifier == showAuthenticationScreenSegueIdentifier {
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers.first as? AuthViewController
-            else { fatalError("Failed to prepate for \(ShowAuthenticationScreenSegueIdentifier)") }
+            else { fatalError("Failed to prepate for \(showAuthenticationScreenSegueIdentifier)") }
             
             viewController.delegate = self
         } else {
@@ -64,7 +64,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success:
-                self.switchToImagesViewController(withIdentifier: self.ShowImagesListViewControllerIdentifier)
+                self.switchToImagesViewController(withIdentifier: self.showImagesListViewControllerIdentifier)
             case .failure(let error):
                 // throw InvalidTokenError
                 print(error)
