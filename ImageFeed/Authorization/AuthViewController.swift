@@ -15,6 +15,13 @@ final class AuthViewController: UIViewController {
 
     @IBOutlet private weak var loginButton: UIButton!
     
+    var isLoginButtonEnabled: Bool = true {
+        didSet {
+            guard isViewLoaded else { return }
+            loginButton.isEnabled = isLoginButtonEnabled
+        }
+    }
+    
     private let showWebViewSegueId = "ShowWebView"
     
     weak var delegate: AuthViewControllerDelegate?
@@ -37,6 +44,7 @@ final class AuthViewController: UIViewController {
     private func setupLoginButton() {
         loginButton.layer.cornerRadius = 16
         loginButton.layer.masksToBounds = true
+        loginButton.isEnabled = isLoginButtonEnabled
     }
 
 }
