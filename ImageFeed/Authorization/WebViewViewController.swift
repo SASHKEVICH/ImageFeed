@@ -18,12 +18,11 @@ final class WebViewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let url = createAuthorizeURL()
-        let request = URLRequest(url: url)
-        webView.load(request)
         
         webView.navigationDelegate = self
+        
+        guard let request = createAuthorizeRequest() else { return }
+        webView.load(request)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,17 +52,20 @@ final class WebViewViewController: UIViewController {
         delegate?.webViewViewControllerDidCancel(self)
     }
     
-    private func createAuthorizeURL() -> URL {
-        var urlComponents = URLComponents(string: unsplashOAuthString)!
-        urlComponents.queryItems = [
+    private func createAuthorizeRequest() -> URLRequest? {
+        var urlComponents = URLComponents(string: unsplashOAuthString)
+        urlComponents?.queryItems = [
             URLQueryItem(name: "client_id", value: accessKey),
             URLQueryItem(name: "redirect_uri", value: redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: accessScopes),
         ]
-        urlComponents.path = "/oauth/authorize"
+        urlComponents?.path = "/oauth/authorize"
         
-        return urlComponents.url!
+        if let url = urlComponents?.url {
+            return URLRequest(url: url)
+        }
+        return nil
     }
     
     private func updateProgress() {
@@ -98,7 +100,7 @@ extension WebViewViewController {
 extension WebViewViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if let code = code(from: navigationAction) {
+        if let code = code(from: navigationAction.request.url) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
@@ -106,9 +108,9 @@ extension WebViewViewController: WKNavigationDelegate {
         }
     }
     
-    private func code(from navigationAction: WKNavigationAction) -> String? {
+    private func code(from url: URL?) -> String? {
         if
-            let url = navigationAction.request.url,
+            let url = url,
             let urlComponents = URLComponents(string: url.absoluteString),
             urlComponents.path == "/oauth/authorize/native",
             let items = urlComponents.queryItems,
