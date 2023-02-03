@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ProgressHUD
 
 final class SplashViewController: UIViewController {
     
@@ -62,6 +63,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         didAuthenticatedSuccessful = true
+        ProgressHUD.show()
         dismiss(animated: true) { [weak self] in
             self?.fetchAuthToken(code: code, vc)
         }
@@ -72,6 +74,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success:
+                ProgressHUD.dismiss()
                 self.switchToImagesViewController(withIdentifier: self.showImagesListViewControllerIdentifier)
             case .failure(let error):
                 // throw InvalidTokenError
