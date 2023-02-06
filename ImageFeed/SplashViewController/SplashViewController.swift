@@ -12,15 +12,19 @@ final class SplashViewController: UIViewController {
     private let showAuthenticationScreenSegueIdentifier = "AuthVCSegue"
     private let showImagesListViewControllerIdentifier = "ImagesListVC"
     private let oauthService = OAuth2Service.shared
+    private let profileService = ProfileService.shared
+    private let token = OAuth2TokenStorage().token
     
     private var isTokenInStorage: Bool {
-        return OAuth2TokenStorage().token != nil
+        return token != nil
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         if isTokenInStorage {
+            guard let token = token else { return }
+            fetchProfile(token: token)
             switchToImagesViewController(withIdentifier: showImagesListViewControllerIdentifier)
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
@@ -60,19 +64,33 @@ extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         UIBlockingProgressHUD.show()
         dismiss(animated: true) { [weak self] in
-            self?.fetchAuthToken(code: code, vc)
+            self?.fetchAuthToken(code: code)
         }
     }
     
-    private func fetchAuthToken(code: String, _ vc: AuthViewController) {
+    private func fetchAuthToken(code: String) {
         oauthService.fetchAuthToken(with: code) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let token):
+                self.fetchProfile(token: token)
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                // show InvalidTokenError
+                print(error)
+            }
+        }
+    }
+    
+    private func fetchProfile(token: String) {
+        profileService.fetchProfile(token: token) { [weak self] result in
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
                 self.switchToImagesViewController(withIdentifier: self.showImagesListViewControllerIdentifier)
             case .failure(let error):
-                // throw InvalidTokenError
+                // show InvalidTokenError
                 print(error)
             }
         }

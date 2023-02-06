@@ -108,7 +108,7 @@
 				96BC124929542F2D00AB1E8D /* ImagesListViewController */,
 				961D0BA7294D9F20005A914D /* LaunchScreen.storyboard */,
 				961D0BA2294D9F1E005A914D /* Main.storyboard */,
-				96AD1E1D295D9DB700947031 /* Profile */,
+				96AD1E1D295D9DB700947031 /* ProfileViewController */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -196,12 +196,12 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		96AD1E1D295D9DB700947031 /* Profile */ = {
+		96AD1E1D295D9DB700947031 /* ProfileViewController */ = {
 			isa = PBXGroup;
 			children = (
 				96AD1E1E295D9DD500947031 /* ProfileViewController.swift */,
 			);
-			path = Profile;
+			path = ProfileViewController;
 			sourceTree = "<group>";
 		};
 		96AD1E20295F419400947031 /* SingleImage */ = {
