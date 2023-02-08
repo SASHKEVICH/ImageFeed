@@ -9,6 +9,8 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -67,10 +69,39 @@ final class ProfileViewController: UIViewController {
         layoutStackView()
         layoutExitButton()
         updateProfileDetails(profile: profileService.profile)
+        
+        addNotificationObserver()
+        updateAvatar()
     }
     
 }
 
+//MARK: - NotificationCenter methods
+private extension ProfileViewController {
+
+    func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.profileImageURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        //TODO: Update Avatar
+    }
+    
+    func addNotificationObserver() {
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.updateAvatar()
+            }
+    }
+    
+}
+
+//MARK: - Some private methods
 private extension ProfileViewController {
     
     func updateProfileDetails(profile: Profile?) {
