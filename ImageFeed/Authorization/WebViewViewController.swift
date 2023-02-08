@@ -14,6 +14,8 @@ final class WebViewViewController: UIViewController {
     @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var backButton: UIButton!
     
+    private var estimatedProgressObservation: NSKeyValueObservation?
+    
     weak var delegate: WebViewViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -23,29 +25,8 @@ final class WebViewViewController: UIViewController {
         
         guard let request = createAuthorizeRequest() else { return }
         webView.load(request)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        subsribeWebViewProgress()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        unsubsribeWebViewProgress()
-    }
-    
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
+        
+        observeToWebViewProgress()
     }
 
     @IBAction func didTapBackButton(_ sender: Any) {
@@ -62,10 +43,8 @@ final class WebViewViewController: UIViewController {
         ]
         urlComponents?.path = "/oauth/authorize"
         
-        if let url = urlComponents?.url {
-            return URLRequest(url: url)
-        }
-        return nil
+        guard let url = urlComponents?.url else { return nil }
+        return URLRequest(url: url)
     }
     
     private func updateProgress() {
@@ -75,23 +54,15 @@ final class WebViewViewController: UIViewController {
     
 }
 
-extension WebViewViewController {
+private extension WebViewViewController {
     
-    private func subsribeWebViewProgress() {
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil
-        )
-        updateProgress()
-    }
-    
-    private func unsubsribeWebViewProgress() {
-        webView.removeObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            context: nil
+    func observeToWebViewProgress() {
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 self?.updateProgress()
+             }
         )
     }
     
