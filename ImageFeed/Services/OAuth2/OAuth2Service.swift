@@ -73,7 +73,10 @@ private extension OAuth2Service {
         return urlComponentes.url!
     }
     
-    func handle(result: Result<OAuthTokenResponseBody, Error>, completion: @escaping (Result<String, Error>) -> Void) {
+    func handle(
+        result: Result<OAuthTokenResponseBody, Error>,
+        completion: @escaping (Result<String, Error>) -> Void
+    ) {
         switch result {
         case .success(let body):
             self.authToken = body.accessToken
@@ -88,11 +91,7 @@ private extension OAuth2Service {
         lastCode == code
     }
     
-}
-
-extension OAuth2Service {
-    
-    private func object(
+    func object(
         for request: URLRequest,
         completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
     ) -> URLSessionTask {

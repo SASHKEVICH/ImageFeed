@@ -44,18 +44,11 @@ private extension ProfileService {
     }
     
     func profileRequest(token: String) -> URLRequest {
-        let url = createProfileURL()
-        var request = URLRequest(url: url!)
+        var request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
-    
-    func createProfileURL() -> URL? {
-        var urlComponents = URLComponents(string: unsplashAPIString)
-        urlComponents?.path = "/me"
-        return urlComponents?.url
-    }
-    
+
     func handle(
         result: Result<ProfileResult, Error>,
         completion: @escaping (Result<Profile, Error>) -> Void
