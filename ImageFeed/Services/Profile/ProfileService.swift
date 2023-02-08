@@ -24,7 +24,7 @@ final class ProfileService {
         
         if isTaskStillRunning { return }
         let request = profileRequest(token: token)
-        let task = object(for: request) { [weak self] result in
+        let task = urlSession.object(for: request) { [weak self] (result: Result<ProfileResult, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)
@@ -60,22 +60,6 @@ private extension ProfileService {
             completion(.success(profile))
         case .failure(let error):
             completion(.failure(error))
-        }
-    }
-    
-    func object(
-        for request: URLRequest,
-        completion: @escaping (Result<ProfileResult, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<ProfileResult, Error> in
-                return Result {
-                    try decoder.decode(ProfileResult.self, from: data)
-                }
-            }
-            completion(response)
         }
     }
     

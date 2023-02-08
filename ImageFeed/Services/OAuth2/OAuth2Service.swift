@@ -37,7 +37,7 @@ final class OAuth2Service {
         
         lastCode = code
         let request = authTokenRequest(code: code)
-        let task = object(for: request) { [weak self] result in
+        let task = urlSession.object(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)
@@ -89,23 +89,6 @@ private extension OAuth2Service {
     
     func isLastCodeEqualsNew(code: String?) -> Bool {
         lastCode == code
-    }
-    
-    func object(
-        for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result {
-                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                }
-            }
-            
-            completion(response)
-        }
     }
     
 }

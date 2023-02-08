@@ -27,7 +27,7 @@ final class ProfileImageService {
         guard isTaskStillRunning, let token = token else { return }
         
         let request = profileImageRequest(username: username, token: token)
-        let task = object(for: request) { [weak self] result in
+        let task = urlSession.object(for: request) { [weak self] (result: Result<UserResult, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)
@@ -72,22 +72,6 @@ private extension ProfileImageService {
         var request = URLRequest.makeHTTPRequest(path: "/users/\(username)", httpMethod: "GET")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
-    }
-    
-    func object(
-        for request: URLRequest,
-        completion: @escaping (Result<UserResult, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<UserResult, Error> in
-                return Result {
-                    try decoder.decode(UserResult.self, from: data)
-                }
-            }
-            completion(response)
-        }
     }
     
 }
