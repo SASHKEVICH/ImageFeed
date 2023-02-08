@@ -102,19 +102,16 @@
 		961D0B9B294D9F1E005A914D /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
-				96271B4E2984F98800FA9ABE /* SplashViewController */,
+				967679AB2993FDEF00E21F6C /* Presentation */,
 				96321372298249F7003A07EB /* Services */,
 				9632136D29824704003A07EB /* Models */,
 				961D0BAA294D9F20005A914D /* Info.plist */,
 				961D0B9C294D9F1E005A914D /* AppDelegate.swift */,
 				961D0B9E294D9F1E005A914D /* SceneDelegate.swift */,
 				961D0BA5294D9F20005A914D /* Assets.xcassets */,
-				963213642981205F003A07EB /* Authorization */,
 				96859C942954A60E00C468D8 /* Helpers */,
-				96BC124929542F2D00AB1E8D /* ImagesListViewController */,
-				961D0BA7294D9F20005A914D /* LaunchScreen.storyboard */,
 				961D0BA2294D9F1E005A914D /* Main.storyboard */,
-				96AD1E1D295D9DB700947031 /* ProfileViewController */,
+				961D0BA7294D9F20005A914D /* LaunchScreen.storyboard */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -207,6 +204,17 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		967679AB2993FDEF00E21F6C /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				96AD1E1D295D9DB700947031 /* ProfileViewController */,
+				96BC124929542F2D00AB1E8D /* ImagesListViewController */,
+				963213642981205F003A07EB /* Authorization */,
+				96271B4E2984F98800FA9ABE /* SplashViewController */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
 		96859C942954A60E00C468D8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -215,8 +223,8 @@
 				96321362297D22B0003A07EB /* Constants.swift */,
 				9632136B2982453F003A07EB /* URLRequest+MakeHTTPRequest.swift */,
 				96321370298247AD003A07EB /* URLSession+DataTask.swift */,
-				967679962990CAF500E21F6C /* UIBlockingProgressHUD.swift */,
 				967679A92993F9E500E21F6C /* URLSession+ObjectTask.swift */,
+				967679962990CAF500E21F6C /* UIBlockingProgressHUD.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
