@@ -25,7 +25,6 @@ final class SplashViewController: UIViewController {
         if isTokenInStorage {
             guard let token = token else { return }
             fetchProfile(token: token)
-            switchToImagesViewController(withIdentifier: showImagesListViewControllerIdentifier)
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -87,8 +86,9 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             switch result {
-            case .success:
+            case .success(let profile):
                 self.switchToImagesViewController(withIdentifier: self.showImagesListViewControllerIdentifier)
+                ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
             case .failure(let error):
                 // show InvalidTokenError
                 print(error)
