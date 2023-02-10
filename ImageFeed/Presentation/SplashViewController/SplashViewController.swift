@@ -9,8 +9,15 @@ import UIKit
 
 final class SplashViewController: UIViewController {
     
-    private let showAuthenticationScreenSegueIdentifier = "AuthVCSegue"
-    private let showImagesListViewControllerIdentifier = "ImagesListVC"
+    private lazy var logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "LaunchScreenVector")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private let authViewControllerIdentifier = "AuthViewController"
+    private let tabBarControllerIdentifier = "TabBarController"
     private let oauthService = OAuth2Service.shared
     private let profileService = ProfileService.shared
     
@@ -24,6 +31,11 @@ final class SplashViewController: UIViewController {
         token != nil
     }
     
+    override func viewDidLoad() {
+        view.backgroundColor = .ypBlack
+        layoutLogo()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -33,34 +45,47 @@ final class SplashViewController: UIViewController {
             guard let token = token else { return }
             fetchProfile(token: token)
         } else {
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+            presentAuthViewController()
         }
     }
     
-    private func switchToImagesViewController(withIdentifier id: String) {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid configuration") }
+    private func presentAuthViewController() {
+        guard let authViewController = getViewController(withIdentifier: authViewControllerIdentifier) as? AuthViewController
+        else { fatalError("Unable to get AuthViewController") }
         
+        authViewController.delegate = self
+        authViewController.modalPresentationStyle = .fullScreen
+        present(authViewController, animated: true)
+    }
+    
+    private func switchToTabBarController() {
+        guard
+            let window = UIApplication.shared.windows.first,
+            let tabBarController = getViewController(withIdentifier: tabBarControllerIdentifier) as? TabBarController
+        else { fatalError("Invalid configuration") }
+        
+        window.rootViewController = tabBarController
+        window.makeKeyAndVisible()
+    }
+    
+    private func getViewController(withIdentifier id: String) -> UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         let viewController = storyboard.instantiateViewController(withIdentifier: id)
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
+        return viewController
     }
 
 }
 
-extension SplashViewController {
+private extension SplashViewController {
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showAuthenticationScreenSegueIdentifier {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers.first as? AuthViewController
-            else { fatalError("Failed to prepate for \(showAuthenticationScreenSegueIdentifier)") }
-            
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    func layoutLogo() {
+        view.addSubview(logoImageView)
+        let constraints = [
+            logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
     }
     
 }
@@ -94,7 +119,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(let profile):
-                self.switchToImagesViewController(withIdentifier: self.showImagesListViewControllerIdentifier)
+                self.switchToTabBarController()
                 ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
             case .failure(let error):
                 self.alertPresenter?.requestAlert()
