@@ -24,7 +24,7 @@ final class ProfileImageService {
         completion: @escaping (Result<String, Error>) -> Void
     ) {
         assert(Thread.isMainThread)
-        guard isTaskStillRunning, let token = token else { return }
+        guard !isTaskStillRunning, let token = token else { return }
         
         let request = profileImageRequest(username: username, token: token)
         let task = urlSession.object(for: request) { [weak self] (result: Result<UserResult, Error>) -> Void in
