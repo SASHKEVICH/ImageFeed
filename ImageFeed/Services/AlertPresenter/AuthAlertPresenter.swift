@@ -11,7 +11,11 @@ protocol AlertPresenterDelegate: AnyObject {
     func didRecieveAlert(_ vc: UIAlertController)
 }
 
-struct AlertPresenter {
+protocol AlertPresenterProtocol {
+    func requestAlert()
+}
+
+struct AuthAlertPresenter: AlertPresenterProtocol {
     
     weak var delegate: AlertPresenterDelegate?
     

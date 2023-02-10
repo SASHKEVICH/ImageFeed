@@ -14,7 +14,7 @@ final class SplashViewController: UIViewController {
     private let oauthService = OAuth2Service.shared
     private let profileService = ProfileService.shared
     
-    private var alertPresenter = AlertPresenter()
+    private var alertPresenter: AlertPresenterProtocol?
     
     private var token: String? {
         OAuth2TokenStorage().token
@@ -27,7 +27,7 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        alertPresenter.delegate = self
+        alertPresenter = AuthAlertPresenter(delegate: self)
 
         if isTokenInStorage {
             guard let token = token else { return }
@@ -82,7 +82,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token: token)
             case .failure(let error):
                 UIBlockingProgressHUD.dismiss()
-                self.alertPresenter.requestAlert()
+                self.alertPresenter?.requestAlert()
                 print(error)
             }
         }
@@ -97,7 +97,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToImagesViewController(withIdentifier: self.showImagesListViewControllerIdentifier)
                 ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
             case .failure(let error):
-                self.alertPresenter.requestAlert()
+                self.alertPresenter?.requestAlert()
                 print(error)
             }
         }
