@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private let profileService = ProfileService.shared
@@ -85,7 +86,7 @@ private extension ProfileViewController {
             let url = URL(string: profileImageURL)
         else { return }
         
-        //TODO: Update Avatar
+        profileImageView.kf.setImage(with: url)
     }
     
     func addNotificationObserver() {
