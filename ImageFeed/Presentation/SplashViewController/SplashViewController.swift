@@ -13,14 +13,21 @@ final class SplashViewController: UIViewController {
     private let showImagesListViewControllerIdentifier = "ImagesListVC"
     private let oauthService = OAuth2Service.shared
     private let profileService = ProfileService.shared
-    private let token = OAuth2TokenStorage().token
+    
+    private var alertPresenter = AlertPresenter()
+    
+    private var token: String? {
+        OAuth2TokenStorage().token
+    }
     
     private var isTokenInStorage: Bool {
-        return token != nil
+        token != nil
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        alertPresenter.delegate = self
 
         if isTokenInStorage {
             guard let token = token else { return }
@@ -75,7 +82,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token: token)
             case .failure(let error):
                 UIBlockingProgressHUD.dismiss()
-                // show InvalidTokenError
+                self.alertPresenter.requestAlert()
                 print(error)
             }
         }
@@ -90,10 +97,18 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToImagesViewController(withIdentifier: self.showImagesListViewControllerIdentifier)
                 ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
             case .failure(let error):
-                // show InvalidTokenError
+                self.alertPresenter.requestAlert()
                 print(error)
             }
         }
+    }
+    
+}
+
+extension SplashViewController: AlertPresenterDelegate {
+    
+    func didRecieveAlert(_ vc: UIAlertController) {
+        present(vc, animated: true)
     }
     
 }
