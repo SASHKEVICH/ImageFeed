@@ -19,7 +19,7 @@ final class SplashViewController: UIViewController {
     private let authViewControllerIdentifier = "AuthViewController"
     private let tabBarControllerIdentifier = "TabBarController"
     private let oauthService = OAuth2Service.shared
-    private let profileService = ProfileService.shared
+    private let profileService = ProfileDescriptionService.shared
     
     private var alertPresenter: AlertPresenterProtocol?
     

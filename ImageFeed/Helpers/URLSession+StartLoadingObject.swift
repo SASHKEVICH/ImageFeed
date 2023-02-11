@@ -1,5 +1,5 @@
 //
-//  URLSession+objectTask.swift
+//  URLSession+StartLoadingObject.swift
 //  ImageFeed
 //
 //  Created by Александр Бекренев on 08.02.2023.
@@ -9,8 +9,8 @@ import Foundation
 
 extension URLSession {
     
-    func object<T: Decodable>(
-        for request: URLRequest,
+    func startLoadingObject<T: Decodable>(
+        from request: URLRequest,
         completion: @escaping (Result<T, Error>) -> Void
     ) -> URLSessionTask {
         let decoder = JSONDecoder()

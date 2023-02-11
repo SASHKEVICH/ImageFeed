@@ -1,5 +1,5 @@
 //
-//  ProfileService.swift
+//  ProfileDescriptionService.swift
 //  ImageFeed
 //
 //  Created by Александр Бекренев on 06.02.2023.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class ProfileService {
-    static let shared = ProfileService()
+final class ProfileDescriptionService {
+    static let shared = ProfileDescriptionService()
     private init() {}
     
     private let urlSession: URLSession = URLSession.shared
@@ -22,22 +22,24 @@ final class ProfileService {
     ) {
         assert(Thread.isMainThread)
         
-        if isTaskStillRunning { return }
+        guard !isTaskStillRunning else { return }
+        
         let request = profileRequest(token: token)
-        let task = urlSession.object(for: request) { [weak self] (result: Result<ProfileResult, Error>) -> Void in
+        let task = urlSession.startLoadingObject(from: request) { [weak self] (result: Result<ProfileResult, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)
                 self.task = nil
             }
         }
+        
         self.task = task
         task.resume()
     }
     
 }
 
-private extension ProfileService {
+private extension ProfileDescriptionService {
     
     var isTaskStillRunning: Bool {
         task != nil
