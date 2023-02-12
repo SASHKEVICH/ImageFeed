@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     
@@ -50,8 +49,6 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        KeychainWrapper.standard.removeAllKeys()
         
         if isTokenInStorage && !isFetchingProfileRunning {
             switchToTabBarController()
