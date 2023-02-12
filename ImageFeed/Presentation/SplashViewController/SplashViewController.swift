@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     
@@ -31,22 +32,46 @@ final class SplashViewController: UIViewController {
         token != nil
     }
     
+    private var isFetchingProfileRunning: Bool = false
+    
+    override init(nibName: String?, bundle: Bundle?) {
+        super.init(nibName: nibName, bundle: bundle)
+        
+        alertPresenter = AuthAlertPresenter(delegate: self)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         view.backgroundColor = .ypBlack
         layoutLogo()
+        print("splash view loaded")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        print("splash view did appear")
         
-        alertPresenter = AuthAlertPresenter(delegate: self)
-
-        if isTokenInStorage {
-            guard let token = token else { return }
-            fetchProfile(token: token)
+        KeychainWrapper.standard.removeAllKeys()
+        
+        if isTokenInStorage && !isFetchingProfileRunning {
+            switchToTabBarController()
+        } else if isFetchingProfileRunning {
+            return
         } else {
             presentAuthViewController()
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("splash view did disappear")
+    }
+    
+    deinit {
+        print("splash view deinitialized")
     }
     
     private func presentAuthViewController() {
@@ -55,6 +80,7 @@ final class SplashViewController: UIViewController {
         
         authViewController.delegate = self
         authViewController.modalPresentationStyle = .fullScreen
+        isFetchingProfileRunning = true
         present(authViewController, animated: true)
     }
     
@@ -76,6 +102,7 @@ final class SplashViewController: UIViewController {
 
 }
 
+//MARK: - AutoLayout Methods
 private extension SplashViewController {
     
     func layoutLogo() {
@@ -106,6 +133,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success(let token):
                 self.fetchProfile(token: token)
             case .failure(let error):
+                self.isFetchingProfileRunning = false
                 UIBlockingProgressHUD.dismiss()
                 self.alertPresenter?.requestAlert()
                 print(error)
@@ -122,6 +150,8 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToTabBarController()
                 ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
             case .failure(let error):
+                self.isFetchingProfileRunning = false
+                UIBlockingProgressHUD.dismiss()
                 self.alertPresenter?.requestAlert()
                 print(error)
             }
