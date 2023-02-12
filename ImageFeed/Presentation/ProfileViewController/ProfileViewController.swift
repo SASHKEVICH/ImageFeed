@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    private let profileService = ProfileDescriptionService.shared
+    private let profileImageService = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -27,6 +32,14 @@ final class ProfileViewController: UIViewController {
         return imageView
     }()
     
+    private lazy var loginNameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .ypGray
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
@@ -35,15 +48,7 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private lazy var nicknameLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .ypGray
-        label.font = UIFont.systemFont(ofSize: 13)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private lazy var textLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 13)
@@ -61,17 +66,58 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypBlack
         
         layoutStackView()
         layoutExitButton()
+        updateProfileDetails(profile: profileService.profile)
+        
+        addNotificationObserver()
+        updateAvatar()
     }
     
-    private func layoutStackView() {
+}
+
+//MARK: - NotificationCenter methods
+private extension ProfileViewController {
+
+    func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.profileImageURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        profileImageView.kf.setImage(with: url)
+    }
+    
+    func addNotificationObserver() {
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.updateAvatar()
+            }
+    }
+    
+}
+
+//MARK: - Some private methods
+private extension ProfileViewController {
+    
+    func updateProfileDetails(profile: Profile?) {
+        guard let profile = profile else { return }
+        loginNameLabel.text = profile.loginName
+        nameLabel.text = profile.name
+    }
+    
+    func layoutStackView() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(profileImageView)
         stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(nicknameLabel)
-        stackView.addArrangedSubview(textLabel)
+        stackView.addArrangedSubview(loginNameLabel)
+        stackView.addArrangedSubview(descriptionLabel)
         
         stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
@@ -83,7 +129,7 @@ final class ProfileViewController: UIViewController {
         layoutTextLabel()
     }
     
-    private func layoutProfileImageView() {
+    func layoutProfileImageView() {
         let widthAndHeight: CGFloat = 70
         
         let constraints = [
@@ -95,19 +141,19 @@ final class ProfileViewController: UIViewController {
         profileImageView.layer.cornerRadius = widthAndHeight / 2
     }
     
-    private func layoutNameLabel() {
+    func layoutNameLabel() {
         nameLabel.text = "Александр Бекренев"
     }
     
-    private func layoutNicknameLabel() {
-        nicknameLabel.text = "@sashkevich"
+    func layoutNicknameLabel() {
+        loginNameLabel.text = "@sashkevich"
     }
     
-    private func layoutTextLabel() {
-        textLabel.text = "Hello, World!"
+    func layoutTextLabel() {
+        descriptionLabel.text = "Hello, World!"
     }
     
-    private func layoutExitButton() {
+    func layoutExitButton() {
         view.addSubview(exitButton)
         exitButton.contentHorizontalAlignment = .fill
         exitButton.contentVerticalAlignment = .fill
@@ -120,4 +166,5 @@ final class ProfileViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
 }

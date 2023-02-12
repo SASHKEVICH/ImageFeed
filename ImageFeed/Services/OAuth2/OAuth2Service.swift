@@ -11,8 +11,11 @@ final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
     
-    private let urlSession: URLSession = URLSession.shared
     private lazy var tokenStorage = OAuth2TokenStorage()
+    
+    private let urlSession: URLSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     private(set) var authToken: String? {
         get {
@@ -27,35 +30,36 @@ final class OAuth2Service {
         with code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
-        let completionInMainThread: (Result<String, Error>) -> Void = { result in
-            DispatchQueue.main.async {
-                completion(result)
-            }
-        }
+        assert(Thread.isMainThread)
         
+        if isLastCodeEqualsNew(code: code) { return }
+        task?.cancel()
+        
+        lastCode = code
         let request = authTokenRequest(code: code)
-        
-        let task = object(for: request) { [weak self] result in
+        let task = urlSession.startLoadingObject(from: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) -> Void in
             guard let self = self else { return }
-            switch result {
-            case .success(let body):
-                self.authToken = body.accessToken
-                completionInMainThread(.success(body.accessToken))
-            case .failure(let error):
-                completionInMainThread(.failure(error))
+            DispatchQueue.main.async {
+                self.handle(result: result, completion: completion)
+                self.task = nil
             }
         }
+        self.task = task
         task.resume()
     }
     
-    private func authTokenRequest(code: String) -> URLRequest {
+}
+
+private extension OAuth2Service {
+    
+    func authTokenRequest(code: String) -> URLRequest {
         let tokenURL = createTokenURL(with: code)
         let request = URLRequest.makeHTTPRequest(url: tokenURL, httpMethod: "POST")
         
         return request
     }
     
-    private func createTokenURL(with code: String) -> URL {
+    func createTokenURL(with code: String) -> URL {
         var urlComponentes = URLComponents(string: unsplashOAuthString)!
         urlComponentes.queryItems = [
             URLQueryItem(name: "client_id", value: accessKey),
@@ -69,24 +73,22 @@ final class OAuth2Service {
         return urlComponentes.url!
     }
     
-}
-
-extension OAuth2Service {
-    
-    private func object(
-        for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result {
-                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                }
-            }
-            completion(response)
+    func handle(
+        result: Result<OAuthTokenResponseBody, Error>,
+        completion: @escaping (Result<String, Error>) -> Void
+    ) {
+        switch result {
+        case .success(let body):
+            self.authToken = body.accessToken
+            completion(.success(body.accessToken))
+        case .failure(let error):
+            completion(.failure(error))
+            self.lastCode = nil
         }
+    }
+    
+    func isLastCodeEqualsNew(code: String?) -> Bool {
+        lastCode == code
     }
     
 }

@@ -9,4 +9,5 @@ import UIKit
 
 extension UIColor {
     static let ypGray: UIColor = UIColor(named: "YP Gray") ?? UIColor()
+    static let ypBlack: UIColor = UIColor(named: "YP Black") ?? UIColor()
 }
