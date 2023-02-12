@@ -36,7 +36,6 @@ final class SplashViewController: UIViewController {
     
     override init(nibName: String?, bundle: Bundle?) {
         super.init(nibName: nibName, bundle: bundle)
-        
         alertPresenter = AuthAlertPresenter(delegate: self)
     }
     
@@ -47,12 +46,10 @@ final class SplashViewController: UIViewController {
     override func viewDidLoad() {
         view.backgroundColor = .ypBlack
         layoutLogo()
-        print("splash view loaded")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("splash view did appear")
         
         KeychainWrapper.standard.removeAllKeys()
         
@@ -63,15 +60,6 @@ final class SplashViewController: UIViewController {
         } else {
             presentAuthViewController()
         }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        print("splash view did disappear")
-    }
-    
-    deinit {
-        print("splash view deinitialized")
     }
     
     private func presentAuthViewController() {
