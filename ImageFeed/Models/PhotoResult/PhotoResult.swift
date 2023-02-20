@@ -9,7 +9,7 @@ import Foundation
 
 struct PhotoUrlsResult: Decodable {
     let full: String
-    let regular: String
+    let thumb: String
 }
 
 struct PhotoResult: Decodable {
