@@ -48,7 +48,7 @@ final class ImagesListViewController: UIViewController {
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
-        guard let imageURL = URL(string: photo.thumbImageURL) else { return }
+        guard let imageURL = URL(string: photo.regularImageURL) else { return }
         cell.cellImage.kf.setImage(with: imageURL)
         cell.dateLabel.text = DateFormatter.imagesListCellDateFormmater.string(from: photo.createdAt ?? Date())
         cell.isLiked = photo.isLiked

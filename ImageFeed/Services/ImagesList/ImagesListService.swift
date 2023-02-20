@@ -14,7 +14,7 @@ final class ImagesListService {
         let size: CGSize
         let createdAt: Date?
         let welcomeDescription: String?
-        let thumbImageURL: String
+        let regularImageURL: String
         let largeImageURL: String
         let isLiked: Bool
         
@@ -23,7 +23,7 @@ final class ImagesListService {
             self.size = CGSize(width: result.width, height: result.height)
             self.createdAt = result.createdAt
             self.welcomeDescription = result.description
-            self.thumbImageURL = result.urls.thumb
+            self.regularImageURL = result.urls.regular
             self.largeImageURL = result.urls.full
             self.isLiked = result.likedByUser
         }
