@@ -25,7 +25,7 @@ final class ProfileDescriptionService {
         guard !isTaskStillRunning else { return }
         
         let request = profileRequest(token: token)
-        let task = urlSession.startLoadingObject(from: request) { [weak self] (result: Result<ProfileResult, Error>) -> Void in
+        let task = urlSession.startLoadingObjectFromNetwork(with: request) { [weak self] (result: Result<ProfileResult, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)

@@ -27,7 +27,7 @@ final class ProfileImageService {
         guard !isTaskStillRunning, let token = token else { return }
         
         let request = profileImageRequest(username: username, token: token)
-        let task = urlSession.startLoadingObject(from: request) { [weak self] (result: Result<UserResult, Error>) -> Void in
+        let task = urlSession.startLoadingObjectFromNetwork(with: request) { [weak self] (result: Result<UserResult, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)

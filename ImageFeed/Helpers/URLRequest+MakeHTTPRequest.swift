@@ -10,7 +10,7 @@ import Foundation
 extension URLRequest {
     static func makeHTTPRequest(
         path: String,
-        httpMethod: String,
+        httpMethod: String = "GET",
         baseURL: URL = unsplashAPIBaseURL
     ) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
@@ -19,10 +19,10 @@ extension URLRequest {
     }
     
     static func makeHTTPRequest(
-        url: URL,
-        httpMethod: String
+        baseURL: URL = unsplashAPIBaseURL,
+        httpMethod: String = "GET"
     ) -> URLRequest {
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: baseURL)
         request.httpMethod = httpMethod
         return request
     }

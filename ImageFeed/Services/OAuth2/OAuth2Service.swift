@@ -37,7 +37,7 @@ final class OAuth2Service {
         
         lastCode = code
         let request = authTokenRequest(code: code)
-        let task = urlSession.startLoadingObject(from: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) -> Void in
+        let task = urlSession.startLoadingObjectFromNetwork(with: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)
@@ -54,7 +54,7 @@ private extension OAuth2Service {
     
     func authTokenRequest(code: String) -> URLRequest {
         let tokenURL = createTokenURL(with: code)
-        let request = URLRequest.makeHTTPRequest(url: tokenURL, httpMethod: "POST")
+        let request = URLRequest.makeHTTPRequest(baseURL: tokenURL, httpMethod: "POST")
         
         return request
     }

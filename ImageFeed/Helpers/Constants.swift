@@ -13,4 +13,5 @@ let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
 
 let accessScopes = "public+read_user+write_likes"
 let unsplashOAuthString = "https://unsplash.com/oauth"
-let unsplashAPIBaseURL = URL(string: "https://api.unsplash.com")!
+let unsplashAPIString = "https://api.unsplash.com"
+let unsplashAPIBaseURL = URL(string: unsplashAPIString)!
