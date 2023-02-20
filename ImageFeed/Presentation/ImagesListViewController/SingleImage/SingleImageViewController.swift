@@ -1,5 +1,5 @@
 //
-//  SingleimageViewController.swift
+//  SingleImageViewController.swift
 //  ImageFeed
 //
 //  Created by Александр Бекренев on 30.12.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SingleimageViewController: UIViewController {
+final class SingleImageViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var shareButton: UIButton!
@@ -37,7 +37,20 @@ final class SingleimageViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    private func rescale(image: UIImage) {
+    @objc
+    private func didTapShareButton() {
+        let activityItems = [image]
+        let vc = UIActivityViewController(
+            activityItems: activityItems as [Any],
+            applicationActivities: nil
+        )
+        present(vc, animated: true)
+    }
+}
+
+private extension SingleImageViewController {
+    
+    func rescale(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
         
@@ -50,7 +63,7 @@ final class SingleimageViewController: UIViewController {
         scrollView.layoutIfNeeded()
     }
     
-    private func centerContent() {
+    func centerContent() {
         let newContentSize = scrollView.contentSize
         let visibleRectSize = scrollView.bounds.size
         
@@ -60,23 +73,17 @@ final class SingleimageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
     
-    private func setupShareButton() {
+    func setupShareButton() {
         shareButton.layer.cornerRadius = shareButton.frame.size.height / 2
         shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
     }
     
-    @objc private func didTapShareButton() {
-        let activityItems = [image]
-        let vc = UIActivityViewController(
-            activityItems: activityItems as [Any],
-            applicationActivities: nil
-        )
-        present(vc, animated: true)
-    }
 }
 
-extension SingleimageViewController: UIScrollViewDelegate {
+extension SingleImageViewController: UIScrollViewDelegate {
+    
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView
     }
+    
 }
