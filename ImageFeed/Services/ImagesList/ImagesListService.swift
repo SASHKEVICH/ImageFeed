@@ -33,7 +33,8 @@ final class ImagesListService {
     
     private let urlSession = URLSession.shared
     private let token = OAuth2TokenStorage().token
-    private var task: URLSessionTask?
+    
+    private var fetchPhotosTask: URLSessionTask?
     
     private(set) var photos: [Photo] = []
     
@@ -41,7 +42,7 @@ final class ImagesListService {
     
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
-        guard !isTaskStillRunning else { return }
+        guard !fetchPhotosTask.isStillRunning else { return }
         
         let nextPage = calculateNextPage()
         let request = nextImagesPageRequest(page: nextPage)
@@ -49,10 +50,10 @@ final class ImagesListService {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result)
-                self.task = nil
+                self.fetchPhotosTask = nil
             }
         }
-        self.task = task
+        self.fetchPhotosTask = task
         task.resume()
     }
     
@@ -71,10 +72,6 @@ private extension ImagesListService {
 }
 
 private extension ImagesListService {
-    
-    var isTaskStillRunning: Bool {
-        task != nil
-    }
     
     func handle(result: Result<[PhotoResult], Error>) {
         switch result {
@@ -104,7 +101,7 @@ private extension ImagesListService {
             URLQueryItem(name: "page", value: "\(page)"),
             URLQueryItem(name: "per_page", value: "10")
         ]
-        var request = URLRequest.makeHTTPRequest(url: imagesPageUrlComponents.url!, token: token)
+        let request = URLRequest.makeHTTPRequest(url: imagesPageUrlComponents.url!, token: token)
         return request
     }
     

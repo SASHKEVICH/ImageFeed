@@ -22,7 +22,7 @@ final class ProfileDescriptionService {
     ) {
         assert(Thread.isMainThread)
         
-        guard !isTaskStillRunning else { return }
+        guard !task.isStillRunning else { return }
         
         let request = profileRequest(token: token)
         let task = urlSession.startLoadingObjectFromNetwork(with: request) { [weak self] (result: Result<ProfileResult, Error>) -> Void in
@@ -41,12 +41,8 @@ final class ProfileDescriptionService {
 
 private extension ProfileDescriptionService {
     
-    var isTaskStillRunning: Bool {
-        task != nil
-    }
-    
     func profileRequest(token: String) -> URLRequest {
-        var request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET", token: token)
+        let request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET", token: token)
         return request
     }
 
