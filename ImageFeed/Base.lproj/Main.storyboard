@@ -102,10 +102,10 @@
             </objects>
             <point key="canvasLocation" x="1012" y="73"/>
         </scene>
-        <!--Singleimage View Controller-->
+        <!--Single Image View Controller-->
         <scene sceneID="CHV-C0-C6L">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="n6V-Cw-qvY" customClass="SingleimageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="n6V-Cw-qvY" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tXc-cv-doS">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
