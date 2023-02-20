@@ -17,7 +17,7 @@ final class ImagesListCell: UITableViewCell {
     
     var isLiked: Bool = false {
         didSet {
-            setButtonImage()
+            setButtonLikedOrDisliked()
         }
     }
     
@@ -44,17 +44,23 @@ final class ImagesListCell: UITableViewCell {
         gradientView.layer.masksToBounds = true
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
+    
     override func layoutSubviews() {
         gradientLayer.frame = gradientView.bounds
         super.layoutSubviews()
     }
     
-    @objc func handleLikeButtonTap() {
+    @objc
+    func handleLikeButtonTap() {
         isLiked.toggle()
-        setButtonImage()
+        setButtonLikedOrDisliked()
     }
     
-    private func setButtonImage() {
+    private func setButtonLikedOrDisliked() {
         likeButton.setImage(UIImage(named: isLiked ? "like_button_on" : "like_button_off"), for: .normal)
     }
 }

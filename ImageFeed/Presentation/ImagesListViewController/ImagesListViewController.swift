@@ -48,8 +48,11 @@ final class ImagesListViewController: UIViewController {
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
-        guard let imageURL = URL(string: photo.regularImageURL) else { return }
-        cell.cellImage.kf.setImage(with: imageURL)
+        guard let imageURL = URL(string: photo.thumbImageURL) else { return }
+        cell.cellImage.kf.indicatorType = .activity
+        cell.cellImage.kf.setImage(with: imageURL, placeholder: UIImage(named: "card_photo_stub")) { [weak self] _ in
+            self?.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
         cell.dateLabel.text = DateFormatter.imagesListCellDateFormmater.string(from: photo.createdAt ?? Date())
         cell.isLiked = photo.isLiked
     }
@@ -59,9 +62,15 @@ final class ImagesListViewController: UIViewController {
 //MARK: - NotificationCenter methods
 private extension ImagesListViewController {
 
-    func updatePhotos() {
+    func updatePhotosAnimated() {
         self.photos = imagesListService.photos
-        tableView.reloadData()
+        tableView.performBatchUpdates {
+            let batchAmount = 10
+            let photosIndexPaths = (photos.count - batchAmount..<photos.count).map { row in
+                IndexPath(row: row, section: 0)
+            }
+            self.tableView.insertRows(at: photosIndexPaths, with: .automatic)
+        } completion: { _ in }
     }
     
     func addNotificationObserver() {
@@ -71,7 +80,7 @@ private extension ImagesListViewController {
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
-                self?.updatePhotos()
+                self?.updatePhotosAnimated()
             }
     }
     
@@ -138,6 +147,7 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         
         configCell(for: imagesListCell, with: indexPath)
+
         return imagesListCell
     }
     

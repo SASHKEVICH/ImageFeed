@@ -23,24 +23,24 @@
                                 <color key="backgroundColor" name="YP Black"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" id="lpp-9E-LjG" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="140"/>
+                                        <rect key="frame" x="0.0" y="50" width="414" height="260"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lpp-9E-LjG" id="F1A-pw-Qb9">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="260"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="lqs-7k-r2U">
-                                                    <rect key="frame" x="16" y="4" width="382" height="132"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="card_photo_stub" translatesAutoresizingMaskIntoConstraints="NO" id="lqs-7k-r2U">
+                                                    <rect key="frame" x="16" y="4" width="382" height="252"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ryz-vB-7Mp" userLabel="Bottom Gradient">
-                                                    <rect key="frame" x="16" y="106" width="382" height="30"/>
+                                                    <rect key="frame" x="16" y="226" width="382" height="30"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="Wc5-HC-q8d"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PYr-0j-FDh">
-                                                    <rect key="frame" x="24" y="112" width="33" height="16"/>
+                                                    <rect key="frame" x="24" y="232" width="33" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
@@ -309,6 +309,7 @@
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="UnsplashLogo" width="60" height="60"/>
+        <image name="card_photo_stub" width="343" height="252"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="like_button_off" width="29" height="26"/>
         <image name="nav_back_button" width="24" height="24"/>
