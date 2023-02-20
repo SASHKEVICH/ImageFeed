@@ -50,7 +50,10 @@ final class ImagesListViewController: UIViewController {
         let photo = photos[indexPath.row]
         guard let imageURL = URL(string: photo.thumbImageURL) else { return }
         cell.cellImage.kf.indicatorType = .activity
-        cell.cellImage.kf.setImage(with: imageURL, placeholder: UIImage(named: "card_photo_stub")) { [weak self] _ in
+        cell.cellImage.kf.setImage(
+            with: imageURL,
+            placeholder: UIImage(named: "card_photo_stub")
+        ) { [weak self] _ in
             self?.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         cell.dateLabel.text = DateFormatter.imagesListCellDateFormmater.string(from: photo.createdAt ?? Date())

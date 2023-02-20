@@ -98,14 +98,13 @@ private extension ImagesListService {
     }
     
     func nextImagesPageRequest(page: Int) -> URLRequest {
-        guard var urlComponents = URLComponents(string: unsplashAPIString) else { fatalError("Unable to construct `/photos` url components") }
-        urlComponents.path = "/photos"
-        urlComponents.queryItems = [
+        guard var imagesPageUrlComponents = URLComponents(string: unsplashAPIString) else { fatalError("Unable to construct `/photos` url components") }
+        imagesPageUrlComponents.path = "/photos"
+        imagesPageUrlComponents.queryItems = [
             URLQueryItem(name: "page", value: "\(page)"),
             URLQueryItem(name: "per_page", value: "10")
         ]
-        var request = URLRequest.makeHTTPRequest(baseURL: urlComponents.url!)
-        request.setValue("Bearer \(token ?? "")", forHTTPHeaderField: "Authorization")
+        var request = URLRequest.makeHTTPRequest(url: imagesPageUrlComponents.url!, token: token)
         return request
     }
     

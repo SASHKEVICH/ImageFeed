@@ -46,8 +46,7 @@ private extension ProfileDescriptionService {
     }
     
     func profileRequest(token: String) -> URLRequest {
-        var request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        var request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET", token: token)
         return request
     }
 

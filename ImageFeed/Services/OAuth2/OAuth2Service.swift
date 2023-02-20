@@ -54,7 +54,7 @@ private extension OAuth2Service {
     
     func authTokenRequest(code: String) -> URLRequest {
         let tokenURL = createTokenURL(with: code)
-        let request = URLRequest.makeHTTPRequest(baseURL: tokenURL, httpMethod: "POST")
+        let request = URLRequest.makeHTTPRequest(url: tokenURL, httpMethod: "POST")
         
         return request
     }
