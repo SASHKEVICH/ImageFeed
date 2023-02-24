@@ -101,7 +101,7 @@ private extension ImagesListService {
             URLQueryItem(name: "page", value: "\(page)"),
             URLQueryItem(name: "per_page", value: "10")
         ]
-        let request = URLRequest.makeHTTPRequest(url: imagesPageUrlComponents.url!, token: token)
+        let request = URLRequest.makeHTTPRequest(url: imagesPageUrlComponents.url!, accessToken: token)
         return request
     }
     

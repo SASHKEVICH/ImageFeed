@@ -65,7 +65,7 @@ private extension ProfileImageService {
     }
     
     func profileImageRequest(username: String, token: String) -> URLRequest {
-        let request = URLRequest.makeHTTPRequest(path: "/users/\(username)", token: token)
+        let request = URLRequest.makeHTTPRequest(path: "/users/\(username)", accessToken: token)
         return request
     }
     

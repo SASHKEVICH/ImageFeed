@@ -12,11 +12,11 @@ extension URLRequest {
         path: String,
         httpMethod: String = "GET",
         baseURL: URL = unsplashAPIBaseURL,
-        token: String? = nil
+        accessToken: String? = nil
     ) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
         request.httpMethod = httpMethod
-        if let token = token {
+        if let token = accessToken {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         return request
@@ -25,11 +25,11 @@ extension URLRequest {
     static func makeHTTPRequest(
         url: URL = unsplashAPIBaseURL,
         httpMethod: String = "GET",
-        token: String? = nil
+        accessToken: String? = nil
     ) -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod
-        if let token = token {
+        if let token = accessToken {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         return request

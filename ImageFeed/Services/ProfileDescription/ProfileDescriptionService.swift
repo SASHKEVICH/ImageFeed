@@ -42,7 +42,7 @@ final class ProfileDescriptionService {
 private extension ProfileDescriptionService {
     
     func profileRequest(token: String) -> URLRequest {
-        let request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET", token: token)
+        let request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET", accessToken: token)
         return request
     }
 
