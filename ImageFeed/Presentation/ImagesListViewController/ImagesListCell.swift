@@ -7,11 +7,17 @@
 
 import UIKit
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imagesListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     @IBOutlet private var gradientView: UIView!
     @IBOutlet var cellImage: UIImageView!
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var likeButton: UIButton!
+    
+    weak var delegate: ImagesListCellDelegate?
     
     static let reuseIdentifier = "ImagesListCell"
     
@@ -58,6 +64,7 @@ final class ImagesListCell: UITableViewCell {
     func handleLikeButtonTap() {
         isLiked.toggle()
         setButtonLikedOrDisliked()
+        delegate?.imagesListCellDidTapLike(self)
     }
     
     private func setButtonLikedOrDisliked() {

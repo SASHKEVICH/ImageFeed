@@ -42,6 +42,7 @@
 		96BC124829542F1500AB1E8D /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BC124729542F1500AB1E8D /* ImagesListCell.swift */; };
 		96DB1D6B29A39626005144AB /* URLSessionTask+IsStillRunning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DB1D6A29A39626005144AB /* URLSessionTask+IsStillRunning.swift */; };
 		96DE47DE2961E94400FD7E28 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DE47DD2961E94400FD7E28 /* UIColor+Extensions.swift */; };
+		96DEA27729A886BF00DEFB5A /* Array+WithReplaced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEA27629A886BF00DEFB5A /* Array+WithReplaced.swift */; };
 		96EF758029A0A7D7005CAE89 /* PhotoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EF757F29A0A7D7005CAE89 /* PhotoResult.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		96BC124729542F1500AB1E8D /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		96DB1D6A29A39626005144AB /* URLSessionTask+IsStillRunning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionTask+IsStillRunning.swift"; sourceTree = "<group>"; };
 		96DE47DD2961E94400FD7E28 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		96DEA27629A886BF00DEFB5A /* Array+WithReplaced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+WithReplaced.swift"; sourceTree = "<group>"; };
 		96EF757F29A0A7D7005CAE89 /* PhotoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -260,6 +262,7 @@
 				967679A92993F9E500E21F6C /* URLSession+StartLoadingObject.swift */,
 				967679962990CAF500E21F6C /* UIBlockingProgressHUD.swift */,
 				96DB1D6A29A39626005144AB /* URLSessionTask+IsStillRunning.swift */,
+				96DEA27629A886BF00DEFB5A /* Array+WithReplaced.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 				96BC124829542F1500AB1E8D /* ImagesListCell.swift in Sources */,
 				967679AE2993FF2500E21F6C /* AuthAlertPresenter.swift in Sources */,
 				9632136829812623003A07EB /* WebViewViewController.swift in Sources */,
+				96DEA27729A886BF00DEFB5A /* Array+WithReplaced.swift in Sources */,
 				963213762983FB20003A07EB /* OAuth2TokenStorage.swift in Sources */,
 				96DB1D6B29A39626005144AB /* URLSessionTask+IsStillRunning.swift in Sources */,
 				96DE47DE2961E94400FD7E28 /* UIColor+Extensions.swift in Sources */,

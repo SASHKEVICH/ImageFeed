@@ -21,3 +21,7 @@ struct PhotoResult: Decodable {
     let likedByUser: Bool
     let urls: PhotoUrlsResult
 }
+
+struct LikePhotoResult: Decodable {
+    let photo: PhotoResult
+}

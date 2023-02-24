@@ -46,20 +46,6 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let photo = photos[indexPath.row]
-        guard let imageURL = URL(string: photo.thumbImageURL) else { return }
-        cell.cellImage.kf.indicatorType = .activity
-        cell.cellImage.kf.setImage(
-            with: imageURL,
-            placeholder: UIImage(named: "card_photo_stub")
-        ) { [weak self] _ in
-            self?.tableView.reloadRows(at: [indexPath], with: .automatic)
-        }
-        cell.dateLabel.text = DateFormatter.imagesListCellDateFormmater.string(from: photo.createdAt ?? Date())
-        cell.isLiked = photo.isLiked
-    }
-    
 }
 
 //MARK: - NotificationCenter methods
@@ -99,6 +85,27 @@ private extension ImagesListViewController {
                 viewController.image = value.image
             case .failure(let error):
                 print(error)
+            }
+        }
+    }
+    
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    
+    func imagesListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: cell.isLiked) { result in
+            switch result {
+            case .success():
+                self.photos = self.imagesListService.photos
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                // TODO: Show error with UIAlertController
+                print(error)
+                UIBlockingProgressHUD.dismiss()
             }
         }
     }
@@ -152,6 +159,21 @@ extension ImagesListViewController: UITableViewDataSource {
         configCell(for: imagesListCell, with: indexPath)
 
         return imagesListCell
+    }
+    
+    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        let photo = photos[indexPath.row]
+        guard let imageURL = URL(string: photo.thumbImageURL) else { return }
+        cell.cellImage.kf.indicatorType = .activity
+        cell.cellImage.kf.setImage(
+            with: imageURL,
+            placeholder: UIImage(named: "card_photo_stub")
+        ) { [weak self] _ in
+            self?.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        cell.dateLabel.text = DateFormatter.imagesListCellDateFormmater.string(from: photo.createdAt ?? Date())
+        cell.isLiked = photo.isLiked
+        cell.delegate = self
     }
     
 }
