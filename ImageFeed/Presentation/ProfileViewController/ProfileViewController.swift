@@ -68,8 +68,9 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
         
-        layoutStackView()
+        layoutProfileStackView()
         layoutExitButton()
+        setupExitButton()
         updateProfileDetails(profile: profileService.profile)
         
         addNotificationObserver()
@@ -103,7 +104,7 @@ private extension ProfileViewController {
     
 }
 
-//MARK: - Some private methods
+//MARK: - Layout methods
 private extension ProfileViewController {
     
     func updateProfileDetails(profile: Profile?) {
@@ -112,7 +113,7 @@ private extension ProfileViewController {
         nameLabel.text = profile.name
     }
     
-    func layoutStackView() {
+    func layoutProfileStackView() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(profileImageView)
         stackView.addArrangedSubview(nameLabel)
@@ -124,9 +125,6 @@ private extension ProfileViewController {
         stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 235).isActive = true
         
         layoutProfileImageView()
-        layoutNameLabel()
-        layoutNicknameLabel()
-        layoutTextLabel()
     }
     
     func layoutProfileImageView() {
@@ -141,18 +139,6 @@ private extension ProfileViewController {
         profileImageView.layer.cornerRadius = widthAndHeight / 2
     }
     
-    func layoutNameLabel() {
-        nameLabel.text = "Александр Бекренев"
-    }
-    
-    func layoutNicknameLabel() {
-        loginNameLabel.text = "@sashkevich"
-    }
-    
-    func layoutTextLabel() {
-        descriptionLabel.text = "Hello, World!"
-    }
-    
     func layoutExitButton() {
         view.addSubview(exitButton)
         exitButton.contentHorizontalAlignment = .fill
@@ -165,6 +151,31 @@ private extension ProfileViewController {
             exitButton.heightAnchor.constraint(equalToConstant: 24),
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+    
+}
+
+private extension ProfileViewController {
+    
+    @objc
+    func didTapExitButton() {
+        deleteToken()
+        switchToSplashViewController()
+    }
+    
+    func setupExitButton() {
+        exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
+    }
+    
+    func deleteToken() {
+        let tokenCleaner = TokenCleaner()
+        tokenCleaner.clean()
+    }
+    
+    func switchToSplashViewController() {
+        guard let window = UIApplication.shared.windows.first else { fatalError("Couldn't retrieve window object") }
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
     }
     
 }
