@@ -40,7 +40,7 @@ final class ImagesListViewController: UIViewController {
                 let imageURL = URL(string: photos[indexPath.row].largeImageURL)
             else { return }
             
-            setLargeImage(for: viewController, with: imageURL)
+            viewController.fullImageURL = imageURL
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -71,22 +71,6 @@ private extension ImagesListViewController {
             ) { [weak self] _ in
                 self?.updatePhotosAnimated()
             }
-    }
-    
-}
-
-private extension ImagesListViewController {
-    
-    func setLargeImage(for viewController: UIViewController, with url: URL) {
-        guard let viewController = viewController as? SingleImageViewController else { return }
-        KingfisherManager.shared.retrieveImage(with: url) { result in
-            switch result {
-            case .success(let value):
-                viewController.image = value.image
-            case .failure(let error):
-                print(error)
-            }
-        }
     }
     
 }

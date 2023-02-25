@@ -21,14 +21,17 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
+    var fullImageURL: URL?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         imageView.image = image
         
-        rescale(image: image)
-        centerContent()
+        if let fullImageURL = fullImageURL {
+            setImage(with: fullImageURL)
+        }
         
         setupShareButton()
     }
@@ -49,6 +52,22 @@ final class SingleImageViewController: UIViewController {
 }
 
 private extension SingleImageViewController {
+    
+    func setImage(with url: URL) {
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: url) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.rescale(image: imageResult.image)
+                self.centerContent()
+            case .failure:
+                print("error")
+                // TODO: self.showError()
+            }
+        }
+    }
     
     func rescale(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
