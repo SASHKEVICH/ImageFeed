@@ -13,7 +13,7 @@ protocol ImagesListCellDelegate: AnyObject {
 
 final class ImagesListCell: UITableViewCell {
     @IBOutlet private var gradientView: UIView!
-    @IBOutlet var cellImage: UIImageView!
+    @IBOutlet var cellImageView: UIImageView!
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var likeButton: UIButton!
     
@@ -27,7 +27,9 @@ final class ImagesListCell: UITableViewCell {
         }
     }
     
-    var gradientLayer: CAGradientLayer = {
+    private var loadingAnimationView: LoadingGradientAnimationView?
+    
+    private var gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
         gradientLayer.type = .axial
         gradientLayer.colors = [UIColor.black.withAlphaComponent(0.0), UIColor.black.withAlphaComponent(0.2).cgColor]
@@ -38,8 +40,8 @@ final class ImagesListCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        cellImage.layer.cornerRadius = 16
-        cellImage.layer.masksToBounds = true
+        cellImageView.layer.cornerRadius = 16
+        cellImageView.layer.masksToBounds = true
         
         likeButton.addTarget(self, action: #selector(handleLikeButtonTap), for: .touchUpInside)
         
@@ -52,7 +54,8 @@ final class ImagesListCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        cellImage.kf.cancelDownloadTask()
+        stopLoadingAnimation()
+        cellImageView.kf.cancelDownloadTask()
     }
     
     override func layoutSubviews() {
@@ -70,4 +73,19 @@ final class ImagesListCell: UITableViewCell {
     private func setButtonLikedOrDisliked() {
         likeButton.setImage(UIImage(named: isLiked ? "like_button_on" : "like_button_off"), for: .normal)
     }
+}
+
+extension ImagesListCell {
+    
+    func startLoadingAnimation() {
+        loadingAnimationView = LoadingGradientAnimationView(frame: bounds)
+        guard let loadingAnimationView = loadingAnimationView else { return }
+        cellImageView.addSubview(loadingAnimationView)
+    }
+    
+    func stopLoadingAnimation() {
+        loadingAnimationView?.removeFromSuperview()
+        loadingAnimationView = nil
+    }
+    
 }

@@ -148,11 +148,9 @@ extension ImagesListViewController: UITableViewDataSource {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
         guard let imageURL = URL(string: photo.thumbImageURL) else { return }
-        cell.cellImage.kf.indicatorType = .activity
-        cell.cellImage.kf.setImage(
-            with: imageURL,
-            placeholder: UIImage(named: "card_photo_stub")
-        ) { [weak self] _ in
+        cell.startLoadingAnimation()
+        cell.cellImageView.kf.setImage(with: imageURL) { [weak self] _ in
+            cell.stopLoadingAnimation()
             self?.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         cell.dateLabel.text = DateFormatter.imagesListCellDateFormmater.string(from: photo.createdAt ?? Date())
