@@ -13,6 +13,8 @@ final class ProfileViewController: UIViewController {
     private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
+    private var animationViews = Set<UIView>()
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -32,18 +34,18 @@ final class ProfileViewController: UIViewController {
         return imageView
     }()
     
-    private lazy var loginNameLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .ypGray
-        label.font = UIFont.systemFont(ofSize: 13)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 23)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var loginNameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .ypGray
+        label.font = UIFont.systemFont(ofSize: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -71,10 +73,41 @@ final class ProfileViewController: UIViewController {
         layoutProfileStackView()
         layoutExitButton()
         setupExitButton()
+        
+        showLoadingAnimation()
+        
         updateProfileDetails(profile: profileService.profile)
         
         addNotificationObserver()
         updateAvatar()
+    }
+    
+}
+
+//MARK: - Animation methods
+private extension ProfileViewController {
+    
+    func showLoadingAnimation() {
+        let profileGradientView = LoadingGradientAnimationView(frame: CGRect(origin: .zero, size: CGSize(width: 70, height: 70)), cornerRadius: 35)
+        let nameGradientView = LoadingGradientAnimationView(frame: CGRect(origin: .zero, size: CGSize(width: 228, height: 28)), cornerRadius: 10)
+        let loginGradientView = LoadingGradientAnimationView(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 16)), cornerRadius: 6)
+        animationViews.insert(profileGradientView)
+        animationViews.insert(nameGradientView)
+        animationViews.insert(loginGradientView)
+        profileImageView.addSubview(profileGradientView)
+        nameLabel.addSubview(nameGradientView)
+        loginNameLabel.addSubview(loginGradientView)
+    }
+    
+    func hideLoadingAnimation() {
+        animationViews.forEach { view in
+            UIView.animate(withDuration: 0.5, animations: {
+                view.alpha = 0
+            }) { _ in
+                view.removeFromSuperview()
+            }
+        }
+        animationViews.removeAll()
     }
     
 }
@@ -89,6 +122,7 @@ private extension ProfileViewController {
         else { return }
         
         profileImageView.kf.setImage(with: url)
+        hideLoadingAnimation()
     }
     
     func addNotificationObserver() {
