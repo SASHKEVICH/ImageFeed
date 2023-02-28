@@ -12,6 +12,13 @@ protocol ImagesListCellDelegate: AnyObject {
 }
 
 final class ImagesListCell: UITableViewCell {
+    
+    enum FeedCellImageState {
+        case loading
+        case error
+        case finished(UIImage)
+    }
+    
     @IBOutlet private var gradientView: UIView!
     @IBOutlet var cellImageView: UIImageView!
     @IBOutlet var dateLabel: UILabel!
@@ -21,6 +28,23 @@ final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier = "ImagesListCell"
     
+    var cellState: FeedCellImageState? {
+        didSet {
+            switch cellState {
+            case .loading:
+                startLoadingAnimation()
+            case .error:
+                stopLoadingAnimation()
+                cellImageView.image = UIImage(named: "card_photo_stub")
+            case .finished(let image):
+                stopLoadingAnimation()
+                cellImageView.image = image
+            default:
+                break
+            }
+        }
+    }
+    
     var isLiked: Bool = false {
         didSet {
             setButtonLikedOrDisliked()
@@ -28,6 +52,7 @@ final class ImagesListCell: UITableViewCell {
     }
     
     private var loadingAnimationView: LoadingGradientAnimationView?
+    private var loadingAnimationLayer: CAGradientLayer?
     
     private var gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
@@ -78,14 +103,38 @@ final class ImagesListCell: UITableViewCell {
 extension ImagesListCell {
     
     func startLoadingAnimation() {
-        loadingAnimationView = LoadingGradientAnimationView(frame: bounds)
+        loadingAnimationView = LoadingGradientAnimationView(frame: cellImageView.bounds)
         guard let loadingAnimationView = loadingAnimationView else { return }
         cellImageView.addSubview(loadingAnimationView)
+//        let gradientChangeAnimation = CABasicAnimation(keyPath: "locations")
+//        gradientChangeAnimation.duration = 1.2
+//        gradientChangeAnimation.repeatCount = .infinity
+//        gradientChangeAnimation.fromValue = [0, 0.1, 0.3]
+//        gradientChangeAnimation.toValue = [0, 0.8, 1]
+//
+//        loadingAnimationLayer = CAGradientLayer()
+//        guard let gradient = loadingAnimationLayer else { return }
+//        gradient.frame = bounds
+//        gradient.cornerRadius = 0
+//        gradient.locations = [0, 0.1, 0.3]
+//        gradient.colors = [
+//            UIColor(red: 0.682, green: 0.686, blue: 0.706, alpha: 1).cgColor,
+//            UIColor(red: 0.531, green: 0.533, blue: 0.553, alpha: 1).cgColor,
+//            UIColor(red: 0.431, green: 0.433, blue: 0.453, alpha: 1).cgColor
+//        ]
+//        gradient.startPoint = CGPoint(x: 0, y: 0.5)
+//        gradient.endPoint = CGPoint(x: 1, y: 0.5)
+//        gradient.masksToBounds = true
+//        gradient.add(gradientChangeAnimation, forKey: "locationsChange")
+//
+//        cellImageView.layer.addSublayer(gradient)
     }
     
     func stopLoadingAnimation() {
         loadingAnimationView?.removeFromSuperview()
         loadingAnimationView = nil
+//        loadingAnimationLayer?.removeFromSuperlayer()
+//        loadingAnimationLayer = nil
     }
     
 }
