@@ -88,15 +88,19 @@ final class ProfileViewController: UIViewController {
 private extension ProfileViewController {
     
     func showLoadingAnimation() {
-        let profileGradientView = LoadingGradientAnimationView(frame: CGRect(origin: .zero, size: CGSize(width: 70, height: 70)), cornerRadius: 35)
-        let nameGradientView = LoadingGradientAnimationView(frame: CGRect(origin: .zero, size: CGSize(width: 228, height: 28)), cornerRadius: 10)
-        let loginGradientView = LoadingGradientAnimationView(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 16)), cornerRadius: 6)
-        animationViews.insert(profileGradientView)
-        animationViews.insert(nameGradientView)
-        animationViews.insert(loginGradientView)
-        profileImageView.addSubview(profileGradientView)
-        nameLabel.addSubview(nameGradientView)
-        loginNameLabel.addSubview(loginGradientView)
+        let profileGradientView = LoadingGradientAnimationView(
+            frame: CGRect(origin: .zero, size: CGSize(width: 70, height: 70)),
+            cornerRadius: 35)
+        let nameGradientView = LoadingGradientAnimationView(
+            frame: CGRect(origin: .zero, size: CGSize(width: 228, height: 28)),
+            cornerRadius: 10)
+        let loginGradientView = LoadingGradientAnimationView(
+            frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 16)),
+            cornerRadius: 6)
+        
+        let gradientViews = [profileGradientView, nameGradientView, loginGradientView]
+        addGradientsToSet(gradients: gradientViews)
+        addToProfileViews(gradients: gradientViews)
     }
     
     func hideLoadingAnimation() {
@@ -108,6 +112,16 @@ private extension ProfileViewController {
             }
         }
         animationViews.removeAll()
+    }
+    
+    func addGradientsToSet(gradients: [LoadingGradientAnimationView]) {
+        gradients.forEach { loadingView in animationViews.insert(loadingView) }
+    }
+    
+    func addToProfileViews(gradients: [LoadingGradientAnimationView]) {
+        profileImageView.addSubview(gradients[0])
+        nameLabel.addSubview(gradients[1])
+        loginNameLabel.addSubview(gradients[2])
     }
     
 }

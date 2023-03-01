@@ -9,7 +9,7 @@ import UIKit
 
 final class LoadingGradientAnimationView: UIView {
 
-    convenience init(frame: CGRect, cornerRadius: CGFloat = 0) {
+    convenience init(frame: CGRect, cornerRadius: CGFloat) {
         self.init(frame: frame)
         
         let animation = setupGradientChangeAnimation()
