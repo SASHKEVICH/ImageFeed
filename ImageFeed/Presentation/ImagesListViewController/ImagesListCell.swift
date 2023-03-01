@@ -12,8 +12,15 @@ protocol ImagesListCellDelegate: AnyObject {
 }
 
 final class ImagesListCell: UITableViewCell {
+    
+    enum FeedCellImageState {
+        case loading
+        case error
+        case finished(UIImage)
+    }
+    
     @IBOutlet private var gradientView: UIView!
-    @IBOutlet var cellImage: UIImageView!
+    @IBOutlet var cellImageView: UIImageView!
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var likeButton: UIButton!
     
@@ -21,13 +28,33 @@ final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier = "ImagesListCell"
     
+    var cellState: FeedCellImageState? {
+        didSet {
+            switch cellState {
+            case .loading:
+                showLoadingAnimation()
+            case .error:
+                hideLoadingAnimation()
+                cellImageView.image = UIImage(named: "card_photo_stub")
+            case .finished(let image):
+                hideLoadingAnimation()
+                cellImageView.image = image
+            default:
+                break
+            }
+        }
+    }
+    
     var isLiked: Bool = false {
         didSet {
             setButtonLikedOrDisliked()
         }
     }
     
-    var gradientLayer: CAGradientLayer = {
+    private var loadingAnimationView: LoadingGradientAnimationView?
+    private var loadingAnimationLayer: CAGradientLayer?
+    
+    private var gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
         gradientLayer.type = .axial
         gradientLayer.colors = [UIColor.black.withAlphaComponent(0.0), UIColor.black.withAlphaComponent(0.2).cgColor]
@@ -38,8 +65,8 @@ final class ImagesListCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        cellImage.layer.cornerRadius = 16
-        cellImage.layer.masksToBounds = true
+        cellImageView.layer.cornerRadius = 16
+        cellImageView.layer.masksToBounds = true
         
         likeButton.addTarget(self, action: #selector(handleLikeButtonTap), for: .touchUpInside)
         
@@ -52,7 +79,8 @@ final class ImagesListCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        cellImage.kf.cancelDownloadTask()
+        hideLoadingAnimation()
+        cellImageView.kf.cancelDownloadTask()
     }
     
     override func layoutSubviews() {
@@ -70,4 +98,19 @@ final class ImagesListCell: UITableViewCell {
     private func setButtonLikedOrDisliked() {
         likeButton.setImage(UIImage(named: isLiked ? "like_button_on" : "like_button_off"), for: .normal)
     }
+}
+
+extension ImagesListCell {
+    
+    func showLoadingAnimation() {
+        let loadingView = LoadingGradientAnimationView(frame: bounds, cornerRadius: 0)
+        loadingAnimationView = loadingView
+        cellImageView.addSubview(loadingView)
+    }
+    
+    func hideLoadingAnimation() {
+        loadingAnimationView?.removeFromSuperview()
+        loadingAnimationView = nil
+    }
+    
 }

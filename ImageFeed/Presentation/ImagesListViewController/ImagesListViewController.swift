@@ -118,6 +118,10 @@ extension ImagesListViewController: UITableViewDelegate {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
+        if let cell = cell as? ImagesListCell, cell.cellImageView.image == nil {
+            cell.cellState = .loading
+        }
+        
         let isNextCellLast = indexPath.row + 1 == photos.count
         if isNextCellLast {
             imagesListService.fetchPhotosNextPage()
@@ -148,13 +152,17 @@ extension ImagesListViewController: UITableViewDataSource {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
         guard let imageURL = URL(string: photo.thumbImageURL) else { return }
-        cell.cellImage.kf.indicatorType = .activity
-        cell.cellImage.kf.setImage(
-            with: imageURL,
-            placeholder: UIImage(named: "card_photo_stub")
-        ) { [weak self] _ in
+        KingfisherManager.shared.retrieveImage(with: imageURL) { [weak self] result in
+            switch result {
+            case .success(let imageResult):
+                cell.cellState = .finished(imageResult.image)
+            case .failure(_):
+                cell.cellState = .error
+            }
+            
             self?.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
+        
         cell.dateLabel.text = DateFormatter.imagesListCellDateFormmater.string(from: photo.createdAt ?? Date())
         cell.isLiked = photo.isLiked
         cell.delegate = self
