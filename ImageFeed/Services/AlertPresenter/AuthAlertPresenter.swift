@@ -7,15 +7,7 @@
 
 import UIKit
 
-protocol AlertPresenterDelegate: AnyObject {
-    func didRecieveAlert(_ vc: UIAlertController)
-}
-
-protocol AlertPresenterProtocol {
-    func requestAlert()
-}
-
-struct AuthAlertPresenter: AlertPresenterProtocol {
+struct AuthAlertPresenter {
     
     weak var delegate: AlertPresenterDelegate?
     

@@ -21,7 +21,7 @@ final class SplashViewController: UIViewController {
     private let oauthService = OAuth2Service.shared
     private let profileService = ProfileDescriptionService.shared
     
-    private var alertPresenter: AlertPresenterProtocol?
+    private var alertPresenter: AuthAlertPresenter?
     
     private var token: String? {
         OAuth2TokenStorage().token
@@ -131,9 +131,7 @@ extension SplashViewController: AuthViewControllerDelegate {
 }
 
 extension SplashViewController: AlertPresenterDelegate {
-    
     func didRecieveAlert(_ vc: UIAlertController) {
         present(vc, animated: true)
     }
-    
 }
