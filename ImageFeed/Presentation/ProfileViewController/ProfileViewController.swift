@@ -207,8 +207,13 @@ private extension ProfileViewController {
     
     @objc
     func didTapExitButton() {
-        deleteToken()
-        switchToSplashViewController()
+        var logoutAlertPresenter = LogoutAlertPresenter()
+        logoutAlertPresenter.delegate = self
+        logoutAlertPresenter.requestAlert { [weak self] _ in
+            guard let self = self else { return }
+            self.deleteToken()
+            self.switchToSplashViewController()
+        }
     }
     
     func setupExitButton() {
@@ -226,4 +231,10 @@ private extension ProfileViewController {
         window.makeKeyAndVisible()
     }
     
+}
+
+extension ProfileViewController: AlertPresenterDelegate {
+    func didRecieveAlert(_ vc: UIAlertController) {
+        present(vc, animated: true)
+    }
 }

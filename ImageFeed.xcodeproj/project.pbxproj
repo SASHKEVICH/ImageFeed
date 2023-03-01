@@ -37,6 +37,8 @@
 		967679AA2993F9E500E21F6C /* URLSession+StartLoadingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967679A92993F9E500E21F6C /* URLSession+StartLoadingObject.swift */; };
 		967679AE2993FF2500E21F6C /* AuthAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967679AD2993FF2500E21F6C /* AuthAlertPresenter.swift */; };
 		96859C962954A62700C468D8 /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96859C952954A62700C468D8 /* DateFormatter+Extensions.swift */; };
+		969A386929AF150800899597 /* LogoutAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969A386829AF150800899597 /* LogoutAlertPresenter.swift */; };
+		969A386B29AF151D00899597 /* AlertPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969A386A29AF151D00899597 /* AlertPresenterDelegate.swift */; };
 		96AD1E1F295D9DD500947031 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AD1E1E295D9DD500947031 /* ProfileViewController.swift */; };
 		96AD1E22295F41A700947031 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AD1E21295F41A700947031 /* SingleImageViewController.swift */; };
 		96BC124829542F1500AB1E8D /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96BC124729542F1500AB1E8D /* ImagesListCell.swift */; };
@@ -78,6 +80,8 @@
 		967679A92993F9E500E21F6C /* URLSession+StartLoadingObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+StartLoadingObject.swift"; sourceTree = "<group>"; };
 		967679AD2993FF2500E21F6C /* AuthAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAlertPresenter.swift; sourceTree = "<group>"; };
 		96859C952954A62700C468D8 /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
+		969A386829AF150800899597 /* LogoutAlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutAlertPresenter.swift; sourceTree = "<group>"; };
+		969A386A29AF151D00899597 /* AlertPresenterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenterDelegate.swift; sourceTree = "<group>"; };
 		96AD1E1E295D9DD500947031 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		96AD1E21295F41A700947031 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		96BC124729542F1500AB1E8D /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
@@ -252,6 +256,8 @@
 			isa = PBXGroup;
 			children = (
 				967679AD2993FF2500E21F6C /* AuthAlertPresenter.swift */,
+				969A386829AF150800899597 /* LogoutAlertPresenter.swift */,
+				969A386A29AF151D00899597 /* AlertPresenterDelegate.swift */,
 			);
 			path = AlertPresenter;
 			sourceTree = "<group>";
@@ -411,10 +417,12 @@
 				96EF758029A0A7D7005CAE89 /* PhotoResult.swift in Sources */,
 				96321371298247AD003A07EB /* URLSession+DataTask.swift in Sources */,
 				9676799E2990CF4200E21F6C /* ProfileResult.swift in Sources */,
+				969A386B29AF151D00899597 /* AlertPresenterDelegate.swift in Sources */,
 				961D0B9D294D9F1E005A914D /* AppDelegate.swift in Sources */,
 				961D0B9F294D9F1E005A914D /* SceneDelegate.swift in Sources */,
 				967679A8299204BF00E21F6C /* UserResult.swift in Sources */,
 				96859C962954A62700C468D8 /* DateFormatter+Extensions.swift in Sources */,
+				969A386929AF150800899597 /* LogoutAlertPresenter.swift in Sources */,
 				9632136F29824715003A07EB /* OAuthTokenResponseBody.swift in Sources */,
 				9632136A298132B1003A07EB /* WebViewViewControllerDelegate.swift in Sources */,
 				967679A02990CF5900E21F6C /* Profile.swift in Sources */,
