@@ -43,6 +43,10 @@ final class SingleImageViewController: UIViewController {
         setupShareButton()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     @IBAction
     private func didTapBackButton() {
         dismissViewController()

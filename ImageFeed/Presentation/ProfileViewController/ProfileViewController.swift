@@ -82,6 +82,10 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
 }
 
 //MARK: - Animation methods

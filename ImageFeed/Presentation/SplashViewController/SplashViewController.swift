@@ -49,6 +49,10 @@ final class SplashViewController: UIViewController {
         }
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     private func presentAuthViewController() {
         guard let authViewController = getViewController(withIdentifier: authViewControllerIdentifier) as? AuthViewController
         else { fatalError("Unable to get AuthViewController") }

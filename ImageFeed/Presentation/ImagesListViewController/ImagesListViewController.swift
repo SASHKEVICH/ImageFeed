@@ -49,6 +49,10 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
 }
 
 //MARK: - NotificationCenter methods
@@ -149,6 +153,7 @@ extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
+        cell.selectionStyle = .none
         
         guard let imagesListCell = cell as? ImagesListCell else {
             print("Something went wrong in \(ImagesListCell.reuseIdentifier)")
