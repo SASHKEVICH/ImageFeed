@@ -20,13 +20,31 @@ final class ImagesListCell: UITableViewCell {
     }
     
     @IBOutlet private var gradientView: UIView!
-    @IBOutlet var cellImageView: UIImageView!
-    @IBOutlet var dateLabel: UILabel!
-    @IBOutlet var likeButton: UIButton!
+    @IBOutlet private var cellImageView: UIImageView!
+    @IBOutlet private var dateLabel: UILabel!
+    @IBOutlet private var likeButton: UIButton!
     
     weak var delegate: ImagesListCellDelegate?
     
     static let reuseIdentifier = "ImagesListCell"
+    
+    var cellImage: UIImage? {
+        get {
+            cellImageView.image
+        }
+        set {
+            cellImageView.image = newValue
+        }
+    }
+    
+    var cellDateText: String? {
+        get {
+            dateLabel.text
+        }
+        set {
+            dateLabel.text = newValue
+        }
+    }
     
     var cellState: FeedCellImageState? {
         didSet {
@@ -52,7 +70,6 @@ final class ImagesListCell: UITableViewCell {
     }
     
     private var loadingAnimationView: LoadingGradientAnimationView?
-    private var loadingAnimationLayer: CAGradientLayer?
     
     private var gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
@@ -104,7 +121,7 @@ extension ImagesListCell {
     
     func showLoadingAnimation() {
         let loadingView = LoadingGradientAnimationView(frame: bounds, cornerRadius: 0)
-        loadingAnimationView = loadingView
+        self.loadingAnimationView = loadingView
         cellImageView.addSubview(loadingView)
     }
     

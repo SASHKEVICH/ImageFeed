@@ -53,12 +53,12 @@ private extension ImagesListViewController {
 
     func updatePhotosAnimated() {
         self.photos = imagesListService.photos
-        tableView.performBatchUpdates {
+        tableView.performBatchUpdates { [weak self] in
             let batchAmount = 10
             let photosIndexPaths = (photos.count - batchAmount..<photos.count).map { row in
                 IndexPath(row: row, section: 0)
             }
-            self.tableView.insertRows(at: photosIndexPaths, with: .automatic)
+            self?.tableView.insertRows(at: photosIndexPaths, with: .automatic)
         } completion: { _ in }
     }
     
@@ -81,7 +81,8 @@ extension ImagesListViewController: ImagesListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photo.id, isLike: cell.isLiked) { result in
+        imagesListService.changeLike(photoId: photo.id, isLike: cell.isLiked) {[weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success():
                 self.photos = self.imagesListService.photos
@@ -118,7 +119,7 @@ extension ImagesListViewController: UITableViewDelegate {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        if let cell = cell as? ImagesListCell, cell.cellImageView.image == nil {
+        if let cell = cell as? ImagesListCell, cell.cellImage == nil {
             cell.cellState = .loading
         }
         
@@ -163,7 +164,7 @@ extension ImagesListViewController: UITableViewDataSource {
             self?.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         
-        cell.dateLabel.text = DateFormatter.imagesListCellDateFormmater.string(from: photo.createdAt ?? Date())
+        cell.cellDateText = photo.createdAt.imagesListCellDateString()
         cell.isLiked = photo.isLiked
         cell.delegate = self
     }
