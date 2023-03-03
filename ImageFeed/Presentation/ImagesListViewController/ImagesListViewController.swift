@@ -16,7 +16,7 @@ final class ImagesListViewController: UIViewController {
     
     private let imagesListService: ImagesListService = ImagesListService()
     private var imagesListServiceObserver: NSObjectProtocol?
-    private var photos: [ImagesListService.Photo] = []
+    private var photos: [Photo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()

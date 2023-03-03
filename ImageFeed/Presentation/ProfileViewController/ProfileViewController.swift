@@ -226,7 +226,10 @@ private extension ProfileViewController {
     }
     
     func switchToSplashViewController() {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Couldn't retrieve window object") }
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Can't retrieve window object")
+            return
+        }
         window.rootViewController = SplashViewController()
         window.makeKeyAndVisible()
     }

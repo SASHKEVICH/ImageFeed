@@ -26,7 +26,7 @@ final class ImagesListService {
         guard !fetchPhotosTask.isStillRunning else { return }
         
         let nextPage = calculateNextPage()
-        let request = nextImagesPageRequest(page: nextPage)
+        guard let request = nextImagesPageRequest(page: nextPage) else { return }
         let task = urlSession.startLoadingObjectFromNetwork(with: request) { [weak self] (result: Result<[PhotoResult], Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -44,7 +44,7 @@ final class ImagesListService {
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         assert(Thread.isMainThread)
-        let request = changeLikeRequest(for: photoId, isLike: isLike)
+        guard let request = changeLikeRequest(for: photoId, isLike: isLike) else { return }
         let task = urlSession.startLoadingObjectFromNetwork(with: request) { [weak self] (result: Result<LikePhotoResult, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -94,8 +94,11 @@ private extension ImagesListService {
         return lastLoadedPage
     }
     
-    func nextImagesPageRequest(page: Int) -> URLRequest {
-        guard var imagesPageUrlComponents = URLComponents(string: unsplashAPIString) else { fatalError("Unable to construct `/photos` url components") }
+    func nextImagesPageRequest(page: Int) -> URLRequest? {
+        guard var imagesPageUrlComponents = URLComponents(string: unsplashAPIString) else {
+            assertionFailure("Unable to construct `/photos` url components")
+            return nil
+        }
         imagesPageUrlComponents.path = "/photos"
         imagesPageUrlComponents.queryItems = [
             URLQueryItem(name: "page", value: "\(page)"),
@@ -135,8 +138,11 @@ private extension ImagesListService {
         self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
     }
     
-    func changeLikeRequest(for id: String, isLike: Bool) -> URLRequest {
-        guard var changeLikeUrlComponents = URLComponents(string: unsplashAPIString) else { fatalError("Unable to construct `/photos/like` url components") }
+    func changeLikeRequest(for id: String, isLike: Bool) -> URLRequest? {
+        guard var changeLikeUrlComponents = URLComponents(string: unsplashAPIString) else {
+            assertionFailure("Unable to construct `/photos/like` url components")
+            return nil
+        }
         changeLikeUrlComponents.path = "/photos/\(id)/like"
         let request = URLRequest.makeHTTPRequest(path: "/photos/\(id)/like", httpMethod: isLike ? "POST" : "DELETE", accessToken: token)
         return request
