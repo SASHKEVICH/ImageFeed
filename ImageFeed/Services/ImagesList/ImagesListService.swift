@@ -115,7 +115,7 @@ private extension ImagesListService {
     
     func handleChangeLike(result: Result<LikePhotoResult, Error>, photoId: String, completion: @escaping (Result<Void, Error>) -> Void) {
         switch result {
-        case .success(_):
+        case .success:
             changePhotoLikedState(photoId: photoId)
             completion(.success(()))
         case .failure(let error):
@@ -133,8 +133,7 @@ private extension ImagesListService {
             welcomeDescription: photo.welcomeDescription,
             thumbImageURL: photo.thumbImageURL,
             largeImageURL: photo.largeImageURL,
-            isLiked: !photo.isLiked
-        )
+            isLiked: !photo.isLiked)
         self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
     }
     

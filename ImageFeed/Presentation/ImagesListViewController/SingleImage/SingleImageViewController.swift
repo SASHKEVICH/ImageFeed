@@ -37,14 +37,15 @@ final class SingleImageViewController: UIViewController {
         self.alertPresenter = AlertPresenter(delegate: self)
         
         if let fullImageURL = fullImageURL {
-            setImage(with: fullImageURL)
+            startFullImageDownloading(with: fullImageURL)
         }
         
         setupShareButton()
     }
     
-    @IBAction private func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
+    @IBAction
+    private func didTapBackButton() {
+        dismissViewController()
     }
     
     @objc
@@ -95,9 +96,30 @@ private extension SingleImageViewController {
         shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
     }
     
+    func dismissViewController() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func startFullImageDownloading(with url: URL) {
+        ProgressHUD.show()
+        disableShareButton()
+        downloadAndSetImage(with: url)
+    }
+    
 }
 
-extension SingleImageViewController: UIScrollViewDelegate {
+private extension SingleImageViewController {
+    
+    func disableShareButton() {
+        shareButton.isEnabled = false
+    }
+    
+    func enableShareButton() {
+        shareButton.isEnabled = true
+    }
+    
+}
+
 extension SingleImageViewController: AlertPresenterDelegate {
     func didRecieveAlert(_ vc: UIAlertController) {
         present(vc, animated: true)
@@ -128,6 +150,13 @@ private extension SingleImageViewController {
                 print(error)
             }
         }
+    }
+    
+    func set(image: UIImage) {
+        imageView.image = image
+        rescale(image: image)
+        self.image = image
+        centerContent()
     }
     
 }
