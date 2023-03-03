@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class SingleImageViewController: UIViewController {
     
@@ -57,12 +58,15 @@ private extension SingleImageViewController {
     
     func setImage(with url: URL) {
         UIBlockingProgressHUD.show()
-        imageView.kf.setImage(with: url) { [weak self] result in
+        ImageDownloader.default.downloadImage(with: url) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             guard let self = self else { return }
             switch result {
             case .success(let imageResult):
-                self.rescale(image: imageResult.image)
+                let image = imageResult.image
+                self.imageView.image = image
+                self.rescale(image: image)
+                self.image = image
                 self.centerContent()
             case .failure:
                 print("error")
