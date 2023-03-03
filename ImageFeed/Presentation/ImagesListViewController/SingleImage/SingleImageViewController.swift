@@ -7,12 +7,15 @@
 
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 final class SingleImageViewController: UIViewController {
     
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var shareButton: UIButton!
+    
+    private var alertPresenter: AlertPresenterProtocol?
     
     var image: UIImage! {
         didSet {
@@ -30,6 +33,8 @@ final class SingleImageViewController: UIViewController {
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
         imageView.image = image
+        
+        self.alertPresenter = AlertPresenter(delegate: self)
         
         if let fullImageURL = fullImageURL {
             setImage(with: fullImageURL)
@@ -54,26 +59,13 @@ final class SingleImageViewController: UIViewController {
     
 }
 
-private extension SingleImageViewController {
-    
-    func setImage(with url: URL) {
-        UIBlockingProgressHUD.show()
-        ImageDownloader.default.downloadImage(with: url) { [weak self] result in
-            UIBlockingProgressHUD.dismiss()
-            guard let self = self else { return }
-            switch result {
-            case .success(let imageResult):
-                let image = imageResult.image
-                self.imageView.image = image
-                self.rescale(image: image)
-                self.image = image
-                self.centerContent()
-            case .failure:
-                print("error")
-                // TODO: self.showError()
-            }
-        }
+extension SingleImageViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        imageView
     }
+}
+
+private extension SingleImageViewController {
     
     func rescale(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
@@ -106,9 +98,36 @@ private extension SingleImageViewController {
 }
 
 extension SingleImageViewController: UIScrollViewDelegate {
+extension SingleImageViewController: AlertPresenterDelegate {
+    func didRecieveAlert(_ vc: UIAlertController) {
+        present(vc, animated: true)
+    }
+}
+
+private extension SingleImageViewController {
     
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageView
+    func downloadAndSetImage(with url: URL) {
+        ImageDownloader.default.downloadImage(with: url) { [weak self] result in
+            guard let self = self else { return }
+            ProgressHUD.dismiss()
+            self.enableShareButton()
+            switch result {
+            case .success(let imageResult):
+                let image = imageResult.image
+                self.set(image: image)
+            case .failure(let error):
+                let dismissHandler: (UIAlertAction) -> Void = { [weak self] _ in
+                    self?.dismissViewController()
+                }
+                let alertModel = AlertModel(
+                    title: "Ошибка сети(",
+                    message: "Не удалось загрузить картинку",
+                    actionTitles: ["OK"],
+                    completions: [dismissHandler])
+                self.alertPresenter?.requestAlert(alertModel)
+                print(error)
+            }
+        }
     }
     
 }

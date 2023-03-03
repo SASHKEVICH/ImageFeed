@@ -207,13 +207,18 @@ private extension ProfileViewController {
     
     @objc
     func didTapExitButton() {
-        var logoutAlertPresenter = LogoutAlertPresenter()
-        logoutAlertPresenter.delegate = self
-        logoutAlertPresenter.requestAlert { [weak self] _ in
+        let logoutAlertPresenter = AlertPresenter(delegate: self)
+        let logoutHandler: (UIAlertAction) -> Void = { [weak self] _ in
             guard let self = self else { return }
             self.deleteToken()
             self.switchToSplashViewController()
         }
+        let alertModel = AlertModel(
+            title: "Пока-пока!",
+            message: "Уверены, что хотите выйти?",
+            actionTitles: ["Да", "Нет"],
+            completions: [logoutHandler])
+        logoutAlertPresenter.requestAlert(alertModel)
     }
     
     func setupExitButton() {

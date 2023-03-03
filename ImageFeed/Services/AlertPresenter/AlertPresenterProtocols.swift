@@ -10,3 +10,7 @@ import UIKit
 protocol AlertPresenterDelegate: AnyObject {
     func didRecieveAlert(_ vc: UIAlertController)
 }
+
+protocol AlertPresenterProtocol {
+    func requestAlert(_ alertModel: AlertModel)
+}

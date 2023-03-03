@@ -18,6 +18,8 @@ final class ImagesListViewController: UIViewController {
     private var imagesListServiceObserver: NSObjectProtocol?
     private var photos: [Photo] = []
     
+    private var alertPresenter: AlertPresenterProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,6 +27,7 @@ final class ImagesListViewController: UIViewController {
         tableView.delegate = self
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
+        self.alertPresenter = AlertPresenter(delegate: self)
         addNotificationObserver()
         
         if photos.isEmpty {
@@ -76,25 +79,32 @@ private extension ImagesListViewController {
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
-    
     func imagesListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id, isLike: cell.isLiked) {[weak self] result in
             guard let self = self else { return }
+            UIBlockingProgressHUD.dismiss()
             switch result {
-            case .success():
+            case .success:
                 self.photos = self.imagesListService.photos
-                UIBlockingProgressHUD.dismiss()
             case .failure(let error):
-                // TODO: Show error with UIAlertController
+                let alertModel = AlertModel(
+                    title: "Ошибка сети",
+                    message: "Не удалось поставить лайк(",
+                    actionTitles: ["OK"])
+                self.alertPresenter?.requestAlert(alertModel)
                 print(error)
-                UIBlockingProgressHUD.dismiss()
             }
         }
     }
-    
+}
+
+extension ImagesListViewController: AlertPresenterDelegate {
+    func didRecieveAlert(_ vc: UIAlertController) {
+        present(vc, animated: true)
+    }
 }
 
 extension ImagesListViewController: UITableViewDelegate {
