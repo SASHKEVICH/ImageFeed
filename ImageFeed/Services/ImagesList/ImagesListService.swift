@@ -76,12 +76,26 @@ private extension ImagesListService {
     func handleFetchingPhotos(result: Result<[PhotoResult], Error>) {
         switch result {
         case .success(let photosResult):
-            let photos = photosResult.map { photoResult in Photo(from: photoResult) }
+            let photos = mapToPhotos(from: photosResult)
             self.photos += photos
             self.postNotification()
         case .failure(let error):
             print(error)
         }
+    }
+    
+    func mapToPhotos(from result: [PhotoResult]) -> [Photo] {
+        let photos = result.map { photoResult in
+            Photo(id: photoResult.id,
+                  size: CGSize(width: photoResult.width, height: photoResult.height),
+                  createdAt: photoResult.createdAt,
+                  welcomeDescription: photoResult.description,
+                  thumbImageURL: photoResult.urls.thumb,
+                  largeImageURL: photoResult.urls.full,
+                  isLiked: photoResult.likedByUser
+            )
+        }
+        return photos
     }
     
     func calculateNextPage() -> Int {
