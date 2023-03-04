@@ -10,20 +10,28 @@ import Foundation
 extension URLRequest {
     static func makeHTTPRequest(
         path: String,
-        httpMethod: String,
-        baseURL: URL = unsplashAPIBaseURL
+        httpMethod: String = "GET",
+        baseURL: URL = Constants.unsplashAPIBaseURL,
+        accessToken: String? = nil
     ) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
         request.httpMethod = httpMethod
+        if let token = accessToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         return request
     }
     
     static func makeHTTPRequest(
-        url: URL,
-        httpMethod: String
+        url: URL = Constants.unsplashAPIBaseURL,
+        httpMethod: String = "GET",
+        accessToken: String? = nil
     ) -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod
+        if let token = accessToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         return request
     }
 }

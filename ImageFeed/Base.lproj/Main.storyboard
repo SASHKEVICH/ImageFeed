@@ -23,24 +23,24 @@
                                 <color key="backgroundColor" name="YP Black"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ImagesListCell" id="lpp-9E-LjG" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="140"/>
+                                        <rect key="frame" x="0.0" y="50" width="414" height="8"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lpp-9E-LjG" id="F1A-pw-Qb9">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="8"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="lqs-7k-r2U">
-                                                    <rect key="frame" x="16" y="4" width="382" height="132"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lqs-7k-r2U">
+                                                    <rect key="frame" x="16" y="4" width="382" height="0.0"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ryz-vB-7Mp" userLabel="Bottom Gradient">
-                                                    <rect key="frame" x="16" y="106" width="382" height="30"/>
+                                                    <rect key="frame" x="16" y="-26" width="382" height="30"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="Wc5-HC-q8d"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PYr-0j-FDh">
-                                                    <rect key="frame" x="24" y="112" width="33" height="16"/>
+                                                    <rect key="frame" x="24" y="-20" width="33" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
@@ -73,7 +73,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="cellImage" destination="lqs-7k-r2U" id="IDh-93-A6a"/>
+                                            <outlet property="cellImageView" destination="lqs-7k-r2U" id="IDh-93-A6a"/>
                                             <outlet property="dateLabel" destination="PYr-0j-FDh" id="Xve-pQ-My8"/>
                                             <outlet property="gradientView" destination="Ryz-vB-7Mp" id="ABa-LZ-vKL"/>
                                             <outlet property="likeButton" destination="QPK-Dd-Ngc" id="dxo-2p-zvq"/>
@@ -102,10 +102,10 @@
             </objects>
             <point key="canvasLocation" x="1012" y="73"/>
         </scene>
-        <!--Singleimage View Controller-->
+        <!--Single Image View Controller-->
         <scene sceneID="CHV-C0-C6L">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="n6V-Cw-qvY" customClass="SingleimageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="n6V-Cw-qvY" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tXc-cv-doS">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

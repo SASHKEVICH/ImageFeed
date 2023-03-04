@@ -8,6 +8,7 @@
 import Foundation
 
 final class OAuth2Service {
+    
     static let shared = OAuth2Service()
     private init() {}
     
@@ -37,7 +38,7 @@ final class OAuth2Service {
         
         lastCode = code
         let request = authTokenRequest(code: code)
-        let task = urlSession.startLoadingObject(from: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) -> Void in
+        let task = urlSession.startLoadingObjectFromNetwork(with: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)
@@ -47,7 +48,6 @@ final class OAuth2Service {
         self.task = task
         task.resume()
     }
-    
 }
 
 private extension OAuth2Service {
@@ -60,11 +60,11 @@ private extension OAuth2Service {
     }
     
     func createTokenURL(with code: String) -> URL {
-        var urlComponentes = URLComponents(string: unsplashOAuthString)!
+        var urlComponentes = URLComponents(string: Constants.unsplashOAuthString)!
         urlComponentes.queryItems = [
-            URLQueryItem(name: "client_id", value: accessKey),
-            URLQueryItem(name: "client_secret", value: secretKey),
-            URLQueryItem(name: "redirect_uri", value: redirectURI),
+            URLQueryItem(name: "client_id", value: Constants.accessKey),
+            URLQueryItem(name: "client_secret", value: Constants.secretKey),
+            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
             URLQueryItem(name: "code", value: code),
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
@@ -90,5 +90,4 @@ private extension OAuth2Service {
     func isLastCodeEqualsNew(code: String?) -> Bool {
         lastCode == code
     }
-    
 }

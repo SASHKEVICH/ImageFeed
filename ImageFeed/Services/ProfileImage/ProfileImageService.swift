@@ -24,10 +24,10 @@ final class ProfileImageService {
         completion: @escaping (Result<String, Error>) -> Void
     ) {
         assert(Thread.isMainThread)
-        guard !isTaskStillRunning, let token = token else { return }
+        guard !task.isStillRunning, let token = token else { return }
         
         let request = profileImageRequest(username: username, token: token)
-        let task = urlSession.startLoadingObject(from: request) { [weak self] (result: Result<UserResult, Error>) -> Void in
+        let task = urlSession.startLoadingObjectFromNetwork(with: request) { [weak self] (result: Result<UserResult, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)
@@ -37,15 +37,9 @@ final class ProfileImageService {
         self.task = task
         task.resume()
     }
-    
 }
 
 private extension ProfileImageService {
-    
-    var isTaskStillRunning: Bool {
-        task != nil
-    }
-    
     func handle(
         result: Result<UserResult, Error>,
         completion: @escaping (Result<String, Error>) -> Void
@@ -69,9 +63,7 @@ private extension ProfileImageService {
     }
     
     func profileImageRequest(username: String, token: String) -> URLRequest {
-        var request = URLRequest.makeHTTPRequest(path: "/users/\(username)", httpMethod: "GET")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        let request = URLRequest.makeHTTPRequest(path: "/users/\(username)", accessToken: token)
         return request
     }
-    
 }

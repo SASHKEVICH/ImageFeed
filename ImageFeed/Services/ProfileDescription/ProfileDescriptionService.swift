@@ -8,6 +8,7 @@
 import Foundation
 
 final class ProfileDescriptionService {
+    
     static let shared = ProfileDescriptionService()
     private init() {}
     
@@ -22,10 +23,10 @@ final class ProfileDescriptionService {
     ) {
         assert(Thread.isMainThread)
         
-        guard !isTaskStillRunning else { return }
+        guard !task.isStillRunning else { return }
         
         let request = profileRequest(token: token)
-        let task = urlSession.startLoadingObject(from: request) { [weak self] (result: Result<ProfileResult, Error>) -> Void in
+        let task = urlSession.startLoadingObjectFromNetwork(with: request) { [weak self] (result: Result<ProfileResult, Error>) -> Void in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.handle(result: result, completion: completion)
@@ -36,18 +37,11 @@ final class ProfileDescriptionService {
         self.task = task
         task.resume()
     }
-    
 }
 
 private extension ProfileDescriptionService {
-    
-    var isTaskStillRunning: Bool {
-        task != nil
-    }
-    
     func profileRequest(token: String) -> URLRequest {
-        var request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        let request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET", accessToken: token)
         return request
     }
 
@@ -64,5 +58,4 @@ private extension ProfileDescriptionService {
             completion(.failure(error))
         }
     }
-    
 }

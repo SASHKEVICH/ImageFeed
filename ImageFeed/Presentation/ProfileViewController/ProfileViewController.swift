@@ -13,6 +13,8 @@ final class ProfileViewController: UIViewController {
     private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
+    private var animationViews = Set<UIView>()
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -32,18 +34,18 @@ final class ProfileViewController: UIViewController {
         return imageView
     }()
     
-    private lazy var loginNameLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .ypGray
-        label.font = UIFont.systemFont(ofSize: 13)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 23)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var loginNameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .ypGray
+        label.font = UIFont.systemFont(ofSize: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -68,14 +70,62 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
         
-        layoutStackView()
+        layoutProfileStackView()
         layoutExitButton()
+        setupExitButton()
+        
+        showLoadingAnimation()
+        
         updateProfileDetails(profile: profileService.profile)
         
         addNotificationObserver()
         updateAvatar()
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+}
+
+//MARK: - Animation methods
+private extension ProfileViewController {
+    
+    func showLoadingAnimation() {
+        let profileGradientView = LoadingGradientAnimationView(
+            frame: CGRect(origin: .zero, size: CGSize(width: 70, height: 70)),
+            cornerRadius: 35)
+        let nameGradientView = LoadingGradientAnimationView(
+            frame: CGRect(origin: .zero, size: CGSize(width: 228, height: 28)),
+            cornerRadius: 10)
+        let loginGradientView = LoadingGradientAnimationView(
+            frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 16)),
+            cornerRadius: 6)
+        
+        let gradientViews = [profileGradientView, nameGradientView, loginGradientView]
+        addGradientsToSet(gradients: gradientViews)
+        addToProfileViews(gradients: gradientViews)
+    }
+    
+    func hideLoadingAnimation() {
+        animationViews.forEach { view in
+            UIView.animate(withDuration: 0.5, animations: {
+                view.alpha = 0
+            }) { _ in
+                view.removeFromSuperview()
+            }
+        }
+        animationViews.removeAll()
+    }
+    
+    func addGradientsToSet(gradients: [LoadingGradientAnimationView]) {
+        gradients.forEach { loadingView in animationViews.insert(loadingView) }
+    }
+    
+    func addToProfileViews(gradients: [LoadingGradientAnimationView]) {
+        profileImageView.addSubview(gradients[0])
+        nameLabel.addSubview(gradients[1])
+        loginNameLabel.addSubview(gradients[2])
+    }
 }
 
 //MARK: - NotificationCenter methods
@@ -88,6 +138,7 @@ private extension ProfileViewController {
         else { return }
         
         profileImageView.kf.setImage(with: url)
+        hideLoadingAnimation()
     }
     
     func addNotificationObserver() {
@@ -100,10 +151,9 @@ private extension ProfileViewController {
                 self?.updateAvatar()
             }
     }
-    
 }
 
-//MARK: - Some private methods
+//MARK: - Layout methods
 private extension ProfileViewController {
     
     func updateProfileDetails(profile: Profile?) {
@@ -112,7 +162,7 @@ private extension ProfileViewController {
         nameLabel.text = profile.name
     }
     
-    func layoutStackView() {
+    func layoutProfileStackView() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(profileImageView)
         stackView.addArrangedSubview(nameLabel)
@@ -124,9 +174,6 @@ private extension ProfileViewController {
         stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 235).isActive = true
         
         layoutProfileImageView()
-        layoutNameLabel()
-        layoutNicknameLabel()
-        layoutTextLabel()
     }
     
     func layoutProfileImageView() {
@@ -139,18 +186,6 @@ private extension ProfileViewController {
         ]
         NSLayoutConstraint.activate(constraints)
         profileImageView.layer.cornerRadius = widthAndHeight / 2
-    }
-    
-    func layoutNameLabel() {
-        nameLabel.text = "Александр Бекренев"
-    }
-    
-    func layoutNicknameLabel() {
-        loginNameLabel.text = "@sashkevich"
-    }
-    
-    func layoutTextLabel() {
-        descriptionLabel.text = "Hello, World!"
     }
     
     func layoutExitButton() {
@@ -166,5 +201,47 @@ private extension ProfileViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+}
+
+private extension ProfileViewController {
     
+    @objc
+    func didTapExitButton() {
+        let logoutAlertPresenter = AlertPresenter(delegate: self)
+        let logoutHandler: (UIAlertAction) -> Void = { [weak self] _ in
+            guard let self = self else { return }
+            self.deleteToken()
+            self.switchToSplashViewController()
+        }
+        let alertModel = AlertModel(
+            title: "Пока-пока!",
+            message: "Уверены, что хотите выйти?",
+            actionTitles: ["Да", "Нет"],
+            completions: [logoutHandler])
+        logoutAlertPresenter.requestAlert(alertModel)
+    }
+    
+    func setupExitButton() {
+        exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
+    }
+    
+    func deleteToken() {
+        let tokenCleaner = TokenCleaner()
+        tokenCleaner.clean()
+    }
+    
+    func switchToSplashViewController() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Can't retrieve window object")
+            return
+        }
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
+    }
+}
+
+extension ProfileViewController: AlertPresenterDelegate {
+    func didRecieveAlert(_ vc: UIAlertController) {
+        present(vc, animated: true)
+    }
 }

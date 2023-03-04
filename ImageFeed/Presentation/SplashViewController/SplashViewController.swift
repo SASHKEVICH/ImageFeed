@@ -21,7 +21,7 @@ final class SplashViewController: UIViewController {
     private let oauthService = OAuth2Service.shared
     private let profileService = ProfileDescriptionService.shared
     
-    private var alertPresenter: AlertPresenterProtocol?
+    private var authAlertPresenter: AlertPresenterProtocol?
     
     private var token: String? {
         OAuth2TokenStorage().token
@@ -39,7 +39,7 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        alertPresenter = AuthAlertPresenter(delegate: self)
+        authAlertPresenter = AlertPresenter(delegate: self)
 
         if isTokenInStorage {
             guard let token = token else { return }
@@ -47,6 +47,10 @@ final class SplashViewController: UIViewController {
         } else {
             presentAuthViewController()
         }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     private func presentAuthViewController() {
@@ -73,11 +77,9 @@ final class SplashViewController: UIViewController {
         let viewController = storyboard.instantiateViewController(withIdentifier: id)
         return viewController
     }
-
 }
 
 private extension SplashViewController {
-    
     func layoutLogo() {
         view.addSubview(logoImageView)
         let constraints = [
@@ -87,7 +89,6 @@ private extension SplashViewController {
         
         NSLayoutConstraint.activate(constraints)
     }
-    
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
@@ -107,7 +108,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token: token)
             case .failure(let error):
                 UIBlockingProgressHUD.dismiss()
-                self.alertPresenter?.requestAlert()
+                self.requestAlert()
                 print(error)
             }
         }
@@ -122,18 +123,23 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToTabBarController()
                 ProfileImageService.shared.fetchProfileImageURL(username: profile.username) { _ in }
             case .failure(let error):
-                self.alertPresenter?.requestAlert()
+                self.requestAlert()
                 print(error)
             }
         }
     }
     
+    private func requestAlert() {
+        let alertModel = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            actionTitles: ["OK"])
+        self.authAlertPresenter?.requestAlert(alertModel)
+    }
 }
 
 extension SplashViewController: AlertPresenterDelegate {
-    
     func didRecieveAlert(_ vc: UIAlertController) {
         present(vc, animated: true)
     }
-    
 }

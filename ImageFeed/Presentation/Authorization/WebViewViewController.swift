@@ -34,12 +34,12 @@ final class WebViewViewController: UIViewController {
     }
     
     private func createAuthorizeRequest() -> URLRequest? {
-        var urlComponents = URLComponents(string: unsplashOAuthString)
+        var urlComponents = URLComponents(string: Constants.unsplashOAuthString)
         urlComponents?.queryItems = [
-            URLQueryItem(name: "client_id", value: accessKey),
-            URLQueryItem(name: "redirect_uri", value: redirectURI),
+            URLQueryItem(name: "client_id", value: Constants.accessKey),
+            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+            URLQueryItem(name: "scope", value: Constants.accessScopes),
             URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: accessScopes),
         ]
         urlComponents?.path = "/oauth/authorize"
         
