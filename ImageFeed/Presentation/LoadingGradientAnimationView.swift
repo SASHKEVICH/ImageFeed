@@ -44,7 +44,7 @@ private extension LoadingGradientAnimationView {
         gradient.startPoint = CGPoint(x: 0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1, y: 0.5)
         gradient.masksToBounds = true
-        gradient.add(animation, forKey: "locationsChange")
+        gradient.add(animation, forKey: "loadingGradientAnimation")
         
         return gradient
     }

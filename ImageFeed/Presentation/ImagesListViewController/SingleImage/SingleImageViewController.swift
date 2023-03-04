@@ -61,7 +61,6 @@ final class SingleImageViewController: UIViewController {
         )
         present(vc, animated: true)
     }
-    
 }
 
 extension SingleImageViewController: UIScrollViewDelegate {
@@ -109,7 +108,6 @@ private extension SingleImageViewController {
         disableShareButton()
         downloadAndSetImage(with: url)
     }
-    
 }
 
 private extension SingleImageViewController {
@@ -121,7 +119,6 @@ private extension SingleImageViewController {
     func enableShareButton() {
         shareButton.isEnabled = true
     }
-    
 }
 
 extension SingleImageViewController: AlertPresenterDelegate {
@@ -162,5 +159,4 @@ private extension SingleImageViewController {
         self.image = image
         centerContent()
     }
-    
 }

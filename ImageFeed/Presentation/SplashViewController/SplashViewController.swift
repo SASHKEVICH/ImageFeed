@@ -77,11 +77,9 @@ final class SplashViewController: UIViewController {
         let viewController = storyboard.instantiateViewController(withIdentifier: id)
         return viewController
     }
-
 }
 
 private extension SplashViewController {
-    
     func layoutLogo() {
         view.addSubview(logoImageView)
         let constraints = [
@@ -91,7 +89,6 @@ private extension SplashViewController {
         
         NSLayoutConstraint.activate(constraints)
     }
-    
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
@@ -139,7 +136,6 @@ extension SplashViewController: AuthViewControllerDelegate {
             actionTitles: ["OK"])
         self.authAlertPresenter?.requestAlert(alertModel)
     }
-    
 }
 
 extension SplashViewController: AlertPresenterDelegate {

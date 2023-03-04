@@ -129,5 +129,4 @@ extension ImagesListCell {
         loadingAnimationView?.removeFromSuperview()
         loadingAnimationView = nil
     }
-    
 }

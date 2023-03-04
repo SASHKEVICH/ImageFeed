@@ -8,6 +8,7 @@
 import Foundation
 
 final class ProfileDescriptionService {
+    
     static let shared = ProfileDescriptionService()
     private init() {}
     
@@ -36,11 +37,9 @@ final class ProfileDescriptionService {
         self.task = task
         task.resume()
     }
-    
 }
 
 private extension ProfileDescriptionService {
-    
     func profileRequest(token: String) -> URLRequest {
         let request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET", accessToken: token)
         return request
@@ -59,5 +58,4 @@ private extension ProfileDescriptionService {
             completion(.failure(error))
         }
     }
-    
 }

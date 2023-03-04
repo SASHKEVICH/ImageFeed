@@ -37,11 +37,9 @@ final class ProfileImageService {
         self.task = task
         task.resume()
     }
-    
 }
 
 private extension ProfileImageService {
-    
     func handle(
         result: Result<UserResult, Error>,
         completion: @escaping (Result<String, Error>) -> Void
@@ -68,5 +66,4 @@ private extension ProfileImageService {
         let request = URLRequest.makeHTTPRequest(path: "/users/\(username)", accessToken: token)
         return request
     }
-    
 }

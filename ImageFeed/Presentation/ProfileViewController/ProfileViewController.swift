@@ -85,7 +85,6 @@ final class ProfileViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
 }
 
 //MARK: - Animation methods
@@ -127,7 +126,6 @@ private extension ProfileViewController {
         nameLabel.addSubview(gradients[1])
         loginNameLabel.addSubview(gradients[2])
     }
-    
 }
 
 //MARK: - NotificationCenter methods
@@ -153,7 +151,6 @@ private extension ProfileViewController {
                 self?.updateAvatar()
             }
     }
-    
 }
 
 //MARK: - Layout methods
@@ -204,7 +201,6 @@ private extension ProfileViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-    
 }
 
 private extension ProfileViewController {
@@ -242,7 +238,6 @@ private extension ProfileViewController {
         window.rootViewController = SplashViewController()
         window.makeKeyAndVisible()
     }
-    
 }
 
 extension ProfileViewController: AlertPresenterDelegate {

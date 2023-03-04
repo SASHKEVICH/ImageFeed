@@ -52,7 +52,6 @@ final class ImagesListViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
 }
 
 //MARK: - NotificationCenter methods
@@ -79,7 +78,6 @@ private extension ImagesListViewController {
                 self?.updatePhotosAnimated()
             }
     }
-    
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
@@ -142,7 +140,6 @@ extension ImagesListViewController: UITableViewDelegate {
             imagesListService.fetchPhotosNextPage()
         }
     }
-    
 }
 
 extension ImagesListViewController: UITableViewDataSource {
@@ -183,5 +180,4 @@ extension ImagesListViewController: UITableViewDataSource {
         cell.isLiked = photo.isLiked
         cell.delegate = self
     }
-    
 }

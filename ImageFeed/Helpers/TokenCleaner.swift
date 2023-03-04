@@ -9,7 +9,7 @@ import Foundation
 import WebKit
 
 struct TokenCleaner {
-    let oauthTokenStorage = OAuth2TokenStorage()
+    private let oauthTokenStorage = OAuth2TokenStorage()
     
     func clean() {
         oauthTokenStorage.clean()

@@ -55,19 +55,16 @@ final class ImagesListService {
         self.likeTask = task
         task.resume()
     }
-    
 }
 
 // MARK: NotifationCenter method
 private extension ImagesListService {
-    
     func postNotification() {
         NotificationCenter.default
             .post(name: ImagesListService.didChangeNotification,
                   object: self,
                   userInfo: ["photos": photos])
     }
-    
 }
 
 // MARK: Fetch Photos methods
@@ -92,8 +89,7 @@ private extension ImagesListService {
                   welcomeDescription: photoResult.description,
                   thumbImageURL: photoResult.urls.thumb,
                   largeImageURL: photoResult.urls.full,
-                  isLiked: photoResult.likedByUser
-            )
+                  isLiked: photoResult.likedByUser)
         }
         return photos
     }
@@ -109,7 +105,7 @@ private extension ImagesListService {
     }
     
     func nextImagesPageRequest(page: Int) -> URLRequest? {
-        guard var imagesPageUrlComponents = URLComponents(string: unsplashAPIString) else {
+        guard var imagesPageUrlComponents = URLComponents(string: Constants.unsplashAPIString) else {
             assertionFailure("Unable to construct `/photos` url components")
             return nil
         }
@@ -121,7 +117,6 @@ private extension ImagesListService {
         let request = URLRequest.makeHTTPRequest(url: imagesPageUrlComponents.url!, accessToken: token)
         return request
     }
-    
 }
 
 // MARK: Change like methods
@@ -152,7 +147,7 @@ private extension ImagesListService {
     }
     
     func changeLikeRequest(for id: String, isLike: Bool) -> URLRequest? {
-        guard var changeLikeUrlComponents = URLComponents(string: unsplashAPIString) else {
+        guard var changeLikeUrlComponents = URLComponents(string: Constants.unsplashAPIString) else {
             assertionFailure("Unable to construct `/photos/like` url components")
             return nil
         }
@@ -160,5 +155,4 @@ private extension ImagesListService {
         let request = URLRequest.makeHTTPRequest(path: "/photos/\(id)/like", httpMethod: isLike ? "POST" : "DELETE", accessToken: token)
         return request
     }
-    
 }

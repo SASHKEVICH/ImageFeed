@@ -26,5 +26,4 @@ struct OAuth2TokenStorage {
     func clean() {
         keyChain.removeObject(forKey: key)
     }
-    
 }

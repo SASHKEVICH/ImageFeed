@@ -16,8 +16,7 @@ struct AlertPresenter: AlertPresenterProtocol {
         let alertController = UIAlertController(
             title: alertModel.title,
             message: alertModel.message,
-            preferredStyle: .alert
-        )
+            preferredStyle: .alert)
         
         guard let titles = alertModel.actionTitles else {
             delegate.didRecieveAlert(alertController)
@@ -31,5 +30,4 @@ struct AlertPresenter: AlertPresenterProtocol {
         }
         delegate.didRecieveAlert(alertController)
     }
-    
 }

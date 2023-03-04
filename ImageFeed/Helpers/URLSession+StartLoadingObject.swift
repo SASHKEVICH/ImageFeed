@@ -8,7 +8,6 @@
 import Foundation
 
 extension URLSession {
-    
     func startLoadingObjectFromNetwork<T: Decodable>(
         with request: URLRequest,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .iso8601,
@@ -26,5 +25,4 @@ extension URLSession {
             completion(response)
         }
     }
-    
 }

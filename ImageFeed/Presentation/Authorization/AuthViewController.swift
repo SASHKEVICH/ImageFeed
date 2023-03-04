@@ -38,11 +38,9 @@ final class AuthViewController: UIViewController {
         loginButton.layer.cornerRadius = 16
         loginButton.layer.masksToBounds = true
     }
-
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
-    
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         delegate?.authViewController(self, didAuthenticateWithCode: code)
     }
@@ -50,5 +48,4 @@ extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
-    
 }

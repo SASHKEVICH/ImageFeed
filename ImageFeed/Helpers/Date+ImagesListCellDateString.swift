@@ -9,11 +9,11 @@ import Foundation
 
 extension Date? {
     func imagesListCellDateString() -> String {
-        switch self {
-        case .some(let date):
-            return DateFormatter.imagesListCellDateFormmater.string(from: date)
-        case .none:
-            return ""
+        var dateString = ""
+        if let date = self {
+            dateString = DateFormatter.imagesListCellDateFormmater.string(from: date)
         }
+        return dateString
+        
     }
 }
