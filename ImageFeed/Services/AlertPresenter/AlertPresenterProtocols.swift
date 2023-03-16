@@ -12,5 +12,6 @@ protocol AlertPresenterDelegate: AnyObject {
 }
 
 protocol AlertPresenterProtocol {
+    var delegate: AlertPresenterDelegate? { get set }
     func requestAlert(_ alertModel: AlertModel)
 }

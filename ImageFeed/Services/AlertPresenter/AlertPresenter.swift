@@ -8,7 +8,6 @@
 import UIKit
 
 struct AlertPresenter: AlertPresenterProtocol {
-    
     weak var delegate: AlertPresenterDelegate?
     
     func requestAlert(_ alertModel: AlertModel) {
