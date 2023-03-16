@@ -18,13 +18,16 @@ public protocol ProfileViewPresenterProtocol {
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     private let profileService = ProfileDescriptionService.shared
     private let profileImageService = ProfileImageService.shared
+    private let profileAlertHelper: ProfileAlertHelperProtocol
     
     private var alertPresenter: AlertPresenterProtocol?
     private var profileImageServiceObserver: NSObjectProtocol?
     
     weak var view: ProfileViewControllerProtocol?
     
-    init() {
+    init(helper: ProfileAlertHelperProtocol) {
+        profileAlertHelper = helper
+        
         alertPresenter = AlertPresenter()
         alertPresenter?.delegate = self
         
@@ -66,10 +69,7 @@ extension ProfileViewPresenter {
     }
     
     private func requestImageDownloadingFailureAlert() {
-        let alertModel = AlertModel(
-            title: "Ошибка загрузки",
-            message: "Не удалось загрузить аватар профиля(",
-            actionTitles: ["OK"])
+        let alertModel = profileAlertHelper.imageDownloadingFailureAlertModel()
         alertPresenter?.requestAlert(alertModel)
     }
 }
@@ -85,10 +85,7 @@ extension ProfileViewPresenter {
     }
     
     private func requestProfileIsEmptyAlert() {
-        let alertModel = AlertModel(
-            title: "Ошибка загрузки",
-            message: "Не удалось загрузить информацию профиля(",
-            actionTitles: ["OK"])
+        let alertModel = profileAlertHelper.profileIsEmptyAlertModel()
         alertPresenter?.requestAlert(alertModel)
     }
 }
@@ -101,12 +98,8 @@ extension ProfileViewPresenter {
             self.deleteToken()
             self.switchToSplashViewController()
         }
-        let alertModel = AlertModel(
-            title: "Пока-пока!",
-            message: "Уверены, что хотите выйти?",
-            actionTitles: ["Да", "Нет"],
-            completions: [logoutHandler])
-        alertPresenter?.requestAlert(alertModel)
+        let logoutAlertModel = profileAlertHelper.exitButtonAlertModel(logoutHandler: logoutHandler)
+        alertPresenter?.requestAlert(logoutAlertModel)
     }
     
     private func deleteToken() {

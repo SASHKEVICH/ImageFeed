@@ -57,6 +57,7 @@
 		96DEA27D29ABC16600DEFB5A /* LoadingGradientAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DEA27C29ABC16600DEFB5A /* LoadingGradientAnimationView.swift */; };
 		96EBB28029C2CBAF00E49CC7 /* ProfileViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB27F29C2CBAF00E49CC7 /* ProfileViewTests.swift */; };
 		96EBB28229C2CF1500E49CC7 /* ProfileViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB28129C2CF1500E49CC7 /* ProfileViewPresenter.swift */; };
+		96EBB28429C3065300E49CC7 /* ProfileAlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB28329C3065300E49CC7 /* ProfileAlertHelper.swift */; };
 		96EF758029A0A7D7005CAE89 /* PhotoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EF757F29A0A7D7005CAE89 /* PhotoResult.swift */; };
 /* End PBXBuildFile section */
 
@@ -121,6 +122,7 @@
 		96DEA27C29ABC16600DEFB5A /* LoadingGradientAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingGradientAnimationView.swift; sourceTree = "<group>"; };
 		96EBB27F29C2CBAF00E49CC7 /* ProfileViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewTests.swift; sourceTree = "<group>"; };
 		96EBB28129C2CF1500E49CC7 /* ProfileViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPresenter.swift; sourceTree = "<group>"; };
+		96EBB28329C3065300E49CC7 /* ProfileAlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAlertHelper.swift; sourceTree = "<group>"; };
 		96EF757F29A0A7D7005CAE89 /* PhotoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -363,6 +365,7 @@
 			children = (
 				96AD1E1E295D9DD500947031 /* ProfileViewController.swift */,
 				96EBB28129C2CF1500E49CC7 /* ProfileViewPresenter.swift */,
+				96EBB28329C3065300E49CC7 /* ProfileAlertHelper.swift */,
 			);
 			path = ProfileViewController;
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 				96859C962954A62700C468D8 /* DateFormatter+Extensions.swift in Sources */,
 				964B296129B20939001964E5 /* AlertModel.swift in Sources */,
 				9632136F29824715003A07EB /* OAuthTokenResponseBody.swift in Sources */,
+				96EBB28429C3065300E49CC7 /* ProfileAlertHelper.swift in Sources */,
 				9632136A298132B1003A07EB /* WebViewViewControllerDelegate.swift in Sources */,
 				96EBB28229C2CF1500E49CC7 /* ProfileViewPresenter.swift in Sources */,
 				967679A02990CF5900E21F6C /* Profile.swift in Sources */,

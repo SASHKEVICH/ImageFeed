@@ -87,11 +87,6 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
-    func didUpdateProfileDetails(profile: Profile) {
-        loginNameLabel.text = profile.loginName
-        nameLabel.text = profile.name
-    }
 }
 
 //MARK: - Animation methods
@@ -179,11 +174,16 @@ private extension ProfileViewController {
     }
 }
 
-//MARK: - Update Profile Avatar
+//MARK: - Update Profile Avatar and Details
 extension ProfileViewController {
     func didUpdateAvatar(with image: UIImage) {
         profileImageView.image = image
         hideLoadingAnimation()
+    }
+    
+    func didUpdateProfileDetails(profile: Profile) {
+        loginNameLabel.text = profile.loginName
+        nameLabel.text = profile.name
     }
 }
 

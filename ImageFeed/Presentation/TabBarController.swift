@@ -22,7 +22,7 @@ final class TabBarController: UITabBarController {
     
     private func setupProfileViewController() -> ProfileViewController {
         let profileViewController = ProfileViewController()
-        let profilePresenter = ProfileViewPresenter()
+        let profilePresenter = ProfileViewPresenter(helper: ProfileAlertHelper())
         
         profileViewController.presenter = profilePresenter
         profilePresenter.view = profileViewController
