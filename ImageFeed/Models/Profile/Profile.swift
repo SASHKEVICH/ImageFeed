@@ -9,14 +9,16 @@ import Foundation
 
 public struct Profile {
     let username: String
-    let name: String
-    let loginName: String
+    public let name: String
+    public let loginName: String
     let bio: String?
     
-    init(from result: ProfileResult) {
-        self.username = result.username
-        self.name = "\(result.firstName) \(result.lastName)"
-        self.loginName = "@\(username)"
-        self.bio = result.bio
+    static func convert(from result: ProfileResult) -> Profile {
+        let profile = Profile(
+            username: result.username,
+            name: "\(result.firstName) \(result.lastName)",
+            loginName: "@\(result.username)",
+            bio: result.bio)
+        return profile
     }
 }

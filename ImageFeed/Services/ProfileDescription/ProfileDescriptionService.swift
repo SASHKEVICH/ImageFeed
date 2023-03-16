@@ -51,7 +51,7 @@ private extension ProfileDescriptionService {
     ) {
         switch result {
         case .success(let profileResult):
-            let profile = Profile(from: profileResult)
+            let profile = Profile.convert(from: profileResult)
             self.profile = profile
             completion(.success(profile))
         case .failure(let error):
