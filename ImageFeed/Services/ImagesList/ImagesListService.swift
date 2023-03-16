@@ -17,6 +17,8 @@ final class ImagesListService {
     private var fetchPhotosTask: URLSessionTask?
     private var likeTask: URLSessionTask?
     
+    private let authConfiguration = AuthConfiguration.standard
+    
     private(set) var photos: [Photo] = []
     
     private var lastLoadedPage: Int?
@@ -105,7 +107,7 @@ private extension ImagesListService {
     }
     
     func nextImagesPageRequest(page: Int) -> URLRequest? {
-        guard var imagesPageUrlComponents = URLComponents(string: Constants.unsplashAPIString) else {
+        guard var imagesPageUrlComponents = URLComponents(string: authConfiguration.unsplashAPIString) else {
             assertionFailure("Unable to construct `/photos` url components")
             return nil
         }
@@ -147,7 +149,7 @@ private extension ImagesListService {
     }
     
     func changeLikeRequest(for id: String, isLike: Bool) -> URLRequest? {
-        guard var changeLikeUrlComponents = URLComponents(string: Constants.unsplashAPIString) else {
+        guard var changeLikeUrlComponents = URLComponents(string: authConfiguration.unsplashAPIString) else {
             assertionFailure("Unable to construct `/photos/like` url components")
             return nil
         }

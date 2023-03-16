@@ -11,7 +11,7 @@ extension URLRequest {
     static func makeHTTPRequest(
         path: String,
         httpMethod: String = "GET",
-        baseURL: URL = Constants.unsplashAPIBaseURL,
+        baseURL: URL = AuthConfiguration.standard.unsplashAPIBaseURL,
         accessToken: String? = nil
     ) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
@@ -23,7 +23,7 @@ extension URLRequest {
     }
     
     static func makeHTTPRequest(
-        url: URL = Constants.unsplashAPIBaseURL,
+        url: URL = AuthConfiguration.standard.unsplashAPIBaseURL,
         httpMethod: String = "GET",
         accessToken: String? = nil
     ) -> URLRequest {

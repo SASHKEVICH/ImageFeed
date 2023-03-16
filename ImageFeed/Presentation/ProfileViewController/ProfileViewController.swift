@@ -153,7 +153,7 @@ private extension ProfileViewController {
     }
 }
 
-//MARK: - Layout methods
+//MARK: - Layout Methods
 private extension ProfileViewController {
     
     func updateProfileDetails(profile: Profile?) {
@@ -203,6 +203,7 @@ private extension ProfileViewController {
     }
 }
 
+// MARK: - Logout Methods
 private extension ProfileViewController {
     
     @objc
@@ -240,6 +241,7 @@ private extension ProfileViewController {
     }
 }
 
+// MARK: - AlertPresenterDelegate
 extension ProfileViewController: AlertPresenterDelegate {
     func didRecieveAlert(_ vc: UIAlertController) {
         present(vc, animated: true)
