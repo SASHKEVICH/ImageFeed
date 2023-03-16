@@ -12,7 +12,6 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-
     @IBOutlet private weak var loginButton: UIButton!
     
     private let showWebViewSegueId = "ShowWebView"
@@ -33,7 +32,8 @@ final class AuthViewController: UIViewController {
                 assertionFailure("Failed to prepare for \(showWebViewSegueId)")
                 return
             }
-            let webViewPresenter = WebViewPresenter()
+            let authHelper = WebViewAuthHelper()
+            let webViewPresenter = WebViewPresenter(helper: authHelper)
             webViewViewController.presenter = webViewPresenter
             webViewPresenter.view = webViewViewController
             webViewViewController.delegate = self

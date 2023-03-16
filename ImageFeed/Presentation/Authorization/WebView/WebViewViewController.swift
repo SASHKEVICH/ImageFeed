@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-protocol WebViewViewControllerProtocol: AnyObject {
+public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
     func load(request: URLRequest)
     func setProgressValue(_ newValue: Float)
@@ -16,7 +16,6 @@ protocol WebViewViewControllerProtocol: AnyObject {
 }
 
 final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
-
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var progressView: UIProgressView!
     @IBOutlet private weak var backButton: UIButton!
@@ -50,11 +49,9 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     func load(request: URLRequest) {
         webView.load(request)
     }
-    
 }
 
 private extension WebViewViewController {
-    
     func observeToWebViewProgress() {
         estimatedProgressObservation = webView.observe(
             \.estimatedProgress,
@@ -65,11 +62,9 @@ private extension WebViewViewController {
              }
         )
     }
-    
 }
 
 extension WebViewViewController: WKNavigationDelegate {
-    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
