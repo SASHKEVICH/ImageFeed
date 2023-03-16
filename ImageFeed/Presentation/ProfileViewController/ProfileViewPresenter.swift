@@ -13,6 +13,7 @@ public protocol ProfileViewPresenterProtocol {
     func didTapExitButton()
     func requestUpdateProfileDetails()
     func requestUpdateProfileAvatar()
+    func viewDidLoad()
 }
 
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
@@ -27,7 +28,9 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     
     init(helper: ProfileAlertHelperProtocol) {
         profileAlertHelper = helper
-        
+    }
+    
+    func viewDidLoad() {
         alertPresenter = AlertPresenter()
         alertPresenter?.delegate = self
         
@@ -47,14 +50,18 @@ extension ProfileViewPresenter {
             guard let self = self else { return }
             switch result {
             case .success(let imageResult):
-                self.view?.didUpdateAvatar(with: imageResult.image)
+                self.updateProfileImageForView(with: imageResult.image)
             case .failure(_):
-                if let placeholder = UIImage(systemName: "person.crop.circle") {
-                    self.view?.didUpdateAvatar(with: placeholder)
+                if let placeholder = UIImage(systemName: "person.crop.circle.fill") {
+                    self.updateProfileImageForView(with: placeholder)
                 }
                 self.requestImageDownloadingFailureAlert()
             }
         }
+    }
+    
+    func updateProfileImageForView(with image: UIImage) {
+        view?.didUpdateAvatar(with: image)
     }
     
     private func addUpdateAvatarNotificationObserver() {
@@ -81,6 +88,10 @@ extension ProfileViewPresenter {
             requestProfileIsEmptyAlert()
             return
         }
+        updateDetailsForView(with: profile)
+    }
+    
+    func updateDetailsForView(with profile: Profile) {
         view?.didUpdateProfileDetails(profile: profile)
     }
     

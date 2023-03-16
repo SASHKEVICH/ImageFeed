@@ -80,6 +80,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         
         showLoadingAnimation()
         
+        presenter?.viewDidLoad()
         presenter?.requestUpdateProfileDetails()
         presenter?.requestUpdateProfileAvatar()
     }
@@ -188,13 +189,13 @@ extension ProfileViewController {
 }
 
 // MARK: - Logout Methods
-private extension ProfileViewController {
+extension ProfileViewController {
     @objc
     func didTapExitButton() {
         presenter?.didTapExitButton()
     }
     
-    func addActionToExitButton() {
+    private func addActionToExitButton() {
         exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
     }
 }
