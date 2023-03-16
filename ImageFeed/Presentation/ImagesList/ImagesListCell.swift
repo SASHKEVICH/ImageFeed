@@ -12,7 +12,6 @@ protocol ImagesListCellDelegate: AnyObject {
 }
 
 final class ImagesListCell: UITableViewCell {
-    
     enum FeedCellImageState {
         case loading
         case error
@@ -85,7 +84,7 @@ final class ImagesListCell: UITableViewCell {
         cellImageView.layer.cornerRadius = 16
         cellImageView.layer.masksToBounds = true
         
-        likeButton.addTarget(self, action: #selector(handleLikeButtonTap), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(didLikeButtonTap), for: .touchUpInside)
         
         gradientLayer.frame = gradientView.bounds
         gradientView.layer.addSublayer(gradientLayer)
@@ -104,9 +103,12 @@ final class ImagesListCell: UITableViewCell {
         gradientLayer.frame = gradientView.bounds
         super.layoutSubviews()
     }
-    
+}
+
+// MARK: - Did Like Button Tap
+extension ImagesListCell {
     @objc
-    func handleLikeButtonTap() {
+    func didLikeButtonTap() {
         isLiked.toggle()
         setButtonLikedOrDisliked()
         delegate?.imagesListCellDidTapLike(self)
@@ -117,6 +119,7 @@ final class ImagesListCell: UITableViewCell {
     }
 }
 
+// MARK: - Show And Hide Loading Animation
 extension ImagesListCell {
     
     func showLoadingAnimation() {

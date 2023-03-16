@@ -9,7 +9,6 @@ import UIKit
 import Kingfisher
 
 final class ImagesListViewController: UIViewController {
-    
     @IBOutlet private weak var tableView: UITableView!
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
