@@ -10,13 +10,11 @@ import UIKit
 public protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfileViewPresenterProtocol? { get set }
     func present(alert: UIAlertController)
+    func didUpdateProfileDetails(profile: Profile)
+    func didUpdateAvatar(with image: UIImage)
 }
 
-final class ProfileViewController: UIViewController {
-    private let profileService = ProfileDescriptionService.shared
-    private let profileImageService = ProfileImageService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
-    
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     private var animationViews = Set<UIView>()
     
     var presenter: ProfileViewPresenterProtocol?
@@ -78,24 +76,22 @@ final class ProfileViewController: UIViewController {
         
         layoutProfileStackView()
         layoutExitButton()
-        setupExitButton()
+        addActionToExitButton()
         
         showLoadingAnimation()
         
-        updateProfileDetails(profile: profileService.profile)
-        
-        addNotificationObserver()
-        updateAvatar()
+        presenter?.requestUpdateProfileDetails()
+        presenter?.requestUpdateProfileAvatar()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-}
-
-//MARK: - ProfileViewControllerProtocol
-extension ProfileViewController: ProfileViewControllerProtocol {
     
+    func didUpdateProfileDetails(profile: Profile) {
+        loginNameLabel.text = profile.loginName
+        nameLabel.text = profile.name
+    }
 }
 
 //MARK: - Animation methods
@@ -114,7 +110,7 @@ private extension ProfileViewController {
         
         let gradientViews = [profileGradientView, nameGradientView, loginGradientView]
         addGradientsToSet(gradientViews)
-        addToProfileViews(subviews: gradientViews)
+        addToProfileViews(gradients: gradientViews)
     }
     
     func hideLoadingAnimation() {
@@ -132,46 +128,15 @@ private extension ProfileViewController {
         gradients.forEach { loadingView in animationViews.insert(loadingView) }
     }
     
-    func addToProfileViews(subviews gradients: [LoadingGradientAnimationView]) {
+    func addToProfileViews(gradients: [LoadingGradientAnimationView]) {
         profileImageView.addSubview(gradients[0])
         nameLabel.addSubview(gradients[1])
         loginNameLabel.addSubview(gradients[2])
     }
 }
 
-//MARK: - NotificationCenter methods
-private extension ProfileViewController {
-
-    func updateAvatar() {
-        guard
-            let profileImageURL = profileImageService.profileImageURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        
-        profileImageView.kf.setImage(with: url)
-        hideLoadingAnimation()
-    }
-    
-    func addNotificationObserver() {
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                self?.updateAvatar()
-            }
-    }
-}
-
 //MARK: - Layout Methods
 private extension ProfileViewController {
-    
-    func updateProfileDetails(profile: Profile?) {
-        guard let profile = profile else { return }
-        loginNameLabel.text = profile.loginName
-        nameLabel.text = profile.name
-    }
     
     func layoutProfileStackView() {
         view.addSubview(stackView)
@@ -214,6 +179,14 @@ private extension ProfileViewController {
     }
 }
 
+//MARK: - Update Profile Avatar
+extension ProfileViewController {
+    func didUpdateAvatar(with image: UIImage) {
+        profileImageView.image = image
+        hideLoadingAnimation()
+    }
+}
+
 // MARK: - Logout Methods
 private extension ProfileViewController {
     @objc
@@ -221,7 +194,7 @@ private extension ProfileViewController {
         presenter?.didTapExitButton()
     }
     
-    func setupExitButton() {
+    func addActionToExitButton() {
         exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
     }
 }
