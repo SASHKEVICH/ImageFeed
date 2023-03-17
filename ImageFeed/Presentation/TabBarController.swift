@@ -10,14 +10,23 @@ import UIKit
 final class TabBarController: UITabBarController {
     override func awakeFromNib() {
         super.awakeFromNib()
-        let storyboard = UIStoryboard(name: "Main", bundle: .main)
         
-        let imagesListViewController = storyboard.instantiateViewController(
-            withIdentifier: "ImagesListViewController")
-        
+        let imagesListViewController = setupImagesListViewController()
         let profileViewController = setupProfileViewController()
         
         self.viewControllers = [imagesListViewController, profileViewController]
+    }
+    
+    private func setupImagesListViewController() -> ImagesListViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        
+        let imagesListViewController = storyboard.instantiateViewController(
+            withIdentifier: "ImagesListViewController") as! ImagesListViewController
+        let imagesListPresenter = ImagesListPresenter()
+        
+        imagesListViewController.configure(presenter: imagesListPresenter)
+        
+        return imagesListViewController
     }
     
     private func setupProfileViewController() -> ProfileViewController {
