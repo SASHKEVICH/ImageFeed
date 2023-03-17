@@ -22,7 +22,7 @@ final class TabBarController: UITabBarController {
         
         let imagesListViewController = storyboard.instantiateViewController(
             withIdentifier: "ImagesListViewController") as! ImagesListViewController
-        let imagesListPresenter = ImagesListPresenter()
+        let imagesListPresenter = ImagesListPresenter(helper: ImagesListCellHelper())
         
         imagesListViewController.configure(presenter: imagesListPresenter)
         

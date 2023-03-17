@@ -21,6 +21,7 @@ public protocol ImagesListPresenterProtocol: AnyObject {
 final class ImagesListPresenter: ImagesListPresenterProtocol {
     private let imagesListService: ImagesListService = ImagesListService()
     private var alertPresenter: AlertPresenter?
+    private var helper: ImagesListCellHelperProtocol
     private var imagesListServiceObserver: NSObjectProtocol?
     
     weak var view: ImagesListViewControllerProtocol?
@@ -28,38 +29,49 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     var photos: [Photo] = []
     
     func viewDidLoad() {
+        self.alertPresenter = AlertPresenter()
+        alertPresenter?.delegate = self
+        
         guard photos.isEmpty else { return }
         requestFetchPhotosNextPage()
     }
     
-    init() {
-        self.alertPresenter = AlertPresenter()
-        alertPresenter?.delegate = self
+    init(helper: ImagesListCellHelperProtocol) {
+        self.helper = helper
         addUpdatePhotosNotificationObserver()
     }
 }
 
+// MARK: - Request Change Like
 extension ImagesListPresenter {
     func requestChangeCellLike(at indexPath: IndexPath, isLike: Bool) {
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id, isLike: isLike) { [weak self] result in
-            guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
-            switch result {
-            case .success:
-                self.photos = self.imagesListService.photos
-            case .failure(_):
-                let alertModel = AlertModel(
-                    title: "Ошибка сети",
-                    message: "Не удалось поставить лайк(",
-                    actionTitles: ["OK"])
-                self.alertPresenter?.requestAlert(alertModel)
-            }
+            self?.handleChangeLike(result: result)
         }
+    }
+    
+    private func handleChangeLike(result: Result<Void, Error>) {
+        switch result {
+        case .success:
+            self.photos = self.imagesListService.photos
+        case .failure(_):
+            requestChangeLikeAlert()
+        }
+    }
+    
+    private func requestChangeLikeAlert() {
+        let alertModel = AlertModel(
+            title: "Ошибка сети",
+            message: "Не удалось поставить лайк(",
+            actionTitles: ["OK"])
+        alertPresenter?.requestAlert(alertModel)
     }
 }
 
+// MARK: - Photos Fetching
 extension ImagesListPresenter {
     func requestFetchPhotosNextPageIfLastCell(at indexPath: IndexPath) {
         let isNextCellLast = indexPath.row + 1 == photos.count
@@ -73,12 +85,14 @@ extension ImagesListPresenter {
     }
 }
 
+// MARK: - AlertPresenterDelegate
 extension ImagesListPresenter: AlertPresenterDelegate {
     func didRecieve(alert vc: UIAlertController) {
         view?.didRecieve(alert: vc)
     }
 }
 
+// MARK: - Subscribing to Notifications
 extension ImagesListPresenter {
     private func addUpdatePhotosNotificationObserver() {
         imagesListServiceObserver = NotificationCenter.default
@@ -95,41 +109,19 @@ extension ImagesListPresenter {
     }
 }
 
-// TODO: - Extract to ImagesListConfigureCellHelper
+// MARK: - Cell Configuring with Helper
 extension ImagesListPresenter {
     func configured(cell: ImagesListCell, at indexPath: IndexPath) -> ImagesListCell {
-        cell.selectionStyle = .none
-        configure(cell: cell, with: indexPath)
-        return cell
-    }
-    
-    private func configure(cell: ImagesListCell, with indexPath: IndexPath) {
         let photo = photos[indexPath.row]
-        guard let imageURL = URL(string: photo.thumbImageURL) else { return }
-        KingfisherManager.shared.retrieveImage(with: imageURL) { [weak self] result in
-            switch result {
-            case .success(let imageResult):
-                cell.cellState = .finished(imageResult.image)
-            case .failure(_):
-                cell.cellState = .error
-            }
-            
+        let configuredCell = helper.configured(cell: cell, at: indexPath, with: photo) { [weak self] in
             self?.view?.reloadRows(at: indexPath)
         }
-        
-        cell.cellDateText = photo.createdAt.imagesListCellDateString()
-        cell.isLiked = photo.isLiked
+        return configuredCell
     }
-}
-
-extension ImagesListPresenter {
+    
     func calculateCellHeight(at indexPath: IndexPath, tableViewWidth: CGFloat) -> CGFloat {
         let photo = photos[indexPath.row]
-        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-        let imageViewWidth = tableViewWidth - imageInsets.left - imageInsets.right
-        let imageWidth = photo.size.width
-        let scale = imageViewWidth / imageWidth
-        let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
+        let cellHeight = helper.calculateCellHeight(at: indexPath, tableViewWidth: tableViewWidth, for: photo)
         return cellHeight
     }
 }

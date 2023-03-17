@@ -61,6 +61,7 @@
 		96EBB28629C30EC200E49CC7 /* ProfileViewPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB28529C30EC200E49CC7 /* ProfileViewPresenterSpy.swift */; };
 		96EBB28829C310F600E49CC7 /* ProfileViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB28729C310F600E49CC7 /* ProfileViewControllerSpy.swift */; };
 		96EBB28B29C321B200E49CC7 /* ImagesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB28A29C321B200E49CC7 /* ImagesListPresenter.swift */; };
+		96EBB28E29C4249B00E49CC7 /* ImagesListCellHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB28D29C4249B00E49CC7 /* ImagesListCellHelper.swift */; };
 		96EF758029A0A7D7005CAE89 /* PhotoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EF757F29A0A7D7005CAE89 /* PhotoResult.swift */; };
 /* End PBXBuildFile section */
 
@@ -129,6 +130,7 @@
 		96EBB28529C30EC200E49CC7 /* ProfileViewPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPresenterSpy.swift; sourceTree = "<group>"; };
 		96EBB28729C310F600E49CC7 /* ProfileViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerSpy.swift; sourceTree = "<group>"; };
 		96EBB28A29C321B200E49CC7 /* ImagesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenter.swift; sourceTree = "<group>"; };
+		96EBB28D29C4249B00E49CC7 /* ImagesListCellHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCellHelper.swift; sourceTree = "<group>"; };
 		96EF757F29A0A7D7005CAE89 /* PhotoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -409,6 +411,7 @@
 			children = (
 				961D0BA0294D9F1E005A914D /* ImagesListViewController.swift */,
 				96EBB28A29C321B200E49CC7 /* ImagesListPresenter.swift */,
+				96EBB28D29C4249B00E49CC7 /* ImagesListCellHelper.swift */,
 			);
 			path = ImagesListViewController;
 			sourceTree = "<group>";
@@ -589,6 +592,7 @@
 				96859C962954A62700C468D8 /* DateFormatter+Extensions.swift in Sources */,
 				964B296129B20939001964E5 /* AlertModel.swift in Sources */,
 				9632136F29824715003A07EB /* OAuthTokenResponseBody.swift in Sources */,
+				96EBB28E29C4249B00E49CC7 /* ImagesListCellHelper.swift in Sources */,
 				96EBB28429C3065300E49CC7 /* ProfileAlertHelper.swift in Sources */,
 				9632136A298132B1003A07EB /* WebViewViewControllerDelegate.swift in Sources */,
 				96EBB28B29C321B200E49CC7 /* ImagesListPresenter.swift in Sources */,

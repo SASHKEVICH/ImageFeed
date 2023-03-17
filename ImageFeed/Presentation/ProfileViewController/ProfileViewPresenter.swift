@@ -31,7 +31,7 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     }
     
     func viewDidLoad() {
-        alertPresenter = AlertPresenter()
+        self.alertPresenter = AlertPresenter()
         alertPresenter?.delegate = self
         
         addUpdateAvatarNotificationObserver()
