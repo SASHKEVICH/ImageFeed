@@ -8,7 +8,6 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
-    
     private lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "LaunchScreenVector")
@@ -139,7 +138,7 @@ extension SplashViewController: AuthViewControllerDelegate {
 }
 
 extension SplashViewController: AlertPresenterDelegate {
-    func didRecieveAlert(_ vc: UIAlertController) {
+    func didRecieve(alert vc: UIAlertController) {
         present(vc, animated: true)
     }
 }

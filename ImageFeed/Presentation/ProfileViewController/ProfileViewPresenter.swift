@@ -130,7 +130,7 @@ extension ProfileViewPresenter {
 
 // MARK: - AlertPresenterDelegate
 extension ProfileViewPresenter: AlertPresenterDelegate {
-    func didRecieveAlert(_ vc: UIAlertController) {
+    func didRecieve(alert vc: UIAlertController) {
         view?.present(alert: vc)
     }
 }
