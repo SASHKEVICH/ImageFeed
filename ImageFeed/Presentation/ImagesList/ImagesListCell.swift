@@ -11,7 +11,7 @@ protocol ImagesListCellDelegate: AnyObject {
     func imagesListCellDidTapLike(_ cell: ImagesListCell)
 }
 
-final class ImagesListCell: UITableViewCell {
+public final class ImagesListCell: UITableViewCell {
     enum FeedCellImageState {
         case loading
         case error
@@ -79,7 +79,7 @@ final class ImagesListCell: UITableViewCell {
         return gradientLayer
     }()
     
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
         cellImageView.layer.cornerRadius = 16
         cellImageView.layer.masksToBounds = true
@@ -93,13 +93,13 @@ final class ImagesListCell: UITableViewCell {
         gradientView.layer.masksToBounds = true
     }
     
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
         hideLoadingAnimation()
         cellImageView.kf.cancelDownloadTask()
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         gradientLayer.frame = gradientView.bounds
         super.layoutSubviews()
     }
