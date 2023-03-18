@@ -23,7 +23,7 @@ public protocol ImagesListPresenterProtocol: AnyObject, ImagesListPresenterCellP
 }
 
 final class ImagesListPresenter: ImagesListPresenterProtocol {
-    private let imagesListService: ImagesListService = ImagesListService()
+    private let imagesListService: ImagesListServiceProtocol
     private var alertPresenter: AlertPresenter?
     private var helper: ImagesListCellHelperProtocol
     private var imagesListServiceObserver: NSObjectProtocol?
@@ -40,8 +40,12 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
         requestFetchPhotosNextPage()
     }
     
-    init(helper: ImagesListCellHelperProtocol) {
+    init(
+        helper: ImagesListCellHelperProtocol,
+        imagesListService: ImagesListServiceProtocol = ImagesListService()
+    ) {
         self.helper = helper
+        self.imagesListService = imagesListService
         addUpdatePhotosNotificationObserver()
     }
 }
@@ -101,7 +105,7 @@ extension ImagesListPresenter {
     private func addUpdatePhotosNotificationObserver() {
         imagesListServiceObserver = NotificationCenter.default
             .addObserver(
-                forName: ImagesListService.didChangeNotification,
+                forName: imagesListService.didChangeNotificationName,
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
@@ -120,7 +124,7 @@ extension ImagesListPresenter {
 extension ImagesListPresenter: ImagesListPresenterCellProtocol {
     func configured(cell: ImagesListCell, at indexPath: IndexPath) -> ImagesListCell {
         let photo = photos[indexPath.row]
-        let configuredCell = helper.configured(cell: cell, at: indexPath, with: photo) { [weak self] in
+        let configuredCell = helper.configured(cell: cell, with: photo) { [weak self] in
             self?.view?.reloadRows(at: indexPath)
         }
         return configuredCell
@@ -129,7 +133,6 @@ extension ImagesListPresenter: ImagesListPresenterCellProtocol {
     func calculateCellHeight(at indexPath: IndexPath, tableViewWidth: CGFloat) -> CGFloat {
         let photo = photos[indexPath.row]
         let cellHeight = helper.calculateCellHeight(
-            at: indexPath,
             tableViewWidth: tableViewWidth,
             for: photo)
         return cellHeight

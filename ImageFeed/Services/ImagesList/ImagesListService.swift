@@ -7,10 +7,17 @@
 
 import Foundation
 
-final class ImagesListService {
-    
-    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-    
+public protocol ImagesListServiceProtocol {
+    var didChangeNotificationName: Notification.Name { get }
+    var photos: [Photo] { get }
+    func fetchPhotosNextPage()
+    func changeLike(
+        photoId: String,
+        isLike: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImagesListService: ImagesListServiceProtocol {
     private let urlSession = URLSession.shared
     private let token = OAuth2TokenStorage().token
     
@@ -18,10 +25,10 @@ final class ImagesListService {
     private var likeTask: URLSessionTask?
     
     private let authConfiguration = AuthConfiguration.standard
-    
-    private(set) var photos: [Photo] = []
-    
     private var lastLoadedPage: Int?
+    
+    var didChangeNotificationName = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    var photos: [Photo] = []
     
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
@@ -63,7 +70,7 @@ final class ImagesListService {
 private extension ImagesListService {
     func postNotification() {
         NotificationCenter.default
-            .post(name: ImagesListService.didChangeNotification,
+            .post(name: didChangeNotificationName,
                   object: self,
                   userInfo: ["photos": photos])
     }
@@ -71,7 +78,6 @@ private extension ImagesListService {
 
 // MARK: Fetch Photos methods
 private extension ImagesListService {
-    
     func handleFetchingPhotos(result: Result<[PhotoResult], Error>) {
         switch result {
         case .success(let photosResult):
@@ -123,8 +129,11 @@ private extension ImagesListService {
 
 // MARK: Change like methods
 private extension ImagesListService {
-    
-    func handleChangeLike(result: Result<LikePhotoResult, Error>, photoId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func handleChangeLike(
+        result: Result<LikePhotoResult, Error>,
+        photoId: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         switch result {
         case .success:
             changePhotoLikedState(photoId: photoId)
