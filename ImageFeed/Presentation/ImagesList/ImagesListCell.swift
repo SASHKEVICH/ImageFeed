@@ -12,7 +12,7 @@ protocol ImagesListCellDelegate: AnyObject {
 }
 
 public final class ImagesListCell: UITableViewCell {
-    enum FeedCellImageState {
+    enum FeedCellImageState: Equatable {
         case loading
         case error
         case finished(UIImage)
