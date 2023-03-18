@@ -8,7 +8,7 @@
 import UIKit
 
 public protocol ImagesListViewControllerProtocol: AnyObject {
-    func didUpdatePhotosAnimated(_ photos: [Photo])
+    func didUpdatePhotosAnimated(photosCount: Int)
     func didRecieve(alert: UIAlertController)
     func reloadRows(at: IndexPath)
 }
@@ -58,10 +58,10 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
 
 //MARK: - Update Photos Animated
 extension ImagesListViewController {
-    func didUpdatePhotosAnimated(_ photos: [Photo]) {
+    func didUpdatePhotosAnimated(photosCount: Int) {
         tableView.performBatchUpdates { [weak self] in
             let batchAmount = 10
-            let photosIndexPaths = (photos.count - batchAmount..<photos.count).map { row in
+            let photosIndexPaths = (photosCount - batchAmount..<photosCount).map { row in
                 IndexPath(row: row, section: 0)
             }
             self?.tableView.insertRows(at: photosIndexPaths, with: .automatic)
@@ -100,14 +100,8 @@ extension ImagesListViewController: UITableViewDelegate {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        setCellStateIfItsImageNil(cell)
+        presenter?.setCellLoadingStateIfItsImageNil(cell)
         presenter?.requestFetchPhotosNextPageIfLastCell(at: indexPath)
-    }
-    
-    func setCellStateIfItsImageNil(_ cell: UITableViewCell) {
-        if let cell = cell as? ImagesListCell, cell.cellImage == nil {
-            cell.cellState = .loading
-        }
     }
 }
 
@@ -119,18 +113,21 @@ extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-        guard
-            let imagesListCell = cell as? ImagesListCell,
-            let configuredImagesListCell = presenter?.configured(cell: imagesListCell, at: indexPath)
-        else {
-            assertionFailure("Something went wrong in \(ImagesListCell.reuseIdentifier)")
-            return UITableViewCell()
-        }
-        configuredImagesListCell.delegate = self
-        return configuredImagesListCell
+        let imagesListCell = configured(cell: cell, at: indexPath) ?? UITableViewCell()
+        return imagesListCell
     }
     
     func reloadRows(at indexPath: IndexPath) {
         tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
+    private func configured(cell: UITableViewCell, at indexPath: IndexPath) -> ImagesListCell? {
+        guard let imagesListCell = cell as? ImagesListCell else {
+            assertionFailure("Something went wrong in \(ImagesListCell.reuseIdentifier)")
+            return nil
+        }
+        let configuredImagesListCell = presenter?.configured(cell: imagesListCell, at: indexPath)
+        configuredImagesListCell?.delegate = self
+        return configuredImagesListCell
     }
 }
