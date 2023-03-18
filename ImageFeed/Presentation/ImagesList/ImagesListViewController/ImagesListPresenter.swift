@@ -8,14 +8,18 @@
 import UIKit
 import Kingfisher
 
-public protocol ImagesListPresenterProtocol: AnyObject {
+public protocol ImagesListPresenterCellProtocol {
+    func configured(cell: ImagesListCell, at: IndexPath) -> ImagesListCell
+    func calculateCellHeight(at: IndexPath, tableViewWidth: CGFloat) -> CGFloat
+    func setCellLoadingStateIfItsImageNil(_: UITableViewCell)
+}
+
+public protocol ImagesListPresenterProtocol: AnyObject, ImagesListPresenterCellProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
     var photos: [Photo] { get set }
     func viewDidLoad()
     func requestFetchPhotosNextPageIfLastCell(at indexPath: IndexPath)
     func requestChangeCellLike(at indexPath: IndexPath, isLike: Bool)
-    func configured(cell: ImagesListCell, at indexPath: IndexPath) -> ImagesListCell
-    func calculateCellHeight(at indexPath: IndexPath, tableViewWidth: CGFloat) -> CGFloat
 }
 
 final class ImagesListPresenter: ImagesListPresenterProtocol {
@@ -101,16 +105,19 @@ extension ImagesListPresenter {
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
-                guard let self = self else { return }
-                let photos = self.imagesListService.photos
-                self.photos = photos
-                self.view?.didUpdatePhotosAnimated(photos)
+                self?.updatePhotosCount()
             }
+    }
+    
+    private func updatePhotosCount() {
+        let photos = imagesListService.photos
+        self.photos = photos
+        view?.didUpdatePhotosAnimated(photosCount: photos.count)
     }
 }
 
 // MARK: - Cell Configuring with Helper
-extension ImagesListPresenter {
+extension ImagesListPresenter: ImagesListPresenterCellProtocol {
     func configured(cell: ImagesListCell, at indexPath: IndexPath) -> ImagesListCell {
         let photo = photos[indexPath.row]
         let configuredCell = helper.configured(cell: cell, at: indexPath, with: photo) { [weak self] in
@@ -121,7 +128,14 @@ extension ImagesListPresenter {
     
     func calculateCellHeight(at indexPath: IndexPath, tableViewWidth: CGFloat) -> CGFloat {
         let photo = photos[indexPath.row]
-        let cellHeight = helper.calculateCellHeight(at: indexPath, tableViewWidth: tableViewWidth, for: photo)
+        let cellHeight = helper.calculateCellHeight(
+            at: indexPath,
+            tableViewWidth: tableViewWidth,
+            for: photo)
         return cellHeight
+    }
+    
+    func setCellLoadingStateIfItsImageNil(_ cell: UITableViewCell) {
+        helper.setCellLoadingStateIfItsImageNil(cell)
     }
 }
