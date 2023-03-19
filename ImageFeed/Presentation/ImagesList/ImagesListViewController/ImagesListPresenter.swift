@@ -130,7 +130,10 @@ extension ImagesListPresenter: ImagesListPresenterCellProtocol {
         return configuredCell
     }
     
-    func calculateCellHeight(at indexPath: IndexPath, tableViewWidth: CGFloat) -> CGFloat {
+    func calculateCellHeight(
+        at indexPath: IndexPath,
+        tableViewWidth: CGFloat
+    ) -> CGFloat {
         let photo = photos[indexPath.row]
         let cellHeight = helper.calculateCellHeight(
             tableViewWidth: tableViewWidth,

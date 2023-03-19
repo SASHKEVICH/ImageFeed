@@ -58,6 +58,38 @@ final class ImagesListTests: XCTestCase {
         XCTAssertTrue(actualCellState == ImagesListCell.FeedCellImageState.loading)
     }
     
+    func testHelperSetImageForCellAndItsStateFinished() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController") as! ImagesListViewController
+        let helper = ImagesListCellHelper()
+        let imageLoader = ImagesListCellImageLoaderStub()
+        let dummyPhoto = Photo(
+            id: "123",
+            size: CGSize(width: photoWidth, height: photoHeight),
+            createdAt: nil,
+            welcomeDescription: nil,
+            thumbImageURL: "nil",
+            largeImageURL: "nil",
+            isLiked: false)
+        
+        helper.imageLoader = imageLoader
+        imageLoader.helper = helper
+        
+        _ = viewController.view
+        
+        let cell = viewController.tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier) as! ImagesListCell
+        
+        let configuredCell = helper.configured(
+            cell: cell,
+            with: dummyPhoto,
+            completion: { () in })
+        
+        let expectedImage = UIImage(systemName: "person.crop.circle")!
+        let expectedState = ImagesListCell.FeedCellImageState.finished(expectedImage)
+        
+        XCTAssertEqual(configuredCell.cellImage, expectedImage)
+        XCTAssertEqual(configuredCell.cellState, expectedState)
+    }
 }
 
 extension ImagesListTests {

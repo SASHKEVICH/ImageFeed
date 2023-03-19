@@ -65,6 +65,7 @@
 		96EBB29129C44E3300E49CC7 /* ImagesListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB29029C44E3300E49CC7 /* ImagesListTests.swift */; };
 		96EBB29329C44F0A00E49CC7 /* ImagesListPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB29229C44F0A00E49CC7 /* ImagesListPresenterSpy.swift */; };
 		96EBB29529C5E6A200E49CC7 /* ImagesListCellImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB29429C5E6A200E49CC7 /* ImagesListCellImageLoader.swift */; };
+		96EBB29929C5FB4600E49CC7 /* ImagesListCellImageLoaderStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EBB29829C5FB4600E49CC7 /* ImagesListCellImageLoaderStub.swift */; };
 		96EF758029A0A7D7005CAE89 /* PhotoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EF757F29A0A7D7005CAE89 /* PhotoResult.swift */; };
 /* End PBXBuildFile section */
 
@@ -137,6 +138,7 @@
 		96EBB29029C44E3300E49CC7 /* ImagesListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListTests.swift; sourceTree = "<group>"; };
 		96EBB29229C44F0A00E49CC7 /* ImagesListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenterSpy.swift; sourceTree = "<group>"; };
 		96EBB29429C5E6A200E49CC7 /* ImagesListCellImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCellImageLoader.swift; sourceTree = "<group>"; };
+		96EBB29829C5FB4600E49CC7 /* ImagesListCellImageLoaderStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCellImageLoaderStub.swift; sourceTree = "<group>"; };
 		96EF757F29A0A7D7005CAE89 /* PhotoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -429,6 +431,7 @@
 			children = (
 				96EBB29029C44E3300E49CC7 /* ImagesListTests.swift */,
 				96EBB29229C44F0A00E49CC7 /* ImagesListPresenterSpy.swift */,
+				96EBB29829C5FB4600E49CC7 /* ImagesListCellImageLoaderStub.swift */,
 			);
 			path = ImagesListViewControllerTests;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96EBB29929C5FB4600E49CC7 /* ImagesListCellImageLoaderStub.swift in Sources */,
 				96EBB28029C2CBAF00E49CC7 /* ProfileViewTests.swift in Sources */,
 				96EBB28629C30EC200E49CC7 /* ProfileViewPresenterSpy.swift in Sources */,
 				9654B50B29BCC0D800CF71AF /* WebViewTests.swift in Sources */,
