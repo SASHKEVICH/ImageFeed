@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 public protocol ImagesListPresenterCellProtocol {
     func configured(cell: ImagesListCell, at: IndexPath) -> ImagesListCell
@@ -16,7 +15,7 @@ public protocol ImagesListPresenterCellProtocol {
 
 public protocol ImagesListPresenterProtocol: AnyObject, ImagesListPresenterCellProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
-    var photos: [Photo] { get set }
+    var photos: [Photo] { get }
     func viewDidLoad()
     func requestFetchPhotosNextPageIfLastCell(at indexPath: IndexPath)
     func requestChangeCellLike(at indexPath: IndexPath, isLike: Bool)
