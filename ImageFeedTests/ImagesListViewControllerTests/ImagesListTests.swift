@@ -43,21 +43,6 @@ final class ImagesListTests: XCTestCase {
         XCTAssertEqual(expectedHeight, actualHeight)
     }
     
-    func testPresenterSetCellLoadingState() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController") as! ImagesListViewController
-        let presenter = ImagesListPresenter(helper: ImagesListCellHelper())
-        
-        _ = viewController.view
-
-        let cell = viewController.tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier) as! ImagesListCell
-        
-        presenter.setCellLoadingStateIfItsImageNil(cell)
-        let actualCellState = cell.cellState
-        
-        XCTAssertTrue(actualCellState == ImagesListCell.FeedCellImageState.loading)
-    }
-    
     func testHelperSetImageForCellAndItsStateFinished() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController") as! ImagesListViewController
@@ -89,6 +74,105 @@ final class ImagesListTests: XCTestCase {
         
         XCTAssertEqual(configuredCell.cellImage, expectedImage)
         XCTAssertEqual(configuredCell.cellState, expectedState)
+    }
+    
+    func testPresenterSetCellLoadingState() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController") as! ImagesListViewController
+        let presenter = ImagesListPresenter(helper: ImagesListCellHelper())
+        
+        _ = viewController.view
+
+        let cell = viewController.tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier) as! ImagesListCell
+        
+        presenter.setCellLoadingStateIfItsImageNil(cell)
+        let actualCellState = cell.cellState
+        
+        XCTAssertTrue(actualCellState == ImagesListCell.FeedCellImageState.loading)
+    }
+    
+    func testPresenterCalledDidUpdatePhotosAnimated() {
+        let viewController = ImagesListViewControllerSpy()
+        let service = ImagesListServiceSpy()
+        let presenter = ImagesListPresenter(helper: ImagesListCellHelper(), imagesListService: service)
+        
+        presenter.view = viewController
+        viewController.presenter = presenter
+        
+        presenter.requestFetchPhotosNextPage()
+        
+        XCTAssertTrue(viewController.didUpdatePhotosAnimatedCalled)
+    }
+    
+    func testPresenterCalledDidUpdatePhotosAnimatedWhenPhotosEmpty() {
+        let viewController = ImagesListViewControllerSpy()
+        let service = ImagesListServiceSpy()
+        let presenter = ImagesListPresenter(helper: ImagesListCellHelper(), imagesListService: service)
+        
+        presenter.view = viewController
+        viewController.presenter = presenter
+        
+        presenter.viewDidLoad()
+        
+        XCTAssertTrue(viewController.didUpdatePhotosAnimatedCalled)
+    }
+    
+    func testPresenterRequestChangeLike() {
+        let service = ImagesListServiceSpy()
+        let presenter = ImagesListPresenter(helper: ImagesListCellHelper(), imagesListService: service)
+
+        let expectedIsLiked = true
+        let cellIndexPath = IndexPath(row: 0, section: 0)
+
+        presenter.requestFetchPhotosNextPage()
+        presenter.requestChangeCellLike(at: cellIndexPath, isLike: expectedIsLiked)
+
+        let actualPhoto = presenter.photos.first
+        let actualIsLiked = actualPhoto?.isLiked
+
+        XCTAssertEqual(expectedIsLiked, actualIsLiked)
+    }
+    
+    func testPresenterDidNotCalledRequestFetchPhotosNextPageIfLastCell() {
+        let service = ImagesListServiceSpy()
+        let presenter = ImagesListPresenter(helper: ImagesListCellHelper(), imagesListService: service)
+        let notLastIndexPath = IndexPath(row: 1, section: 0)
+        
+        let dummyPhotos = [
+            Photo(
+                id: "123",
+                size: CGSize(width: 100, height: 100),
+                createdAt: nil,
+                welcomeDescription: nil,
+                thumbImageURL: "nil",
+                largeImageURL: "nil",
+                isLiked: false),
+            Photo(
+                id: "1234",
+                size: CGSize(width: 100, height: 100),
+                createdAt: nil,
+                welcomeDescription: nil,
+                thumbImageURL: "nil",
+                largeImageURL: "nil",
+                isLiked: false),
+            Photo(
+                id: "12345",
+                size: CGSize(width: 100, height: 100),
+                createdAt: nil,
+                welcomeDescription: nil,
+                thumbImageURL: "nil",
+                largeImageURL: "nil",
+                isLiked: false),
+        ]
+        presenter.photos.append(contentsOf: dummyPhotos)
+        
+        presenter.requestFetchPhotosNextPageIfLastCell(at: notLastIndexPath)
+        
+        XCTAssertFalse(service.didCalledFetchPhotosNextPage)
+    }
+    
+    func testPresenterConfiguredCalledViewsReloadRows() {
+        
     }
 }
 
