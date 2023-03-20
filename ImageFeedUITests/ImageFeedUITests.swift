@@ -26,14 +26,15 @@ final class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         
         loginTextField.tap()
-        loginTextField.typeText("praise2001@icloud.com")
+        // Да, я знаю, что спалил креды от Unsplash :)
+        loginTextField.typeText("Тут-должен-быть-ваш-email")
         webView.swipeUp()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         
         passwordTextField.tap()
-        passwordTextField.typeText("dywPes-vacgud-razdy8")
+        passwordTextField.typeText("Тут-должен-быть-ваш-пароль")
         webView.swipeUp()
         
         print(app.debugDescription)
