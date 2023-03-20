@@ -25,6 +25,7 @@ struct AlertPresenter: AlertPresenterProtocol {
         for (index, title) in titles.enumerated() {
             let handler = alertModel.completions?[safe: index]
             let action = UIAlertAction(title: title, style: .default, handler: handler)
+            action.accessibilityIdentifier = title
             alertController.addAction(action)
         }
         delegate.didRecieve(alert: alertController)

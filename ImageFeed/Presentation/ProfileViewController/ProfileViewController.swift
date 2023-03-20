@@ -146,6 +146,9 @@ private extension ProfileViewController {
         stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 235).isActive = true
         
         layoutProfileImageView()
+        
+        nameLabel.accessibilityIdentifier = "ProfileNameLabel"
+        loginNameLabel.accessibilityIdentifier = "ProfileLoginNameLabel"
     }
     
     func layoutProfileImageView() {
@@ -172,6 +175,7 @@ private extension ProfileViewController {
             exitButton.heightAnchor.constraint(equalToConstant: 24),
         ]
         NSLayoutConstraint.activate(constraints)
+        exitButton.accessibilityIdentifier = "ProfileExitButton"
     }
 }
 

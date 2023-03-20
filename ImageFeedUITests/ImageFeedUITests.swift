@@ -73,6 +73,21 @@ final class ImageFeedUITests: XCTestCase {
     }
     
     func testProfile() throws {
+        sleep(3)
+        app.tabBars.buttons.element(boundBy: 1).tap()
         
+        let nameLabel = app.staticTexts["ProfileNameLabel"]
+        let loginNameLabel = app.staticTexts["ProfileLoginNameLabel"]
+        XCTAssertTrue(nameLabel.exists)
+        XCTAssertTrue(loginNameLabel.exists)
+        
+        let exitButton = app.buttons["ProfileExitButton"]
+        exitButton.tap()
+        
+        app.alerts["Пока-пока!"].scrollViews.otherElements.buttons["Да"].tap()
+        
+        sleep(2)
+        
+        XCTAssertTrue(app.buttons["AuthenticateButton"].exists)
     }
 }
