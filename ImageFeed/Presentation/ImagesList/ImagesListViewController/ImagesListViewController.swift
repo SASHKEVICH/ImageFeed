@@ -100,8 +100,10 @@ extension ImagesListViewController: UITableViewDelegate {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        presenter?.setCellLoadingStateIfItsImageNil(cell)
-        presenter?.requestFetchPhotosNextPageIfLastCell(at: indexPath)
+        if let visibleIndexPaths = tableView.indexPathsForVisibleRows, visibleIndexPaths.contains(indexPath) {
+            presenter?.setCellLoadingStateIfItsImageNil(cell)
+            presenter?.requestFetchPhotosNextPageIfLastCell(at: indexPath)
+        }
     }
 }
 
