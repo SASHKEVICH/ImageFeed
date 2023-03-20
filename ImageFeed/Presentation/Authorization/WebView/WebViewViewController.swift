@@ -29,6 +29,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         super.viewDidLoad()
         
         webView.navigationDelegate = self
+        webView.accessibilityIdentifier = "AuthenticateWebView"
         presenter?.viewDidLoad()
         observeToWebViewProgress()
     }

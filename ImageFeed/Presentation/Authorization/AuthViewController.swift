@@ -21,6 +21,7 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loginButton.accessibilityIdentifier = "AuthenticateButton"
         setupLoginButton()
     }
     

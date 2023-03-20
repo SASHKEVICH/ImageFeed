@@ -170,10 +170,6 @@ final class ImagesListTests: XCTestCase {
         
         XCTAssertFalse(service.didCalledFetchPhotosNextPage)
     }
-    
-    func testPresenterConfiguredCalledViewsReloadRows() {
-        
-    }
 }
 
 extension ImagesListTests {
