@@ -59,7 +59,7 @@ final class WebViewTests: XCTestCase {
         let configuration = AuthConfiguration.standard
         let helper = WebViewAuthHelper(configuration: configuration)
         
-        guard let url = helper.authURL() else {
+        guard let url = helper.authURL else {
             XCTFail("Unable to get url")
             return
         }

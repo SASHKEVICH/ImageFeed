@@ -9,8 +9,8 @@ import Foundation
 
 public struct Profile {
     let username: String
-    public let name: String
-    public let loginName: String
+    let name: String
+    let loginName: String
     let bio: String?
     
     static func convert(from result: ProfileResult) -> Profile {

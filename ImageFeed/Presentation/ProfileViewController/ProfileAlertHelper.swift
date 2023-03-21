@@ -7,7 +7,7 @@
 
 import UIKit
 
-public protocol ProfileAlertHelperProtocol {
+protocol ProfileAlertHelperProtocol {
     func exitButtonAlertModel(logoutHandler: @escaping (UIAlertAction) -> Void) -> AlertModel
     func profileIsEmptyAlertModel() -> AlertModel
     func imageDownloadingFailureAlertModel() -> AlertModel

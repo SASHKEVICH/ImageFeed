@@ -30,7 +30,7 @@ final class ImagesListCellImageLoader: ImagesListCellImageLoaderProtocol {
             switch result {
             case .success(let imageResult):
                 self.helper?.didSet(image: imageResult.image, for: cell)
-            case .failure(_):
+            case .failure:
                 self.helper?.didSetErrorState(for: cell)
             }
 

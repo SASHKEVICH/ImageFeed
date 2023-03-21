@@ -34,7 +34,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         observeToWebViewProgress()
     }
 
-    @IBAction func didTapBackButton(_ sender: Any) {
+    @IBAction private func didTapBackButton(_ sender: Any) {
         delegate?.webViewViewControllerDidCancel(self)
     }
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-public struct AlertModel {
+struct AlertModel {
     let title: String?
     let message: String?
     var actionTitles: [String]? = nil

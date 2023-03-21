@@ -8,7 +8,7 @@
 import Foundation
 
 protocol WebViewAuthHelperProtocol {
-    func authRequest() -> URLRequest?
+    var authRequest: URLRequest? { get }
     func code(from url: URL) -> String?
 }
 
@@ -19,8 +19,22 @@ struct WebViewAuthHelper: WebViewAuthHelperProtocol {
         self.configuration = configuration
     }
     
-    func authRequest() -> URLRequest? {
-        guard let url = authURL() else { return nil }
+    var authURL: URL? {
+        var urlComponents = URLComponents(string: configuration.unsplashOAuthString)
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "client_id", value: configuration.accessKey),
+            URLQueryItem(name: "redirect_uri", value: configuration.redirectURI),
+            URLQueryItem(name: "scope", value: configuration.accessScopes),
+            URLQueryItem(name: "response_type", value: "code"),
+        ]
+        urlComponents?.path = "/oauth/authorize"
+        
+        guard let url = urlComponents?.url else { return nil }
+        return url
+    }
+    
+    var authRequest: URLRequest? {
+        guard let url = authURL else { return nil }
         return URLRequest(url: url)
     }
     
@@ -33,19 +47,5 @@ struct WebViewAuthHelper: WebViewAuthHelperProtocol {
         else { return nil }
         
         return codeItem.value
-    }
-    
-    func authURL() -> URL? {
-        var urlComponents = URLComponents(string: configuration.unsplashOAuthString)
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "client_id", value: configuration.accessKey),
-            URLQueryItem(name: "redirect_uri", value: configuration.redirectURI),
-            URLQueryItem(name: "scope", value: configuration.accessScopes),
-            URLQueryItem(name: "response_type", value: "code"),
-        ]
-        urlComponents?.path = "/oauth/authorize"
-        
-        guard let url = urlComponents?.url else { return nil }
-        return url
     }
 }

@@ -5,9 +5,9 @@
 //  Created by Александр Бекренев on 16.03.2023.
 //
 
-@testable import ImageFeed
 import XCTest
 import UIKit
+@testable import ImageFeed
 
 final class ProfileViewTests: XCTestCase {
     func testViewControllerCallsViewDidLoad() {

@@ -13,7 +13,6 @@ public protocol ImagesListCellHelperDelegate: AnyObject {
 }
 
 public protocol ImagesListCellHelperProtocol: AnyObject, ImagesListCellHelperDelegate {
-    var imageLoader: ImagesListCellImageLoaderProtocol? { get }
     func configured(
         cell: ImagesListCell,
         with: Photo,
@@ -28,7 +27,7 @@ public protocol ImagesListCellHelperProtocol: AnyObject, ImagesListCellHelperDel
 
 // MARK: - Interface methods
 final class ImagesListCellHelper: ImagesListCellHelperProtocol {
-    var imageLoader: ImagesListCellImageLoaderProtocol?
+    private var imageLoader: ImagesListCellImageLoaderProtocol
     
     init(imageLoader: ImagesListCellImageLoaderProtocol = ImagesListCellImageLoader()) {
         self.imageLoader = imageLoader
@@ -85,7 +84,7 @@ private extension ImagesListCellHelper {
         with photo: Photo,
         completion: @escaping () -> Void
     ) -> ImagesListCell {
-        imageLoader?.requestLoadImage(for: cell, with: photo, completion: completion)
+        imageLoader.requestLoadImage(for: cell, with: photo, completion: completion)
         
         cell.cellDateText = photo.createdAt.imagesListCellDateString()
         cell.isLiked = photo.isLiked

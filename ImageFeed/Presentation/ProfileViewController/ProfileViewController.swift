@@ -132,8 +132,7 @@ private extension ProfileViewController {
 }
 
 //MARK: - Layout Methods
-private extension ProfileViewController {
-    
+private extension ProfileViewController { 
     func layoutProfileStackView() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(profileImageView)
