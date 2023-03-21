@@ -31,7 +31,11 @@ final class ProfileViewTests: XCTestCase {
         
         let expectedLogin = "@sashkevich"
         let expectedName = "Aleksandr Bekrenev"
-        let profile = Profile(username: "sashkevich", name: expectedName, loginName: expectedLogin, bio: nil)
+        let profile = Profile(
+            loginName: expectedLogin,
+            name: expectedName,
+            username: "sashkevich",
+            bio: nil)
         presenter.updateDetailsForView(with: profile)
         
         let actualLogin = viewController.loginName

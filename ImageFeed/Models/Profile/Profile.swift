@@ -8,16 +8,16 @@
 import Foundation
 
 public struct Profile {
-    let username: String
-    let name: String
-    let loginName: String
+    public let loginName: String
+    public let name: String
+    public let username: String
     let bio: String?
     
     static func convert(from result: ProfileResult) -> Profile {
         let profile = Profile(
-            username: result.username,
-            name: "\(result.firstName) \(result.lastName)",
             loginName: "@\(result.username)",
+            name: "\(result.firstName) \(result.lastName)",
+            username: result.username,
             bio: result.bio)
         return profile
     }

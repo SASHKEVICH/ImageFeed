@@ -46,8 +46,8 @@ final class ImagesListTests: XCTestCase {
     func testHelperSetImageForCellAndItsStateFinished() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController") as! ImagesListViewController
-        let helper = ImagesListCellHelper()
         let imageLoader = ImagesListCellImageLoaderStub()
+        let helper = ImagesListCellHelper(imageLoader: imageLoader)
         let dummyPhoto = Photo(
             id: "123",
             size: CGSize(width: photoWidth, height: photoHeight),
@@ -57,7 +57,6 @@ final class ImagesListTests: XCTestCase {
             largeImageURL: "nil",
             isLiked: false)
         
-        helper.imageLoader = imageLoader
         imageLoader.helper = helper
         
         _ = viewController.view

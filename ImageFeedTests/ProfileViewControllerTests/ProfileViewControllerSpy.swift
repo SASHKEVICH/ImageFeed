@@ -16,7 +16,7 @@ final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
     
     func present(alert: UIAlertController) {}
     
-    func didUpdateProfileDetails(profile: ImageFeed.Profile) {
+    func didUpdateProfileDetails(profile: Profile) {
         self.loginName = profile.loginName
         self.name = profile.name
     }
