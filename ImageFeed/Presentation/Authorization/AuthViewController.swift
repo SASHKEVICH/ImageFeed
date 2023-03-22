@@ -12,7 +12,6 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-
     @IBOutlet private weak var loginButton: UIButton!
     
     private let showWebViewSegueId = "ShowWebView"
@@ -22,13 +21,23 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loginButton.accessibilityIdentifier = "AuthenticateButton"
         setupLoginButton()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showWebViewSegueId {
-            let vc = segue.destination as! WebViewViewController
-            vc.delegate = self
+            guard
+                let webViewViewController = segue.destination as? WebViewViewController
+            else {
+                assertionFailure("Failed to prepare for \(showWebViewSegueId)")
+                return
+            }
+            let authHelper = WebViewAuthHelper()
+            let webViewPresenter = WebViewPresenter(helper: authHelper)
+            webViewViewController.presenter = webViewPresenter
+            webViewPresenter.view = webViewViewController
+            webViewViewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
         }

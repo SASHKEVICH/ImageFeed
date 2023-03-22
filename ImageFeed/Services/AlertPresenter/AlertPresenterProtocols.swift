@@ -8,9 +8,10 @@
 import UIKit
 
 protocol AlertPresenterDelegate: AnyObject {
-    func didRecieveAlert(_ vc: UIAlertController)
+    func didRecieve(alert: UIAlertController)
 }
 
 protocol AlertPresenterProtocol {
+    var delegate: AlertPresenterDelegate? { get set }
     func requestAlert(_ alertModel: AlertModel)
 }

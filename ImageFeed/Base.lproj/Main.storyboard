@@ -131,6 +131,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XMO-Eb-XV7" userLabel="Exit Button">
                                 <rect key="frame" x="8" y="56" width="48" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="SingleImageBackButton"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="2Js-Rd-hcd"/>
                                     <constraint firstAttribute="height" constant="48" id="kXh-93-Fwf"/>
@@ -251,7 +252,7 @@
         <!--Web View View Controller-->
         <scene sceneID="aUv-Ny-Kb8">
             <objects>
-                <viewController id="FhZ-P9-Rvn" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="FhZ-P9-Rvn" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mWI-fj-t62">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

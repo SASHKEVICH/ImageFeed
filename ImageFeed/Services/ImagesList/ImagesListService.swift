@@ -7,19 +7,28 @@
 
 import Foundation
 
-final class ImagesListService {
-    
-    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-    
+public protocol ImagesListServiceProtocol {
+    var didChangeNotificationName: Notification.Name { get }
+    var photos: [Photo] { get }
+    func fetchPhotosNextPage()
+    func changeLike(
+        photoId: String,
+        isLike: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImagesListService: ImagesListServiceProtocol {
     private let urlSession = URLSession.shared
     private let token = OAuth2TokenStorage().token
     
     private var fetchPhotosTask: URLSessionTask?
     private var likeTask: URLSessionTask?
     
-    private(set) var photos: [Photo] = []
-    
+    private let authConfiguration = AuthConfiguration.standard
     private var lastLoadedPage: Int?
+    
+    var didChangeNotificationName = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    var photos: [Photo] = []
     
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
@@ -61,7 +70,7 @@ final class ImagesListService {
 private extension ImagesListService {
     func postNotification() {
         NotificationCenter.default
-            .post(name: ImagesListService.didChangeNotification,
+            .post(name: didChangeNotificationName,
                   object: self,
                   userInfo: ["photos": photos])
     }
@@ -69,7 +78,6 @@ private extension ImagesListService {
 
 // MARK: Fetch Photos methods
 private extension ImagesListService {
-    
     func handleFetchingPhotos(result: Result<[PhotoResult], Error>) {
         switch result {
         case .success(let photosResult):
@@ -105,7 +113,7 @@ private extension ImagesListService {
     }
     
     func nextImagesPageRequest(page: Int) -> URLRequest? {
-        guard var imagesPageUrlComponents = URLComponents(string: Constants.unsplashAPIString) else {
+        guard var imagesPageUrlComponents = URLComponents(string: authConfiguration.unsplashAPIString) else {
             assertionFailure("Unable to construct `/photos` url components")
             return nil
         }
@@ -121,8 +129,11 @@ private extension ImagesListService {
 
 // MARK: Change like methods
 private extension ImagesListService {
-    
-    func handleChangeLike(result: Result<LikePhotoResult, Error>, photoId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func handleChangeLike(
+        result: Result<LikePhotoResult, Error>,
+        photoId: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         switch result {
         case .success:
             changePhotoLikedState(photoId: photoId)
@@ -147,7 +158,7 @@ private extension ImagesListService {
     }
     
     func changeLikeRequest(for id: String, isLike: Bool) -> URLRequest? {
-        guard var changeLikeUrlComponents = URLComponents(string: Constants.unsplashAPIString) else {
+        guard var changeLikeUrlComponents = URLComponents(string: authConfiguration.unsplashAPIString) else {
             assertionFailure("Unable to construct `/photos/like` url components")
             return nil
         }

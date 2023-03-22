@@ -11,9 +11,8 @@ protocol ImagesListCellDelegate: AnyObject {
     func imagesListCellDidTapLike(_ cell: ImagesListCell)
 }
 
-final class ImagesListCell: UITableViewCell {
-    
-    enum FeedCellImageState {
+public final class ImagesListCell: UITableViewCell {
+    enum FeedCellImageState: Equatable {
         case loading
         case error
         case finished(UIImage)
@@ -80,12 +79,12 @@ final class ImagesListCell: UITableViewCell {
         return gradientLayer
     }()
     
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
         cellImageView.layer.cornerRadius = 16
         cellImageView.layer.masksToBounds = true
         
-        likeButton.addTarget(self, action: #selector(handleLikeButtonTap), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(didLikeButtonTap), for: .touchUpInside)
         
         gradientLayer.frame = gradientView.bounds
         gradientView.layer.addSublayer(gradientLayer)
@@ -94,19 +93,22 @@ final class ImagesListCell: UITableViewCell {
         gradientView.layer.masksToBounds = true
     }
     
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
         hideLoadingAnimation()
         cellImageView.kf.cancelDownloadTask()
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         gradientLayer.frame = gradientView.bounds
         super.layoutSubviews()
     }
-    
+}
+
+// MARK: - Did Like Button Tap
+extension ImagesListCell {
     @objc
-    func handleLikeButtonTap() {
+    func didLikeButtonTap() {
         isLiked.toggle()
         setButtonLikedOrDisliked()
         delegate?.imagesListCellDidTapLike(self)
@@ -117,6 +119,7 @@ final class ImagesListCell: UITableViewCell {
     }
 }
 
+// MARK: - Show And Hide Loading Animation
 extension ImagesListCell {
     
     func showLoadingAnimation() {

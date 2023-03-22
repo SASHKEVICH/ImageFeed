@@ -122,7 +122,7 @@ private extension SingleImageViewController {
 }
 
 extension SingleImageViewController: AlertPresenterDelegate {
-    func didRecieveAlert(_ vc: UIAlertController) {
+    func didRecieve(alert vc: UIAlertController) {
         present(vc, animated: true)
     }
 }

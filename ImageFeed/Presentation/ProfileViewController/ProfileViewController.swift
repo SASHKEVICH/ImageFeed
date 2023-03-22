@@ -6,14 +6,18 @@
 //
 
 import UIKit
-import Kingfisher
 
-final class ProfileViewController: UIViewController {
-    private let profileService = ProfileDescriptionService.shared
-    private let profileImageService = ProfileImageService.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
-    
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfileViewPresenterProtocol? { get set }
+    func present(alert: UIAlertController)
+    func didUpdateProfileDetails(profile: Profile)
+    func didUpdateAvatar(with image: UIImage)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     private var animationViews = Set<UIView>()
+    
+    var presenter: ProfileViewPresenterProtocol?
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -72,14 +76,13 @@ final class ProfileViewController: UIViewController {
         
         layoutProfileStackView()
         layoutExitButton()
-        setupExitButton()
+        addActionToExitButton()
         
         showLoadingAnimation()
         
-        updateProfileDetails(profile: profileService.profile)
-        
-        addNotificationObserver()
-        updateAvatar()
+        presenter?.viewDidLoad()
+        presenter?.requestUpdateProfileDetails()
+        presenter?.requestUpdateProfileAvatar()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -102,7 +105,7 @@ private extension ProfileViewController {
             cornerRadius: 6)
         
         let gradientViews = [profileGradientView, nameGradientView, loginGradientView]
-        addGradientsToSet(gradients: gradientViews)
+        addGradientsToSet(gradientViews)
         addToProfileViews(gradients: gradientViews)
     }
     
@@ -117,7 +120,7 @@ private extension ProfileViewController {
         animationViews.removeAll()
     }
     
-    func addGradientsToSet(gradients: [LoadingGradientAnimationView]) {
+    func addGradientsToSet(_ gradients: [LoadingGradientAnimationView]) {
         gradients.forEach { loadingView in animationViews.insert(loadingView) }
     }
     
@@ -128,40 +131,8 @@ private extension ProfileViewController {
     }
 }
 
-//MARK: - NotificationCenter methods
-private extension ProfileViewController {
-
-    func updateAvatar() {
-        guard
-            let profileImageURL = profileImageService.profileImageURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        
-        profileImageView.kf.setImage(with: url)
-        hideLoadingAnimation()
-    }
-    
-    func addNotificationObserver() {
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                self?.updateAvatar()
-            }
-    }
-}
-
-//MARK: - Layout methods
-private extension ProfileViewController {
-    
-    func updateProfileDetails(profile: Profile?) {
-        guard let profile = profile else { return }
-        loginNameLabel.text = profile.loginName
-        nameLabel.text = profile.name
-    }
-    
+//MARK: - Layout Methods
+private extension ProfileViewController { 
     func layoutProfileStackView() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(profileImageView)
@@ -174,6 +145,9 @@ private extension ProfileViewController {
         stackView.widthAnchor.constraint(greaterThanOrEqualToConstant: 235).isActive = true
         
         layoutProfileImageView()
+        
+        nameLabel.accessibilityIdentifier = "ProfileNameLabel"
+        loginNameLabel.accessibilityIdentifier = "ProfileLoginNameLabel"
     }
     
     func layoutProfileImageView() {
@@ -200,48 +174,37 @@ private extension ProfileViewController {
             exitButton.heightAnchor.constraint(equalToConstant: 24),
         ]
         NSLayoutConstraint.activate(constraints)
+        exitButton.accessibilityIdentifier = "ProfileExitButton"
     }
 }
 
-private extension ProfileViewController {
+//MARK: - Update Profile Avatar and Details
+extension ProfileViewController {
+    func didUpdateAvatar(with image: UIImage) {
+        profileImageView.image = image
+        hideLoadingAnimation()
+    }
     
+    func didUpdateProfileDetails(profile: Profile) {
+        loginNameLabel.text = profile.loginName
+        nameLabel.text = profile.name
+    }
+}
+
+// MARK: - Logout Methods
+extension ProfileViewController {
     @objc
     func didTapExitButton() {
-        let logoutAlertPresenter = AlertPresenter(delegate: self)
-        let logoutHandler: (UIAlertAction) -> Void = { [weak self] _ in
-            guard let self = self else { return }
-            self.deleteToken()
-            self.switchToSplashViewController()
-        }
-        let alertModel = AlertModel(
-            title: "Пока-пока!",
-            message: "Уверены, что хотите выйти?",
-            actionTitles: ["Да", "Нет"],
-            completions: [logoutHandler])
-        logoutAlertPresenter.requestAlert(alertModel)
+        presenter?.didTapExitButton()
     }
     
-    func setupExitButton() {
+    private func addActionToExitButton() {
         exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
-    }
-    
-    func deleteToken() {
-        let tokenCleaner = TokenCleaner()
-        tokenCleaner.clean()
-    }
-    
-    func switchToSplashViewController() {
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Can't retrieve window object")
-            return
-        }
-        window.rootViewController = SplashViewController()
-        window.makeKeyAndVisible()
     }
 }
 
-extension ProfileViewController: AlertPresenterDelegate {
-    func didRecieveAlert(_ vc: UIAlertController) {
-        present(vc, animated: true)
+extension ProfileViewController {
+    func present(alert: UIAlertController) {
+        present(alert, animated: true)
     }
 }

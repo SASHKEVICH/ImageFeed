@@ -8,7 +8,6 @@
 import UIKit
 
 struct AlertPresenter: AlertPresenterProtocol {
-    
     weak var delegate: AlertPresenterDelegate?
     
     func requestAlert(_ alertModel: AlertModel) {
@@ -19,15 +18,16 @@ struct AlertPresenter: AlertPresenterProtocol {
             preferredStyle: .alert)
         
         guard let titles = alertModel.actionTitles else {
-            delegate.didRecieveAlert(alertController)
+            delegate.didRecieve(alert: alertController)
             return
         }
         
         for (index, title) in titles.enumerated() {
             let handler = alertModel.completions?[safe: index]
             let action = UIAlertAction(title: title, style: .default, handler: handler)
+            action.accessibilityIdentifier = title
             alertController.addAction(action)
         }
-        delegate.didRecieveAlert(alertController)
+        delegate.didRecieve(alert: alertController)
     }
 }
