@@ -9,6 +9,10 @@ import UIKit
 import ImageFeed
 
 final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
+    func switchToSplashViewController() {}
+    
+    func didRecieve(alert: UIAlertController) {}
+    
     var presenter: ImageFeed.ProfileViewPresenterProtocol?
     var image: UIImage?
     var loginName: String?

@@ -5,12 +5,12 @@
 //  Created by Александр Бекренев on 16.03.2023.
 //
 
-import UIKit
+import Foundation
 
 public protocol ImagesListPresenterCellProtocol {
     func configured(cell: ImagesListCell, at: IndexPath) -> ImagesListCell
     func calculateCellHeight(at: IndexPath, tableViewWidth: CGFloat) -> CGFloat
-    func setCellLoadingStateIfItsImageNil(_: UITableViewCell)
+    func setCellLoadingStateIfItsImageNil(_: ImagesListCell)
 }
 
 public protocol ImagesListPresenterProtocol: AnyObject, ImagesListPresenterCellProtocol {
@@ -33,7 +33,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     
     func viewDidLoad() {
         self.alertPresenter = AlertPresenter()
-        alertPresenter?.delegate = self
+        alertPresenter?.delegate = view
         
         guard photos.isEmpty else { return }
         requestFetchPhotosNextPage()
@@ -92,13 +92,6 @@ extension ImagesListPresenter {
     }
 }
 
-// MARK: - AlertPresenterDelegate
-extension ImagesListPresenter: AlertPresenterDelegate {
-    func didRecieve(alert vc: UIAlertController) {
-        view?.didRecieve(alert: vc)
-    }
-}
-
 // MARK: - Subscribing to Notifications
 extension ImagesListPresenter {
     private func addUpdatePhotosNotificationObserver() {
@@ -140,7 +133,7 @@ extension ImagesListPresenter: ImagesListPresenterCellProtocol {
         return cellHeight
     }
     
-    func setCellLoadingStateIfItsImageNil(_ cell: UITableViewCell) {
+    func setCellLoadingStateIfItsImageNil(_ cell: ImagesListCell) {
         helper.setCellLoadingStateIfItsImageNil(cell)
     }
 }

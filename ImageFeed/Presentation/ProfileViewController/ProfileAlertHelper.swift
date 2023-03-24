@@ -8,18 +8,21 @@
 import UIKit
 
 protocol ProfileAlertHelperProtocol {
-    func exitButtonAlertModel(logoutHandler: @escaping (UIAlertAction) -> Void) -> AlertModel
+    func exitButtonAlertModel(logoutHandler: @escaping () -> Void) -> AlertModel
     func profileIsEmptyAlertModel() -> AlertModel
     func imageDownloadingFailureAlertModel() -> AlertModel
 }
 
 struct ProfileAlertHelper: ProfileAlertHelperProtocol {
-    func exitButtonAlertModel(logoutHandler: @escaping (UIAlertAction) -> Void) -> AlertModel {
+    func exitButtonAlertModel(
+        logoutHandler: @escaping () -> Void
+    ) -> AlertModel {
+        let completion: (UIAlertAction) -> Void = { _ in logoutHandler() }
         let alertModel = AlertModel(
             title: "Пока-пока!",
             message: "Уверены, что хотите выйти?",
             actionTitles: ["Да", "Нет"],
-            completions: [logoutHandler])
+            completions: [completion])
         return alertModel
     }
     
