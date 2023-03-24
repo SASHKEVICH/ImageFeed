@@ -22,7 +22,7 @@ public protocol ImagesListCellHelperProtocol: AnyObject, ImagesListCellHelperDel
         tableViewWidth: CGFloat,
         for: Photo
     ) -> CGFloat
-    func setCellLoadingStateIfItsImageNil(_: UITableViewCell)
+    func setCellLoadingStateIfItsImageNil(_: ImagesListCell)
 }
 
 // MARK: - Interface methods
@@ -59,10 +59,9 @@ final class ImagesListCellHelper: ImagesListCellHelperProtocol {
         return cellHeight
     }
     
-    func setCellLoadingStateIfItsImageNil(_ cell: UITableViewCell) {
-        if let cell = cell as? ImagesListCell, cell.cellImage == nil {
-            cell.cellState = .loading
-        }
+    func setCellLoadingStateIfItsImageNil(_ cell: ImagesListCell) {
+        guard cell.cellImage == nil else { return }
+        cell.cellState = .loading
     }
 }
 

@@ -32,7 +32,7 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     
     func viewDidLoad() {
         self.alertPresenter = AlertPresenter()
-        alertPresenter?.delegate = self
+        alertPresenter?.delegate = view
         
         addUpdateAvatarNotificationObserver()
     }
@@ -104,12 +104,10 @@ extension ProfileViewPresenter {
 // MARK: - Logout Methods
 extension ProfileViewPresenter {
     func didTapExitButton() {
-        let logoutHandler: (UIAlertAction) -> Void = { [weak self] _ in
-            guard let self = self else { return }
-            self.deleteToken()
-            self.switchToSplashViewController()
+        let logoutAlertModel = profileAlertHelper.exitButtonAlertModel { [weak self] in
+            self?.deleteToken()
+            self?.switchToSplashViewController()
         }
-        let logoutAlertModel = profileAlertHelper.exitButtonAlertModel(logoutHandler: logoutHandler)
         alertPresenter?.requestAlert(logoutAlertModel)
     }
     
@@ -119,18 +117,6 @@ extension ProfileViewPresenter {
     }
     
     private func switchToSplashViewController() {
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Can't retrieve window object")
-            return
-        }
-        window.rootViewController = SplashViewController()
-        window.makeKeyAndVisible()
-    }
-}
-
-// MARK: - AlertPresenterDelegate
-extension ProfileViewPresenter: AlertPresenterDelegate {
-    func didRecieve(alert vc: UIAlertController) {
-        view?.present(alert: vc)
+        view?.switchToSplashViewController()
     }
 }

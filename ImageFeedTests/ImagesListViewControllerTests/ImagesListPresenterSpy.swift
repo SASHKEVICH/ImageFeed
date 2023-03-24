@@ -9,6 +9,8 @@ import UIKit
 import ImageFeed
 
 final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
+    func setCellLoadingStateIfItsImageNil(_: ImagesListCell) {}
+    
     var view: ImagesListViewControllerProtocol?
     var photos: [Photo] = []
     

@@ -7,9 +7,8 @@
 
 import UIKit
 
-public protocol ImagesListViewControllerProtocol: AnyObject {
+public protocol ImagesListViewControllerProtocol: AnyObject, AlertPresenterDelegate {
     func didUpdatePhotosAnimated(photosCount: Int)
-    func didRecieve(alert: UIAlertController)
     func reloadRows(at: IndexPath)
 }
 
@@ -78,7 +77,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
 }
 
 //MARK: - Recieving Alerts
-extension ImagesListViewController {
+extension ImagesListViewController: AlertPresenterDelegate {
     func didRecieve(alert: UIAlertController) {
         present(alert, animated: true)
     }
@@ -101,7 +100,9 @@ extension ImagesListViewController: UITableViewDelegate {
         forRowAt indexPath: IndexPath
     ) {
         if let visibleIndexPaths = tableView.indexPathsForVisibleRows, visibleIndexPaths.contains(indexPath) {
-            presenter?.setCellLoadingStateIfItsImageNil(cell)
+            if let cell = cell as? ImagesListCell {
+                presenter?.setCellLoadingStateIfItsImageNil(cell)
+            }
             presenter?.requestFetchPhotosNextPageIfLastCell(at: indexPath)
         }
     }

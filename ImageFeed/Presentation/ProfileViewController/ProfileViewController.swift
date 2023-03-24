@@ -7,11 +7,11 @@
 
 import UIKit
 
-public protocol ProfileViewControllerProtocol: AnyObject {
+public protocol ProfileViewControllerProtocol: AnyObject, AlertPresenterDelegate {
     var presenter: ProfileViewPresenterProtocol? { get set }
-    func present(alert: UIAlertController)
     func didUpdateProfileDetails(profile: Profile)
     func didUpdateAvatar(with image: UIImage)
+    func switchToSplashViewController()
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
@@ -201,10 +201,20 @@ extension ProfileViewController {
     private func addActionToExitButton() {
         exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
     }
+    
+    func switchToSplashViewController() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Can't retrieve window object")
+            return
+        }
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
+    }
 }
 
-extension ProfileViewController {
-    func present(alert: UIAlertController) {
+// MARK: - AlertPresenterDelegate
+extension ProfileViewController: AlertPresenterDelegate {
+    func didRecieve(alert: UIAlertController) {
         present(alert, animated: true)
     }
 }
