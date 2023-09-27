@@ -25,7 +25,7 @@ jobs:
       - name: Generate .xcodeproj
         uses: xavierLowmiller/xcodegen-action@1.1.2
         with:
-          spec: project.yaml
+          spec: ../project.yaml
           version: latest
 
       - name: Build
