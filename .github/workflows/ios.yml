@@ -21,9 +21,12 @@ jobs:
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
           echo $default | cat >default
           echo Using default scheme: $default
-      
+
       - name: Generate .xcodeproj
-        run: make gen
+        uses: xavierLowmiller/xcodegen-action@1.1.2
+        with:
+          spec: project.yaml
+          version: latest
 
       - name: Build
         env:
