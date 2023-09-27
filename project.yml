@@ -1,0 +1,107 @@
+---
+name: ImageFeed 
+options:
+  deploymentTarget:
+    iOS: 13.0
+  defaultConfig: Debug
+  developmentLanguage: "ru"
+  enableBaseInternationalization: true
+  indentWidth: 4
+
+configs:
+  Debug: debug
+  Release: release
+
+packages:
+  Kingfisher:
+    url: https://github.com/onevcat/Kingfisher
+    version: 7.9.0
+  ProgressHUD:
+    url: https://github.com/relatedcode/ProgressHUD
+    version: 13.6.2
+  SwiftKeychainWrapper:
+    url: https://github.com/jrendel/SwiftKeychainWrapper
+    version: 4.0.1
+
+settings:
+  base:
+    SWIFT_VERSION: 5.5
+    DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+    MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+    TARGETED_DEVICE_FAMILY: 1
+    SUPPORTS_MACCATALYST: NO
+  configs:
+    Debug:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: ["$(inherited)", "DEBUG"]
+      SWIFT_COMPILATION_MODE: incremental
+    Release:
+      SWIFT_COMPILATION_MODE: wholemodule
+
+targets:
+  ImageFeed:
+    type: application
+    platform: iOS
+    dependencies:
+      - package: Kingfisher
+      - package: ProgressHUD
+      - package: SwiftKeychainWrapper
+    sources:
+      - path: ./ImageFeed
+    configFiles:
+      Release: Config/ImageFeed.xcconfig
+      Debug: Config/ImageFeed.xcconfig
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        MARKETING_VERSION: $(IMAGEFEED_MARKETING_VERSION)
+        CURRENT_PROJECT_VERSION: $(IMAGEFEED_MARKETING_SUB_VERSION)
+        TARGETED_DEVICE_FAMILY: 1
+        PRODUCT_BUNDLE_IDENTIFIER: com.bekrenev.aleksandr.ImageFeed
+        DEVELOPMENT_TEAM: 8F9BJF9KQ5
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
+
+  ImageFeedTests:
+    type: bundle.unit-test
+    platform: iOS
+    dependencies:
+      - target: ImageFeed
+    sources:
+      - path: ./ImageFeedTests
+    scheme:
+      testTargets:
+        - ImageFeedTests
+      gatherCoverageData: true
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
+      PRODUCT_BUNDLE_IDENTIFIER: com.bekrenev.aleksandr.ImageFeed.tests
+
+  ImageFeedUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: ./ImageFeedUITests
+    dependencies:
+      - target: ImageFeed
+    scheme:
+      testTargets:
+        - ImageFeedUITests
+      gatherCoverageData: true
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
+      PRODUCT_BUNDLE_IDENTIFIER: com.bekrenev.aleksandr.ImageFeed.uitests
+
+schemes:
+  ImageFeed:
+    build:
+      targets:
+        ImageFeed: all
+    run:
+      config: Debug
+      environmentVariables:
+        OS_ACTIVITY_MODE: disable
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
