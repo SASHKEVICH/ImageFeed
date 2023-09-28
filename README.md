@@ -10,9 +10,10 @@
 ## Технологический стек
 1. [Swift](https://www.swift.org)
 2. UIKit
-3. [ProgressHUD](https://github.com/relatedcode/ProgressHUD)
-4. [Kingfisher](https://github.com/onevcat/Kingfisher)
-5. [SwiftKeychainWrapper](https://github.com/jrendel/SwiftKeychainWrapper)
+3. MVP
+4. [ProgressHUD](https://github.com/relatedcode/ProgressHUD)
+5. [Kingfisher](https://github.com/onevcat/Kingfisher)
+6. [SwiftKeychainWrapper](https://github.com/jrendel/SwiftKeychainWrapper)
 
 ## Screenshots
 <img width="400" alt="Screenshot 2023-09-28 at 21 17 16" src="https://github.com/SASHKEVICH/ImageFeed/assets/51797416/d0a16e46-966d-4ce8-b4cc-1673e84e94bb">
