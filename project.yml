@@ -53,6 +53,8 @@ targets:
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UILaunchStoryboardName: LaunchScreen
+        INFOPLIST_KEY_UIMainStoryboardFile: Main
         MARKETING_VERSION: $(IMAGEFEED_MARKETING_VERSION)
         CURRENT_PROJECT_VERSION: $(IMAGEFEED_MARKETING_SUB_VERSION)
         TARGETED_DEVICE_FAMILY: 1
